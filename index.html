@@ -1,0 +1,1098 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Botably — Automation & Bot Setup Services</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;700;900&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet">
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    :root {
+      --ink:     #1a1a1a;
+      --ink-mid: #555;
+      --ink-light: #888;
+      --paper:   #faf8f4;
+      --paper-2: #f2efe8;
+      --accent:  #c8622a;
+      --accent-2:#e8a87c;
+      --rule:    #d8d2c8;
+      --white:   #ffffff;
+    }
+
+    html { scroll-behavior: smooth; }
+
+    body {
+      font-family: 'DM Sans', sans-serif;
+      background: var(--paper);
+      color: var(--ink);
+      font-size: 16px;
+      line-height: 1.6;
+      overflow-x: hidden;
+    }
+
+    /* ── NAV ── */
+    nav {
+      position: fixed; top: 0; left: 0; right: 0; z-index: 100;
+      background: rgba(250,248,244,0.92);
+      backdrop-filter: blur(8px);
+      border-bottom: 1px solid var(--rule);
+      padding: 0 5vw;
+      display: flex; align-items: center; justify-content: space-between;
+      height: 64px;
+    }
+    .nav-brand {
+      font-family: 'Playfair Display', serif;
+      font-weight: 900;
+      font-size: 1.25rem;
+      letter-spacing: -0.02em;
+      color: var(--ink);
+      text-decoration: none;
+    }
+    .nav-brand span { color: var(--accent); }
+    .nav-links { display: flex; gap: 2rem; list-style: none; }
+    .nav-links a {
+      font-size: 0.85rem;
+      font-weight: 500;
+      letter-spacing: 0.06em;
+      text-transform: uppercase;
+      color: var(--ink-mid);
+      text-decoration: none;
+      transition: color 0.2s;
+    }
+    .nav-links a:hover { color: var(--accent); }
+    .nav-cta {
+      background: var(--accent);
+      color: var(--white) !important;
+      padding: 0.45rem 1.1rem;
+      border-radius: 2px;
+    }
+    .nav-cta:hover { background: #b0541f; color: var(--white) !important; }
+
+    /* ── HERO ── */
+    .hero {
+      min-height: 100vh;
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      padding-top: 64px;
+    }
+    .hero-left {
+      padding: 8vw 5vw 8vw 8vw;
+      display: flex; flex-direction: column; justify-content: center;
+      animation: fadeUp 0.9s ease both;
+    }
+    .hero-eyebrow {
+      font-size: 0.75rem;
+      font-weight: 500;
+      letter-spacing: 0.18em;
+      text-transform: uppercase;
+      color: var(--accent);
+      margin-bottom: 1.5rem;
+      display: flex; align-items: center; gap: 0.75rem;
+    }
+    .hero-eyebrow::before {
+      content: '';
+      display: block; width: 32px; height: 1px;
+      background: var(--accent);
+    }
+    .hero h1 {
+      font-family: 'Playfair Display', serif;
+      font-size: clamp(2.8rem, 5vw, 4.5rem);
+      font-weight: 900;
+      line-height: 1.08;
+      letter-spacing: -0.03em;
+      color: var(--ink);
+      margin-bottom: 1.75rem;
+    }
+    .hero h1 em {
+      font-style: italic;
+      color: var(--accent);
+    }
+    .hero-sub {
+      font-size: 1.1rem;
+      color: var(--ink-mid);
+      max-width: 420px;
+      line-height: 1.7;
+      margin-bottom: 2.5rem;
+    }
+    .hero-actions { display: flex; gap: 1rem; align-items: center; flex-wrap: wrap; }
+    .btn-primary {
+      background: var(--accent);
+      color: var(--white);
+      padding: 0.85rem 2rem;
+      font-family: 'DM Sans', sans-serif;
+      font-size: 0.9rem;
+      font-weight: 500;
+      letter-spacing: 0.04em;
+      border: none; border-radius: 2px;
+      cursor: pointer;
+      text-decoration: none;
+      transition: background 0.2s, transform 0.15s;
+      display: inline-block;
+    }
+    .btn-primary:hover { background: #b0541f; transform: translateY(-1px); }
+    .btn-ghost {
+      color: var(--ink);
+      font-size: 0.9rem;
+      font-weight: 500;
+      text-decoration: none;
+      border-bottom: 1px solid var(--ink);
+      padding-bottom: 1px;
+      transition: color 0.2s, border-color 0.2s;
+    }
+    .btn-ghost:hover { color: var(--accent); border-color: var(--accent); }
+
+    .hero-right {
+      background: var(--paper-2);
+      border-left: 1px solid var(--rule);
+      display: flex; align-items: center; justify-content: center;
+      padding: 4rem;
+      animation: fadeIn 1.2s ease both;
+      position: relative; overflow: hidden;
+    }
+    .hero-right::before {
+      content: '';
+      position: absolute; inset: 0;
+      background: repeating-linear-gradient(
+        45deg,
+        transparent,
+        transparent 24px,
+        rgba(200,98,42,0.04) 24px,
+        rgba(200,98,42,0.04) 25px
+      );
+    }
+    .terminal-card {
+      background: var(--white);
+      border: 1px solid var(--rule);
+      border-radius: 6px;
+      box-shadow: 0 8px 40px rgba(0,0,0,0.08), 0 2px 8px rgba(0,0,0,0.04);
+      width: 100%; max-width: 400px;
+      position: relative; z-index: 1;
+      animation: floatCard 4s ease-in-out infinite;
+    }
+    @keyframes floatCard {
+      0%,100% { transform: translateY(0); }
+      50%      { transform: translateY(-6px); }
+    }
+    .terminal-bar {
+      background: var(--paper-2);
+      border-bottom: 1px solid var(--rule);
+      padding: 0.6rem 1rem;
+      display: flex; gap: 0.4rem; align-items: center;
+      border-radius: 6px 6px 0 0;
+    }
+    .dot { width: 10px; height: 10px; border-radius: 50%; }
+    .dot-r { background: #ff5f57; }
+    .dot-y { background: #febc2e; }
+    .dot-g { background: #28c840; }
+    .terminal-title {
+      font-size: 0.72rem;
+      color: var(--ink-light);
+      margin-left: auto; margin-right: auto;
+      letter-spacing: 0.05em;
+    }
+    .terminal-body { padding: 1.25rem 1.25rem 1.5rem; font-family: 'Courier New', monospace; font-size: 0.78rem; }
+    .t-line { margin-bottom: 0.45rem; color: var(--ink-mid); }
+    .t-prompt { color: var(--accent); font-weight: bold; }
+    .t-green { color: #28a745; }
+    .t-blue  { color: #0066cc; }
+    .t-dim   { color: var(--ink-light); }
+    .t-blink { animation: blink 1.1s step-end infinite; }
+    @keyframes blink { 50% { opacity: 0; } }
+
+    /* ── SECTION BASE ── */
+    section { padding: 7rem 8vw; }
+    .section-label {
+      font-size: 0.72rem;
+      font-weight: 500;
+      letter-spacing: 0.18em;
+      text-transform: uppercase;
+      color: var(--accent);
+      margin-bottom: 1rem;
+    }
+    .section-title {
+      font-family: 'Playfair Display', serif;
+      font-size: clamp(2rem, 3.5vw, 3rem);
+      font-weight: 700;
+      line-height: 1.15;
+      letter-spacing: -0.02em;
+      color: var(--ink);
+      margin-bottom: 1.25rem;
+    }
+    .section-sub {
+      font-size: 1.05rem;
+      color: var(--ink-mid);
+      max-width: 560px;
+      line-height: 1.75;
+    }
+
+    /* ── SERVICES ── */
+    #services { background: var(--white); border-top: 1px solid var(--rule); border-bottom: 1px solid var(--rule); }
+    .services-head { max-width: 580px; margin-bottom: 4rem; }
+    .services-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+      gap: 1.5px;
+      background: var(--rule);
+      border: 1px solid var(--rule);
+    }
+    .service-card {
+      background: var(--white);
+      padding: 2.5rem 2rem;
+      transition: background 0.2s;
+      cursor: default;
+    }
+    .service-card:hover { background: var(--paper); }
+    .service-icon {
+      font-size: 1.8rem;
+      margin-bottom: 1.25rem;
+    }
+    .service-card h3 {
+      font-family: 'Playfair Display', serif;
+      font-size: 1.2rem;
+      font-weight: 700;
+      margin-bottom: 0.6rem;
+      color: var(--ink);
+    }
+    .service-card p { font-size: 0.9rem; color: var(--ink-mid); line-height: 1.65; }
+    .service-tag {
+      display: inline-block;
+      margin-top: 1rem;
+      font-size: 0.7rem;
+      font-weight: 500;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      color: var(--accent);
+      border: 1px solid var(--accent-2);
+      padding: 0.2rem 0.6rem;
+      border-radius: 2px;
+    }
+
+    /* ── HOW IT WORKS ── */
+    #process { background: var(--paper-2); }
+    .process-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+      gap: 3rem;
+      margin-top: 4rem;
+    }
+    .process-step { position: relative; }
+    .step-num {
+      font-family: 'Playfair Display', serif;
+      font-size: 4rem;
+      font-weight: 900;
+      color: var(--rule);
+      line-height: 1;
+      margin-bottom: 0.75rem;
+      letter-spacing: -0.04em;
+    }
+    .process-step h3 {
+      font-family: 'Playfair Display', serif;
+      font-size: 1.15rem;
+      font-weight: 700;
+      margin-bottom: 0.5rem;
+    }
+    .process-step p { font-size: 0.9rem; color: var(--ink-mid); line-height: 1.65; }
+
+    /* ── ABOUT ── */
+    #about {
+      background: var(--ink);
+      color: var(--white);
+    }
+    #about .section-title { color: var(--white); }
+    #about .section-sub { color: rgba(255,255,255,0.65); max-width: 640px; }
+    #about .section-label { color: var(--accent-2); }
+    .about-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 5rem;
+      align-items: center;
+      margin-top: 4rem;
+    }
+    .about-stats {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 2rem;
+    }
+    .stat-block { border-left: 2px solid var(--accent); padding-left: 1.25rem; }
+    .stat-num {
+      font-family: 'Playfair Display', serif;
+      font-size: 2.5rem;
+      font-weight: 900;
+      color: var(--white);
+      line-height: 1;
+      letter-spacing: -0.03em;
+    }
+    .stat-label { font-size: 0.8rem; color: rgba(255,255,255,0.5); margin-top: 0.3rem; text-transform: uppercase; letter-spacing: 0.1em; }
+    .about-text p { color: rgba(255,255,255,0.7); line-height: 1.8; margin-bottom: 1rem; }
+    .about-text p:last-child { margin-bottom: 0; }
+
+    /* ── CONTACT ── */
+    #contact { background: var(--white); }
+    .contact-grid {
+      display: grid;
+      grid-template-columns: 1fr 1.4fr;
+      gap: 6rem;
+      align-items: start;
+      margin-top: 4rem;
+    }
+    .contact-info h3 {
+      font-family: 'Playfair Display', serif;
+      font-size: 1.4rem;
+      font-weight: 700;
+      margin-bottom: 1rem;
+    }
+    .contact-info p { color: var(--ink-mid); line-height: 1.75; margin-bottom: 1.5rem; font-size: 0.95rem; }
+    .contact-detail {
+      display: flex; align-items: center; gap: 0.75rem;
+      font-size: 0.875rem; color: var(--ink-mid);
+      margin-bottom: 0.75rem;
+    }
+    .contact-detail strong { color: var(--ink); }
+
+    /* Form */
+    .form-group { margin-bottom: 1.25rem; }
+    label {
+      display: block;
+      font-size: 0.78rem;
+      font-weight: 500;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      color: var(--ink-mid);
+      margin-bottom: 0.4rem;
+    }
+    input, textarea, select {
+      width: 100%;
+      padding: 0.75rem 1rem;
+      border: 1px solid var(--rule);
+      border-radius: 2px;
+      background: var(--paper);
+      color: var(--ink);
+      font-family: 'DM Sans', sans-serif;
+      font-size: 0.95rem;
+      transition: border-color 0.2s, box-shadow 0.2s;
+      outline: none;
+      appearance: none;
+    }
+    input:focus, textarea:focus, select:focus {
+      border-color: var(--accent);
+      box-shadow: 0 0 0 3px rgba(200,98,42,0.1);
+    }
+    textarea { resize: vertical; min-height: 130px; }
+    .form-row { display: grid; grid-template-columns: 1fr 1fr; gap: 1rem; }
+    .submit-btn {
+      width: 100%;
+      background: var(--accent);
+      color: var(--white);
+      border: none;
+      padding: 0.95rem;
+      font-family: 'DM Sans', sans-serif;
+      font-size: 0.95rem;
+      font-weight: 500;
+      letter-spacing: 0.04em;
+      border-radius: 2px;
+      cursor: pointer;
+      transition: background 0.2s, transform 0.15s;
+      margin-top: 0.5rem;
+    }
+    .submit-btn:hover { background: #b0541f; transform: translateY(-1px); }
+    .form-note { font-size: 0.78rem; color: var(--ink-light); margin-top: 0.75rem; text-align: center; }
+    #form-success {
+      display: none;
+      background: #edf7ed;
+      border: 1px solid #a8d5a8;
+      color: #2d6a2d;
+      padding: 1rem;
+      border-radius: 2px;
+      font-size: 0.9rem;
+      text-align: center;
+      margin-top: 1rem;
+    }
+
+    /* ── FOOTER ── */
+    footer {
+      background: var(--ink);
+      color: rgba(255,255,255,0.45);
+      padding: 2.5rem 8vw;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      font-size: 0.8rem;
+      border-top: 1px solid rgba(255,255,255,0.08);
+    }
+    footer .foot-brand {
+      font-family: 'Playfair Display', serif;
+      font-weight: 700;
+      color: var(--white);
+      font-size: 1rem;
+    }
+    footer span { color: var(--accent); }
+
+    /* ── ANIMATIONS ── */
+    @keyframes fadeUp {
+      from { opacity: 0; transform: translateY(24px); }
+      to   { opacity: 1; transform: translateY(0); }
+    }
+    @keyframes fadeIn {
+      from { opacity: 0; }
+      to   { opacity: 1; }
+    }
+    .reveal {
+      opacity: 0;
+      transform: translateY(20px);
+      transition: opacity 0.7s ease, transform 0.7s ease;
+    }
+    .reveal.visible {
+      opacity: 1;
+      transform: translateY(0);
+    }
+
+    /* ── RESPONSIVE ── */
+    @media (max-width: 860px) {
+      .hero { grid-template-columns: 1fr; }
+      .hero-right { display: none; }
+      .about-grid { grid-template-columns: 1fr; gap: 3rem; }
+      .contact-grid { grid-template-columns: 1fr; gap: 3rem; }
+      nav .nav-links { display: none; }
+      .form-row { grid-template-columns: 1fr; }
+      footer { flex-direction: column; gap: 0.75rem; text-align: center; }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- NAV -->
+  <nav>
+    <a href="#" class="nav-brand">Bot<span>ably</span></a>
+    <ul class="nav-links">
+      <li><a href="#services">Services</a></li>
+      <li><a href="#process">Process</a></li>
+      <li><a href="#about">About</a></li>
+      <li><a href="#contact" class="nav-cta">Get a Quote</a></li>
+    </ul>
+  </nav>
+
+  <!-- HERO -->
+  <section class="hero">
+    <div class="hero-left">
+      <div class="hero-eyebrow">Automation & Bot Setup Services</div>
+      <h1>Your business,<br><em>running itself.</em></h1>
+      <p class="hero-sub">
+        Full-stack automation pipelines, Telegram bots, privacy router setups,
+        and job-search agents — deployed, tested, and handed to you live.
+      </p>
+      <div class="hero-actions">
+        <a href="#contact" class="btn-primary">Get a Free Quote</a>
+        <a href="#services" class="btn-ghost">See What I Build</a>
+      </div>
+    </div>
+    <div class="hero-right">
+      <div class="terminal-card">
+        <div class="terminal-bar">
+          <div class="dot dot-r"></div>
+          <div class="dot dot-y"></div>
+          <div class="dot dot-g"></div>
+          <span class="terminal-title">bot_status.py</span>
+        </div>
+        <div class="terminal-body">
+          <div class="t-line"><span class="t-prompt">$</span> python3 status.py</div>
+          <div class="t-line t-dim">────────────────────────</div>
+          <div class="t-line"><span class="t-green">✓</span> bot.py          <span class="t-green">Running</span></div>
+          <div class="t-line"><span class="t-green">✓</span> jobsearch.py    <span class="t-green">20:00 UTC</span></div>
+          <div class="t-line"><span class="t-green">✓</span> cryptosearch.py <span class="t-green">06:00 UTC</span></div>
+          <div class="t-line"><span class="t-green">✓</span> scriptgen.py    <span class="t-green">21:00 UTC</span></div>
+          <div class="t-line t-dim">────────────────────────</div>
+          <div class="t-line"><span class="t-blue">→</span> Telegram alert sent</div>
+          <div class="t-line t-dim">All systems operational <span class="t-blink">▌</span></div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- SERVICES -->
+  <section id="services">
+    <div class="services-head reveal">
+      <div class="section-label">What I Build</div>
+      <h2 class="section-title">Custom automation, built to your exact workflow</h2>
+      <p class="section-sub">Every setup is configured from scratch, tested live, and handed over with full documentation. No templates. No fluff.</p>
+    </div>
+    <div class="services-grid">
+      <div class="service-card reveal">
+        <div class="service-icon">🤖</div>
+        <h3>Telegram Bot Setups</h3>
+        <p>Custom command bots, email monitors, alert systems, and interactive agents — deployed on always-on servers.</p>
+        <span class="service-tag">Most Popular</span>
+      </div>
+      <div class="service-card reveal">
+        <div class="service-icon">⚙️</div>
+        <h3>Automation Pipelines</h3>
+        <p>Scheduled scripts for job scraping, crypto alerts, content generation, and data delivery — running 24/7.</p>
+        <span class="service-tag">Full Stack</span>
+      </div>
+      <div class="service-card reveal">
+        <div class="service-icon">🔒</div>
+        <h3>Ghost Mode Privacy Setup</h3>
+        <p>Travel router VPN configuration, dedicated IP setup, WebRTC leak elimination, and US digital presence abroad.</p>
+        <span class="service-tag">Security</span>
+      </div>
+      <div class="service-card reveal">
+        <div class="service-icon">📬</div>
+        <h3>Email Agent Systems</h3>
+        <p>IMAP monitors that read, filter, and forward important emails to Telegram with AI-powered summaries.</p>
+        <span class="service-tag">AI-Powered</span>
+      </div>
+      <div class="service-card reveal">
+        <div class="service-icon">📊</div>
+        <h3>Job Search Automation</h3>
+        <p>Daily scrapers across RemoteOK, WeWorkRemotely, and Reddit — filtered, scored, and delivered to your phone.</p>
+        <span class="service-tag">Remote Work</span>
+      </div>
+      <div class="service-card reveal">
+        <div class="service-icon">🌐</div>
+        <h3>Full-Stack Deployment</h3>
+        <p>PythonAnywhere setup, scheduler configuration, API integrations, and live handoff — everything running before I leave.</p>
+        <span class="service-tag">Done-For-You</span>
+      </div>
+    </div>
+  </section>
+
+  <!-- PROCESS -->
+  <section id="process">
+    <div class="reveal">
+      <div class="section-label">How It Works</div>
+      <h2 class="section-title">Simple, fast, and yours to keep</h2>
+    </div>
+    <div class="process-grid">
+      <div class="process-step reveal">
+        <div class="step-num">01</div>
+        <h3>You describe the problem</h3>
+        <p>Tell me what you want automated, monitored, or built. No technical knowledge required.</p>
+      </div>
+      <div class="process-step reveal">
+        <div class="step-num">02</div>
+        <h3>I scope and quote</h3>
+        <p>Within 24 hours I'll send a clear scope, delivery timeline, and flat-rate price. No surprises.</p>
+      </div>
+      <div class="process-step reveal">
+        <div class="step-num">03</div>
+        <h3>Build and test live</h3>
+        <p>I build on your actual accounts and credentials — everything tested in production before handoff.</p>
+      </div>
+      <div class="process-step reveal">
+        <div class="step-num">04</div>
+        <h3>Handed over running</h3>
+        <p>You receive full documentation, all credentials, and a live system — not a zip file and good luck.</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- ABOUT -->
+  <section id="about">
+    <div class="about-grid">
+      <div class="about-text reveal">
+        <div class="section-label">About</div>
+        <h2 class="section-title">Clean systems. Clear results.</h2>
+        <p>Full-stack automation, Telegram bots, and privacy setups — built for people who want technology that just works.</p>
+        <p>Every system I deliver has been stress-tested on my own infrastructure before I hand it to you. If it runs for me 24/7, it'll run for you. Free quote in 24 hours.</p>
+        <a href="#contact" class="btn-primary" style="margin-top:1.5rem; display:inline-block;">Start a Project</a>
+      </div>
+      <div class="about-stats reveal">
+        <div class="stat-block">
+          <div class="stat-num">24/7</div>
+          <div class="stat-label">Uptime Target</div>
+        </div>
+        <div class="stat-block">
+          <div class="stat-num">48h</div>
+          <div class="stat-label">Avg. Delivery</div>
+        </div>
+        <div class="stat-block">
+          <div class="stat-num">5+</div>
+          <div class="stat-label">Live Pipelines</div>
+        </div>
+        <div class="stat-block">
+          <div class="stat-num">100%</div>
+          <div class="stat-label">Tested Before Handoff</div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- CONTACT -->
+  <section id="contact">
+    <div class="contact-grid">
+      <div class="contact-info reveal">
+        <div class="section-label">Contact</div>
+        <h3>Ready to automate something?</h3>
+        <p>Fill out the form and I'll respond within 24 hours with a scope and quote. No commitment required.</p>
+        <div class="contact-detail">
+          <strong>Response Time:</strong>&nbsp; Within 24 hours
+        </div>
+        <div class="contact-detail">
+          <strong>Quote:</strong>&nbsp; Free, no obligation
+        </div>
+        <div class="contact-detail">
+          <strong>Payment:</strong>&nbsp; 50% upfront, 50% on delivery
+        </div>
+        <div class="contact-detail" style="margin-top:1rem;">
+          <strong>📧 Email:</strong>&nbsp;
+          <a id="display-email" href="/cdn-cgi/l/email-protection#dcbfb0b9bdaeafa8bdbfb7afb9aeaab5bfb9af9cbbb1bdb5b0f2bfb3b1" style="color:var(--accent);font-weight:500;text-decoration:none;">
+            <span class="__cf_email__" data-cfemail="c6a5aaa3a7b4b5b2a7a5adb5a3b4b0afa5a3b586a1aba7afaae8a5a9ab">[email&#160;protected]</span>
+          </a>
+        </div>
+        <div class="contact-detail">
+          <strong>🇺🇸 US / WhatsApp:</strong>&nbsp;
+          <a id="display-us-phone" href="https://wa.me/13212661767"
+            target="_blank"
+            style="color:var(--accent);font-weight:500;text-decoration:none;">
+            +1 (321) 266-1767
+          </a>
+        </div>
+        <div class="contact-detail">
+          <strong>🇵🇭 Philippines:</strong>&nbsp;
+          <a id="display-ph-phone" href="tel:+639998849286"
+            style="color:var(--accent);font-weight:500;text-decoration:none;">
+            +63 999 884 9286
+          </a>
+        </div>
+        <button onclick="openAdminPanel()" style="
+          margin-top:1.5rem; background:none; border:1px solid var(--rule);
+          color:var(--ink-light); font-size:0.72rem; padding:0.35rem 0.75rem;
+          border-radius:2px; cursor:pointer; font-family:'DM Sans',sans-serif;
+          letter-spacing:0.06em; text-transform:uppercase;
+          transition:border-color 0.2s, color 0.2s;
+        " onmouseover="this.style.color='var(--accent)';this.style.borderColor='var(--accent)'"
+           onmouseout="this.style.color='var(--ink-light)';this.style.borderColor='var(--rule)'">
+          ⚙ Edit Contact Info
+        </button>
+      </div>
+      <div class="reveal">
+        <div class="form-row">
+          <div class="form-group">
+            <label for="fname">First Name</label>
+            <input type="text" id="fname" placeholder="Jane" />
+          </div>
+          <div class="form-group">
+            <label for="lname">Last Name</label>
+            <input type="text" id="lname" placeholder="Smith" />
+          </div>
+        </div>
+        <div class="form-group">
+          <label for="email">Email Address</label>
+          <input type="email" id="email" placeholder="jane@example.com" />
+        </div>
+        <div class="form-group">
+          <label for="service">Service Needed</label>
+          <select id="service">
+            <option value="">— Select a service —</option>
+            <option>Telegram Bot Setup</option>
+            <option>Automation Pipeline</option>
+            <option>Ghost Mode Privacy Setup</option>
+            <option>Email Agent System</option>
+            <option>Job Search Automation</option>
+            <option>Full-Stack Deployment</option>
+            <option>Something else</option>
+          </select>
+        </div>
+        <div class="form-group">
+          <label for="message">Describe What You Need</label>
+          <textarea id="message" placeholder="Tell me what you want automated or built. The more detail, the better my quote."></textarea>
+        </div>
+        <button class="submit-btn" onclick="handleSubmit()">Send Message →</button>
+        <p class="form-note">No spam. Your info is used only to respond to your inquiry.</p>
+        <div id="form-success">✓ Message sent! I'll be in touch within 24 hours.</div>
+      </div>
+    </div>
+  </section>
+
+  <!-- FOOTER -->
+  <footer>
+    <div class="foot-brand">Bot<span>ably</span></div>
+    <div>© 2026 · <a href="https://botably.github.io" style="color:rgba(255,255,255,0.45);text-decoration:none;">botably.github.io</a></div>
+    <div style="display:flex;gap:1rem;align-items:center;">
+      <a href="/cdn-cgi/l/email-protection#d6b5bab3b7a4a5a2b7b5bda5b3a4a0bfb5b3a596b1bbb7bfbaf8b5b9bb" style="color:rgba(255,255,255,0.45);text-decoration:none;" title="Email">📧</a>
+      <a id="footer-fb" href="#" target="_blank" style="color:rgba(255,255,255,0.45);text-decoration:none;font-size:0.8rem;" title="Facebook">Facebook</a>
+    </div>
+  </footer>
+
+  <script data-cfasync="false">
+    // Scroll reveal
+    const reveals = document.querySelectorAll('.reveal');
+    const observer = new IntersectionObserver((entries) => {
+      entries.forEach((e, i) => {
+        if (e.isIntersecting) {
+          setTimeout(() => e.target.classList.add('visible'), i * 80);
+        }
+      });
+    }, { threshold: 0.1 });
+    reveals.forEach(el => observer.observe(el));
+
+    // Form submit (static — no backend yet)
+    function handleSubmit() {
+      const f = document.getElementById('fname').value;
+      const e = document.getElementById('email').value;
+      const m = document.getElementById('message').value;
+      if (!f || !e || !m) {
+        alert('Please fill in your name, email, and message.');
+        return;
+      }
+      document.getElementById('form-success').style.display = 'block';
+      document.getElementById('fname').value = '';
+      document.getElementById('lname').value = '';
+      document.getElementById('email').value = '';
+      document.getElementById('message').value = '';
+      document.getElementById('service').value = '';
+    }
+  </script>
+
+  <!-- ADMIN PANEL MODAL -->
+  <div id="admin-overlay" style="
+    display:none; position:fixed; inset:0; z-index:10000;
+    background:rgba(0,0,0,0.5); backdrop-filter:blur(4px);
+    align-items:center; justify-content:center;
+  ">
+    <div style="
+      background:#fff; border-radius:10px; padding:2rem;
+      width:90%; max-width:420px;
+      box-shadow:0 16px 60px rgba(0,0,0,0.2);
+      font-family:'DM Sans',sans-serif;
+    ">
+      <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:1.5rem;">
+        <h3 style="font-family:'Playfair Display',serif;font-size:1.2rem;">⚙️ Edit Contact Info</h3>
+        <button onclick="closeAdminPanel()" style="background:none;border:none;font-size:1.2rem;cursor:pointer;color:#888;">✕</button>
+      </div>
+
+      <div style="margin-bottom:1rem;">
+        <label style="display:block;font-size:0.75rem;font-weight:500;letter-spacing:0.08em;text-transform:uppercase;color:#888;margin-bottom:0.4rem;">
+          📧 Email Address
+        </label>
+        <input id="admin-email" type="email" placeholder="botablyservices@gmail.com"
+          style="width:100%;padding:0.7rem 1rem;border:1px solid #d8d2c8;border-radius:4px;font-size:0.95rem;font-family:'DM Sans',sans-serif;outline:none;" />
+      </div>
+
+      <div style="margin-bottom:1rem;">
+        <label style="display:block;font-size:0.75rem;font-weight:500;letter-spacing:0.08em;text-transform:uppercase;color:#888;margin-bottom:0.4rem;">
+          🇺🇸 US Phone Number
+        </label>
+        <input id="admin-us-phone" type="text" placeholder="+1 (321) 266-1767"
+          style="width:100%;padding:0.7rem 1rem;border:1px solid #d8d2c8;border-radius:4px;font-size:0.95rem;font-family:'DM Sans',sans-serif;outline:none;" />
+      </div>
+
+      <div style="margin-bottom:1rem;">
+        <label style="display:block;font-size:0.75rem;font-weight:500;letter-spacing:0.08em;text-transform:uppercase;color:#888;margin-bottom:0.4rem;">
+          🇵🇭 Philippines WhatsApp Number
+        </label>
+        <input id="admin-ph-phone" type="text" placeholder="+63 999 884 9286"
+          style="width:100%;padding:0.7rem 1rem;border:1px solid #d8d2c8;border-radius:4px;font-size:0.95rem;font-family:'DM Sans',sans-serif;outline:none;" />
+        <p style="font-size:0.72rem;color:#aaa;margin-top:0.4rem;">Used as WhatsApp click-to-chat link. Digits only for the link, display text is formatted automatically.</p>
+      </div>
+
+      <div style="margin-bottom:1.5rem;">
+        <label style="display:block;font-size:0.75rem;font-weight:500;letter-spacing:0.08em;text-transform:uppercase;color:#888;margin-bottom:0.4rem;">
+          Admin Password
+        </label>
+        <input id="admin-pass-set" type="password" placeholder="Set a new password (leave blank to keep current)"
+          style="width:100%;padding:0.7rem 1rem;border:1px solid #d8d2c8;border-radius:4px;font-size:0.95rem;font-family:'DM Sans',sans-serif;outline:none;" />
+        <p style="font-size:0.72rem;color:#aaa;margin-top:0.4rem;">Default: <code>botably</code></p>
+      </div>
+
+      <button onclick="saveAdminSettings()" style="
+        width:100%;background:#c8622a;color:#fff;border:none;
+        padding:0.85rem;border-radius:4px;font-size:0.95rem;
+        font-family:'DM Sans',sans-serif;font-weight:500;cursor:pointer;
+      ">Save Changes</button>
+      <div id="admin-saved" style="display:none;margin-top:0.75rem;text-align:center;font-size:0.85rem;color:#28a745;">✓ Saved successfully</div>
+    </div>
+  </div>
+
+  <!-- ADMIN PASSWORD GATE -->
+  <div id="admin-gate" style="
+    display:none; position:fixed; inset:0; z-index:10001;
+    background:rgba(0,0,0,0.5); backdrop-filter:blur(4px);
+    align-items:center; justify-content:center;
+  ">
+    <div style="
+      background:#fff; border-radius:10px; padding:2rem;
+      width:90%; max-width:340px;
+      box-shadow:0 16px 60px rgba(0,0,0,0.2);
+      font-family:'DM Sans',sans-serif; text-align:center;
+    ">
+      <h3 style="font-family:'Playfair Display',serif;font-size:1.1rem;margin-bottom:1rem;">🔒 Admin Access</h3>
+      <input id="gate-input" type="password" placeholder="Enter password"
+        style="width:100%;padding:0.7rem 1rem;border:1px solid #d8d2c8;border-radius:4px;font-size:0.95rem;font-family:'DM Sans',sans-serif;outline:none;margin-bottom:0.75rem;"
+        onkeydown="if(event.key==='Enter')checkGate()" />
+      <div id="gate-error" style="display:none;color:#c0392b;font-size:0.8rem;margin-bottom:0.5rem;">Incorrect password</div>
+      <button onclick="checkGate()" style="
+        width:100%;background:#1a1a1a;color:#fff;border:none;
+        padding:0.75rem;border-radius:4px;font-size:0.9rem;
+        font-family:'DM Sans',sans-serif;cursor:pointer;
+      ">Unlock</button>
+      <button onclick="closeGate()" style="margin-top:0.5rem;background:none;border:none;color:#aaa;font-size:0.8rem;cursor:pointer;">Cancel</button>
+    </div>
+  </div>
+
+  <script>
+    // ── CONTACT INFO STORAGE ──
+    const DEFAULTS = {
+      email:   'botablyservices@gmail.com',
+      usPhone: '+1 (321) 266-1767',
+      phPhone: '+63 999 884 9286',
+      pass:    'botably'
+    };
+
+    function get(key) { return localStorage.getItem('cs_' + key) || DEFAULTS[key]; }
+
+    function renderContacts() {
+      const emailEl   = document.getElementById('display-email');
+      const usPhoneEl = document.getElementById('display-us-phone');
+      const phPhoneEl = document.getElementById('display-ph-phone');
+
+      if (emailEl) {
+        emailEl.textContent = get('email');
+        emailEl.href = 'mailto:' + get('email');
+      }
+      if (usPhoneEl) {
+        usPhoneEl.textContent = get('usPhone');
+        usPhoneEl.href = 'tel:' + get('usPhone').replace(/\D/g,'').replace(/^1/,'+1');
+      }
+      if (phPhoneEl) {
+        const digits = get('phPhone').replace(/\D/g,'');
+        phPhoneEl.textContent = get('phPhone');
+        phPhoneEl.href = 'https://wa.me/' + digits;
+      }
+    }
+    renderContacts();
+
+    // ── ADMIN GATE ──
+    function openAdminPanel() {
+      document.getElementById('admin-gate').style.display = 'flex';
+      document.getElementById('gate-input').value = '';
+      document.getElementById('gate-error').style.display = 'none';
+      setTimeout(() => document.getElementById('gate-input').focus(), 100);
+    }
+    function closeGate() {
+      document.getElementById('admin-gate').style.display = 'none';
+    }
+    function checkGate() {
+      const entered = document.getElementById('gate-input').value;
+      if (entered === get('pass')) {
+        closeGate();
+        showAdminPanel();
+      } else {
+        document.getElementById('gate-error').style.display = 'block';
+      }
+    }
+
+    // ── ADMIN PANEL ──
+    function showAdminPanel() {
+      document.getElementById('admin-email').value    = get('email');
+      document.getElementById('admin-us-phone').value = get('usPhone');
+      document.getElementById('admin-ph-phone').value = get('phPhone');
+      document.getElementById('admin-pass-set').value = '';
+      document.getElementById('admin-saved').style.display = 'none';
+      document.getElementById('admin-overlay').style.display = 'flex';
+    }
+    function closeAdminPanel() {
+      document.getElementById('admin-overlay').style.display = 'none';
+    }
+    function saveAdminSettings() {
+      const email   = document.getElementById('admin-email').value.trim();
+      const usPhone = document.getElementById('admin-us-phone').value.trim();
+      const phPhone = document.getElementById('admin-ph-phone').value.trim();
+      const pass    = document.getElementById('admin-pass-set').value.trim();
+      if (email)   localStorage.setItem('ba_email',   email);
+      if (usPhone) localStorage.setItem('ba_usPhone', usPhone);
+      if (phPhone) localStorage.setItem('ba_phPhone', phPhone);
+      if (pass)    localStorage.setItem('ba_pass',    pass);
+      renderContacts();
+      document.getElementById('admin-saved').style.display = 'block';
+      setTimeout(closeAdminPanel, 1200);
+    }
+  </script>
+
+       AI CHAT WIDGET — paste your Claude API key
+       in the ONE place marked below
+  ══════════════════════════════════════════ -->
+
+  <!-- API Key Setup Banner (remove once key is added) -->
+  <div id="setup-banner" style="
+    position:fixed; bottom:90px; right:24px; z-index:9998;
+    background:#1a1a1a; color:#fff; padding:0.75rem 1rem;
+    border-radius:6px; font-size:0.78rem; max-width:240px;
+    box-shadow:0 4px 20px rgba(0,0,0,0.25); line-height:1.5;
+    display:flex; flex-direction:column; gap:0.5rem;
+  ">
+    <strong style="color:#e8a87c;">⚙️ One-time setup</strong>
+    Open this file, find <code style="background:#333;padding:2px 4px;border-radius:2px;">YOUR_API_KEY_HERE</code>
+    and replace with your Anthropic key to activate the chat agent.
+    <button onclick="document.getElementById('setup-banner').style.display='none'"
+      style="background:#c8622a;color:#fff;border:none;padding:4px 8px;border-radius:3px;cursor:pointer;font-size:0.75rem;align-self:flex-end;">
+      Got it ✕
+    </button>
+  </div>
+
+  <!-- Chat Bubble Button -->
+  <button aria-label="Open chat" onclick="
+    var w = document.getElementById('chat-window');
+    var isOpen = w.style.display === 'flex';
+    if (isOpen) {
+      w.style.display = 'none';
+      this.innerHTML = '💬';
+    } else {
+      w.style.display = 'flex';
+      w.style.flexDirection = 'column';
+      this.innerHTML = '✕';
+      var msgs = document.getElementById('chat-messages');
+      if (msgs.children.length === 0) {
+        var d = document.createElement('div');
+        d.style.cssText = 'max-width:85%;padding:0.6rem 0.85rem;border-radius:4px 12px 12px 12px;background:#fff;color:#1a1a1a;font-size:0.875rem;line-height:1.5;align-self:flex-start;box-shadow:0 1px 4px rgba(0,0,0,0.08);border:1px solid #d8d2c8;';
+        d.textContent = 'Hi! I am the AI assistant for Botably. Ask me about services, pricing, or how the process works.';
+        msgs.appendChild(d);
+      }
+    }
+  " style="
+    position:fixed; bottom:24px; right:24px; z-index:9999;
+    width:56px; height:56px; border-radius:50%;
+    background:#c8622a; color:#fff; border:none;
+    box-shadow:0 4px 20px rgba(200,98,42,0.45);
+    cursor:pointer; font-size:1.4rem;
+    display:flex; align-items:center; justify-content:center;
+  ">💬</button>
+
+  <!-- Chat Window -->
+  <div id="chat-window" style="
+    position:fixed; bottom:92px; right:24px; z-index:9999;
+    width:340px; max-height:520px;
+    background:#fff; border-radius:12px;
+    box-shadow:0 8px 40px rgba(0,0,0,0.15), 0 2px 8px rgba(0,0,0,0.08);
+    border:1px solid #d8d2c8;
+    display:none; flex-direction:column; overflow:hidden;
+    font-family:'DM Sans',sans-serif;
+  ">
+    <!-- Header -->
+    <div style="
+      background:#1a1a1a; color:#fff;
+      padding:1rem 1.25rem;
+      display:flex; align-items:center; justify-content:space-between;
+    ">
+      <div style="display:flex;align-items:center;gap:0.6rem;">
+        <div style="width:32px;height:32px;border-radius:50%;background:#c8622a;display:flex;align-items:center;justify-content:center;font-size:1rem;">🤖</div>
+        <div>
+          <div style="font-weight:600;font-size:0.9rem;">AI Assistant</div>
+          <div style="font-size:0.7rem;color:#e8a87c;display:flex;align-items:center;gap:4px;">
+            <span style="width:6px;height:6px;background:#28c840;border-radius:50%;display:inline-block;"></span>
+            Online now
+          </div>
+        </div>
+      </div>
+      <button id="chat-close" style="background:none;border:none;color:#888;cursor:pointer;font-size:1.1rem;padding:4px;">✕</button>
+    </div>
+
+    <!-- Messages -->
+    <div id="chat-messages" style="
+      flex:1; overflow-y:auto; padding:1rem;
+      display:flex; flex-direction:column; gap:0.75rem;
+      min-height:280px; max-height:340px;
+      background:#faf8f4;
+    ">
+      <!-- Greeting injected by JS -->
+    </div>
+
+    <!-- Typing indicator -->
+    <div id="chat-typing" style="
+      display:none; padding:0 1rem 0.5rem;
+      background:#faf8f4;
+      font-size:0.78rem; color:#888; font-style:italic;
+    ">Agent is typing…</div>
+
+    <!-- Input -->
+    <div style="
+      padding:0.75rem; background:#fff;
+      border-top:1px solid #d8d2c8;
+      display:flex; gap:0.5rem; align-items:flex-end;
+    ">
+      <textarea id="chat-input" rows="1" placeholder="Ask about services, pricing, or anything…" style="
+        flex:1; border:1px solid #d8d2c8; border-radius:6px;
+        padding:0.6rem 0.75rem; font-size:0.875rem;
+        font-family:'DM Sans',sans-serif; resize:none;
+        outline:none; background:#faf8f4; color:#1a1a1a;
+        max-height:80px; line-height:1.4;
+      "></textarea>
+      <button onclick="botablySend()" style="
+        background:#c8622a; color:#fff; border:none;
+        border-radius:6px; padding:0.6rem 0.9rem;
+        cursor:pointer; font-size:0.9rem; flex-shrink:0;
+      ">→</button>
+    </div>
+  </div>
+
+  <script>
+    // ═══════════════════════════════════════════════
+    // REPLACE THIS WITH YOUR ANTHROPIC API KEY
+    var BOTABLY_KEY = 'YOUR_API_KEY_HERE';
+    // ═══════════════════════════════════════════════
+
+    var botHistory = [];
+
+    document.getElementById('chat-input').addEventListener('keydown', function(e) {
+      if (e.key === 'Enter' && !e.shiftKey) { e.preventDefault(); botablySend(); }
+    });
+
+    function botablyAddMsg(role, text) {
+      var msgs = document.getElementById('chat-messages');
+      var d = document.createElement('div');
+      var isAgent = role === 'agent';
+      d.style.cssText = 'max-width:85%;padding:0.6rem 0.85rem;border-radius:' + (isAgent ? '4px 12px 12px 12px' : '12px 4px 12px 12px') + ';background:' + (isAgent ? '#fff' : '#c8622a') + ';color:' + (isAgent ? '#1a1a1a' : '#fff') + ';font-size:0.875rem;line-height:1.5;align-self:' + (isAgent ? 'flex-start' : 'flex-end') + ';box-shadow:0 1px 4px rgba(0,0,0,0.08);border:' + (isAgent ? '1px solid #d8d2c8' : 'none') + ';white-space:pre-wrap;margin-bottom:4px;';
+      d.textContent = text;
+      msgs.appendChild(d);
+      msgs.scrollTop = msgs.scrollHeight;
+    }
+
+    async function botablySend() {
+      var input = document.getElementById('chat-input');
+      var text = input.value.trim();
+      if (!text) return;
+
+      if (!BOTABLY_KEY || BOTABLY_KEY === 'YOUR_API_KEY_HERE') {
+        botablyAddMsg('agent', 'Chat is not configured yet. Please use the contact form below.');
+        input.value = '';
+        return;
+      }
+
+      botablyAddMsg('user', text);
+      botHistory.push({ role: 'user', content: text });
+      input.value = '';
+
+      var typing = document.getElementById('chat-typing');
+      typing.style.display = 'block';
+
+      try {
+        var res = await fetch('https://api.anthropic.com/v1/messages', {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+            'x-api-key': BOTABLY_KEY,
+            'anthropic-version': '2023-06-01',
+            'anthropic-dangerous-direct-browser-access': 'true'
+          },
+          body: JSON.stringify({
+            model: 'claude-sonnet-4-20250514',
+            max_tokens: 300,
+            system: 'You are a friendly sales assistant for Botably, an automation and bot setup service. Services include Telegram bots, automation pipelines, Ghost Mode privacy setups, email agents, job search automation, and full-stack deployment. Pricing ranges $150-$1500. Process: free quote in 24h, 50% upfront, 50% on delivery. Keep replies to 2-4 sentences. Always suggest the contact form for quotes.',
+            messages: botHistory
+          })
+        });
+        var data = await res.json();
+        var reply = (data && data.content && data.content[0]) ? data.content[0].text : 'Sorry, something went wrong. Please try again.';
+        botHistory.push({ role: 'assistant', content: reply });
+        botablyAddMsg('agent', reply);
+      } catch(err) {
+        botablyAddMsg('agent', 'Connection issue. Please try the contact form below.');
+      }
+
+      typing.style.display = 'none';
+    }
+  </script>
+
+</body>
+</html>
