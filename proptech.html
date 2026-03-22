@@ -1,0 +1,1296 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Botably PropTech — The Future of Real Estate</title>
+<link href="https://fonts.googleapis.com/css2?family=DM+Serif+Display:ital@0;1&family=DM+Sans:wght@300;400;500;700&family=JetBrains+Mono:wght@400;700&display=swap" rel="stylesheet">
+<style>
+:root {
+  --orange: #FF6B00;
+  --orange-dim: rgba(255,107,0,0.12);
+  --gold: #C9A84C;
+  --dark: #06060A;
+  --dark2: #0C0C12;
+  --dark3: #111118;
+  --white: #F2EDE6;
+  --muted: #6B6B7A;
+  --green: #00E5A0;
+  --blue: #0099FF;
+  --purple: #8B5CF6;
+}
+
+* { margin:0; padding:0; box-sizing:border-box; }
+
+html { scroll-behavior: smooth; }
+
+body {
+  background: var(--dark);
+  color: var(--white);
+  font-family: 'DM Sans', sans-serif;
+  overflow-x: hidden;
+  cursor: default;
+}
+
+/* ── NOISE OVERLAY ── */
+body::before {
+  content: '';
+  position: fixed;
+  inset: 0;
+  background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)' opacity='0.03'/%3E%3C/svg%3E");
+  pointer-events: none;
+  z-index: 1000;
+  opacity: 0.4;
+}
+
+/* ── NAV ── */
+nav {
+  position: fixed;
+  top: 0; left: 0; right: 0;
+  z-index: 500;
+  padding: 20px 40px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  background: linear-gradient(to bottom, rgba(6,6,10,0.95), transparent);
+  backdrop-filter: blur(8px);
+}
+
+.nav-logo {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 13px;
+  font-weight: 700;
+  color: var(--orange);
+  letter-spacing: 3px;
+  text-decoration: none;
+}
+
+.nav-cta {
+  background: var(--orange);
+  color: #000;
+  font-family: 'DM Sans', sans-serif;
+  font-size: 12px;
+  font-weight: 700;
+  letter-spacing: 1px;
+  padding: 10px 22px;
+  border-radius: 6px;
+  text-decoration: none;
+  text-transform: uppercase;
+}
+
+/* ── HERO ── */
+.hero {
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  text-align: center;
+  padding: 120px 32px 80px;
+  position: relative;
+  overflow: hidden;
+}
+
+.hero-bg {
+  position: absolute;
+  inset: 0;
+  background:
+    radial-gradient(ellipse 80% 60% at 50% 0%, rgba(255,107,0,0.08) 0%, transparent 70%),
+    radial-gradient(ellipse 60% 40% at 80% 80%, rgba(0,153,255,0.05) 0%, transparent 60%),
+    radial-gradient(ellipse 50% 50% at 20% 70%, rgba(139,92,246,0.04) 0%, transparent 60%);
+}
+
+.hero-grid {
+  position: absolute;
+  inset: 0;
+  background-image:
+    linear-gradient(rgba(255,107,0,0.04) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(255,107,0,0.04) 1px, transparent 1px);
+  background-size: 60px 60px;
+  mask-image: radial-gradient(ellipse 80% 80% at 50% 50%, black 0%, transparent 100%);
+}
+
+.hero-eyebrow {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 11px;
+  color: var(--orange);
+  letter-spacing: 5px;
+  text-transform: uppercase;
+  margin-bottom: 28px;
+  opacity: 0;
+  animation: fadeUp 0.8s ease 0.2s forwards;
+}
+
+.hero-title {
+  font-family: 'DM Serif Display', serif;
+  font-size: clamp(42px, 8vw, 96px);
+  line-height: 1.0;
+  font-weight: 400;
+  max-width: 900px;
+  margin-bottom: 28px;
+  opacity: 0;
+  animation: fadeUp 0.8s ease 0.4s forwards;
+}
+
+.hero-title em {
+  font-style: italic;
+  color: var(--orange);
+}
+
+.hero-sub {
+  font-size: clamp(15px, 2.5vw, 19px);
+  font-weight: 300;
+  color: var(--muted);
+  max-width: 560px;
+  line-height: 1.7;
+  margin-bottom: 48px;
+  opacity: 0;
+  animation: fadeUp 0.8s ease 0.6s forwards;
+}
+
+.hero-stats {
+  display: flex;
+  gap: 48px;
+  flex-wrap: wrap;
+  justify-content: center;
+  margin-bottom: 56px;
+  opacity: 0;
+  animation: fadeUp 0.8s ease 0.8s forwards;
+}
+
+.hero-stat-num {
+  font-family: 'DM Serif Display', serif;
+  font-size: clamp(32px, 5vw, 52px);
+  color: var(--orange);
+  line-height: 1;
+}
+
+.hero-stat-label {
+  font-size: 11px;
+  color: var(--muted);
+  letter-spacing: 2px;
+  text-transform: uppercase;
+  margin-top: 4px;
+}
+
+.hero-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
+  background: var(--orange);
+  color: #000;
+  font-weight: 700;
+  font-size: 14px;
+  letter-spacing: 1px;
+  text-transform: uppercase;
+  padding: 16px 36px;
+  border-radius: 8px;
+  text-decoration: none;
+  opacity: 0;
+  animation: fadeUp 0.8s ease 1.0s forwards;
+}
+
+/* ── SECTION BASE ── */
+section {
+  padding: 100px 32px;
+  max-width: 1100px;
+  margin: 0 auto;
+}
+
+.section-full {
+  max-width: 100%;
+  padding: 100px 0;
+}
+
+.eyebrow {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 10px;
+  color: var(--orange);
+  letter-spacing: 5px;
+  text-transform: uppercase;
+  margin-bottom: 20px;
+}
+
+.section-title {
+  font-family: 'DM Serif Display', serif;
+  font-size: clamp(32px, 5vw, 58px);
+  line-height: 1.1;
+  font-weight: 400;
+  margin-bottom: 20px;
+}
+
+.section-title em { font-style: italic; color: var(--orange); }
+
+.section-sub {
+  font-size: clamp(14px, 2vw, 17px);
+  color: var(--muted);
+  max-width: 560px;
+  line-height: 1.7;
+  margin-bottom: 56px;
+}
+
+/* ── PROBLEM SECTION ── */
+.problem-section {
+  background: var(--dark2);
+  border-top: 1px solid #111;
+  border-bottom: 1px solid #111;
+}
+
+.problem-inner {
+  max-width: 1100px;
+  margin: 0 auto;
+  padding: 100px 32px;
+}
+
+.timeline {
+  display: flex;
+  flex-direction: column;
+  gap: 0;
+  max-width: 640px;
+  margin: 0 auto;
+  position: relative;
+}
+
+.timeline::before {
+  content: '';
+  position: absolute;
+  left: 28px;
+  top: 0; bottom: 0;
+  width: 1px;
+  background: linear-gradient(to bottom, var(--orange), transparent);
+}
+
+.timeline-item {
+  display: flex;
+  gap: 24px;
+  align-items: flex-start;
+  padding: 20px 0;
+}
+
+.timeline-dot {
+  width: 56px;
+  height: 56px;
+  border-radius: 50%;
+  background: var(--dark3);
+  border: 1px solid #1f1f2a;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 20px;
+  flex-shrink: 0;
+  position: relative;
+  z-index: 1;
+}
+
+.timeline-content { padding-top: 12px; }
+.timeline-label {
+  font-size: 11px;
+  color: var(--orange);
+  letter-spacing: 2px;
+  text-transform: uppercase;
+  margin-bottom: 4px;
+}
+.timeline-text { font-size: 15px; color: #999; line-height: 1.5; }
+.timeline-time {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 20px;
+  font-weight: 700;
+  color: var(--white);
+  margin-top: 4px;
+}
+
+.vs-divider {
+  display: flex;
+  align-items: center;
+  gap: 24px;
+  margin: 60px 0;
+  max-width: 640px;
+  margin-left: auto;
+  margin-right: auto;
+}
+
+.vs-line { flex: 1; height: 1px; background: #1a1a24; }
+.vs-badge {
+  font-family: 'DM Serif Display', serif;
+  font-size: 32px;
+  color: var(--orange);
+  font-style: italic;
+}
+
+/* ── SERVICE CARDS ── */
+.services-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+  gap: 24px;
+}
+
+.service-card {
+  background: var(--dark2);
+  border: 1px solid #141420;
+  border-radius: 16px;
+  padding: 32px;
+  position: relative;
+  overflow: hidden;
+  transition: border-color 0.3s, transform 0.3s;
+}
+
+.service-card:hover {
+  border-color: rgba(255,107,0,0.3);
+  transform: translateY(-4px);
+}
+
+.service-card::before {
+  content: '';
+  position: absolute;
+  top: 0; left: 0; right: 0;
+  height: 1px;
+  background: linear-gradient(90deg, transparent, var(--orange), transparent);
+  opacity: 0;
+  transition: opacity 0.3s;
+}
+
+.service-card:hover::before { opacity: 1; }
+
+.card-icon {
+  font-size: 32px;
+  margin-bottom: 20px;
+  display: block;
+}
+
+.card-tag {
+  display: inline-block;
+  background: var(--orange-dim);
+  border: 1px solid rgba(255,107,0,0.2);
+  color: var(--orange);
+  font-size: 9px;
+  font-weight: 700;
+  letter-spacing: 2px;
+  text-transform: uppercase;
+  padding: 3px 10px;
+  border-radius: 20px;
+  margin-bottom: 16px;
+}
+
+.card-title {
+  font-family: 'DM Serif Display', serif;
+  font-size: 24px;
+  font-weight: 400;
+  margin-bottom: 12px;
+  line-height: 1.2;
+}
+
+.card-desc {
+  font-size: 14px;
+  color: var(--muted);
+  line-height: 1.7;
+  margin-bottom: 24px;
+}
+
+.card-metrics {
+  display: flex;
+  gap: 20px;
+  flex-wrap: wrap;
+  padding-top: 20px;
+  border-top: 1px solid #141420;
+}
+
+.metric { }
+.metric-num {
+  font-family: 'DM Serif Display', serif;
+  font-size: 26px;
+  color: var(--orange);
+  line-height: 1;
+}
+.metric-label { font-size: 10px; color: var(--muted); letter-spacing: 1px; text-transform: uppercase; margin-top: 2px; }
+
+/* ── PIPELINE ── */
+.pipeline-section {
+  background: var(--dark2);
+  border-top: 1px solid #111;
+  border-bottom: 1px solid #111;
+}
+
+.pipeline-inner {
+  max-width: 1100px;
+  margin: 0 auto;
+  padding: 100px 32px;
+}
+
+.pipeline-flow {
+  display: flex;
+  align-items: stretch;
+  gap: 0;
+  overflow-x: auto;
+  padding-bottom: 20px;
+  scrollbar-width: none;
+}
+
+.pipeline-step {
+  flex: 1;
+  min-width: 160px;
+  background: var(--dark3);
+  border: 1px solid #141420;
+  border-radius: 0;
+  padding: 28px 20px;
+  text-align: center;
+  position: relative;
+}
+
+.pipeline-step:first-child { border-radius: 12px 0 0 12px; }
+.pipeline-step:last-child { border-radius: 0 12px 12px 0; background: #0a1a08; border-color: rgba(0,229,160,0.2); }
+
+.pipeline-step + .pipeline-step::before {
+  content: '→';
+  position: absolute;
+  left: -14px;
+  top: 50%;
+  transform: translateY(-50%);
+  color: var(--orange);
+  font-size: 20px;
+  z-index: 2;
+  background: var(--dark2);
+  padding: 0 2px;
+}
+
+.pipeline-emoji { font-size: 28px; margin-bottom: 12px; display: block; }
+.pipeline-label { font-size: 11px; font-weight: 700; color: var(--white); margin-bottom: 6px; }
+.pipeline-sub { font-size: 10px; color: var(--muted); line-height: 1.4; }
+.pipeline-time {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 13px;
+  color: var(--green);
+  margin-top: 8px;
+  font-weight: 700;
+}
+
+/* ── BLOCKCHAIN SECTION ── */
+.blockchain-section { position: relative; overflow: hidden; }
+
+.blockchain-bg {
+  position: absolute;
+  inset: 0;
+  background: radial-gradient(ellipse 60% 80% at 50% 50%, rgba(139,92,246,0.06) 0%, transparent 70%);
+  pointer-events: none;
+}
+
+.chain-visual {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  margin: 48px 0;
+  max-width: 700px;
+}
+
+.block {
+  background: var(--dark2);
+  border: 1px solid #141420;
+  border-radius: 10px;
+  padding: 18px 24px;
+  display: flex;
+  align-items: center;
+  gap: 20px;
+  position: relative;
+  transition: border-color 0.3s;
+}
+
+.block:hover { border-color: rgba(139,92,246,0.4); }
+
+.block-hash {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 10px;
+  color: rgba(139,92,246,0.6);
+  min-width: 80px;
+}
+
+.block-content { flex: 1; }
+.block-title { font-size: 13px; font-weight: 700; color: var(--white); margin-bottom: 3px; }
+.block-desc { font-size: 12px; color: var(--muted); }
+
+.block-status {
+  font-size: 10px;
+  font-weight: 700;
+  letter-spacing: 1px;
+  text-transform: uppercase;
+  padding: 4px 10px;
+  border-radius: 20px;
+}
+
+.status-confirmed { background: rgba(0,229,160,0.1); color: var(--green); border: 1px solid rgba(0,229,160,0.2); }
+.status-pending { background: rgba(255,107,0,0.1); color: var(--orange); border: 1px solid rgba(255,107,0,0.2); }
+
+.chain-connector {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 0 24px;
+}
+
+.chain-line {
+  width: 1px;
+  height: 20px;
+  background: linear-gradient(to bottom, rgba(139,92,246,0.5), rgba(139,92,246,0.1));
+  margin: 0 auto;
+}
+
+/* ── TOKENIZATION ── */
+.token-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 32px;
+  margin-top: 48px;
+}
+
+@media (max-width: 640px) {
+  .token-grid { grid-template-columns: 1fr; }
+}
+
+.token-visual {
+  background: var(--dark2);
+  border: 1px solid #141420;
+  border-radius: 16px;
+  padding: 32px;
+}
+
+.token-bar-label {
+  display: flex;
+  justify-content: space-between;
+  font-size: 12px;
+  color: var(--muted);
+  margin-bottom: 8px;
+}
+
+.token-bar-track {
+  height: 8px;
+  background: #111;
+  border-radius: 4px;
+  overflow: hidden;
+  margin-bottom: 20px;
+}
+
+.token-bar-fill {
+  height: 100%;
+  border-radius: 4px;
+  background: linear-gradient(90deg, var(--orange), var(--gold));
+}
+
+.investor-row {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 10px 0;
+  border-bottom: 1px solid #0f0f18;
+}
+
+.investor-flag { font-size: 20px; }
+.investor-info { flex: 1; }
+.investor-name { font-size: 13px; color: var(--white); font-weight: 500; }
+.investor-type { font-size: 11px; color: var(--muted); }
+.investor-amount {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 13px;
+  color: var(--green);
+  font-weight: 700;
+}
+
+/* ── ROI SECTION ── */
+.roi-section {
+  background: var(--dark2);
+  border-top: 1px solid #111;
+}
+
+.roi-inner {
+  max-width: 1100px;
+  margin: 0 auto;
+  padding: 100px 32px;
+}
+
+.roi-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+  gap: 20px;
+  margin-top: 48px;
+}
+
+.roi-card {
+  background: var(--dark3);
+  border: 1px solid #141420;
+  border-radius: 12px;
+  padding: 28px 24px;
+  text-align: center;
+}
+
+.roi-before { font-size: 11px; color: #ff4444; letter-spacing: 2px; text-transform: uppercase; margin-bottom: 8px; }
+.roi-after { font-size: 11px; color: var(--green); letter-spacing: 2px; text-transform: uppercase; margin-bottom: 8px; }
+
+.roi-num-before {
+  font-family: 'DM Serif Display', serif;
+  font-size: 36px;
+  color: #ff4444;
+  text-decoration: line-through;
+  opacity: 0.6;
+}
+
+.roi-num-after {
+  font-family: 'DM Serif Display', serif;
+  font-size: 36px;
+  color: var(--green);
+}
+
+.roi-label { font-size: 11px; color: var(--muted); margin-top: 8px; letter-spacing: 1px; text-transform: uppercase; }
+
+/* ── PRICING ── */
+.pricing-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+  gap: 24px;
+  margin-top: 56px;
+}
+
+.price-card {
+  background: var(--dark2);
+  border: 1px solid #141420;
+  border-radius: 16px;
+  padding: 36px 28px;
+  position: relative;
+}
+
+.price-card.featured {
+  background: #0d0a00;
+  border-color: rgba(255,107,0,0.4);
+}
+
+.price-card.featured::before {
+  content: 'RECOMMENDED';
+  position: absolute;
+  top: -12px;
+  left: 50%;
+  transform: translateX(-50%);
+  background: var(--orange);
+  color: #000;
+  font-size: 9px;
+  font-weight: 700;
+  letter-spacing: 2px;
+  padding: 4px 14px;
+  border-radius: 20px;
+}
+
+.price-name { font-size: 13px; color: var(--muted); letter-spacing: 2px; text-transform: uppercase; margin-bottom: 12px; }
+.price-num {
+  font-family: 'DM Serif Display', serif;
+  font-size: 52px;
+  color: var(--white);
+  line-height: 1;
+  margin-bottom: 4px;
+}
+.price-num span { font-size: 20px; color: var(--muted); }
+.price-period { font-size: 12px; color: var(--muted); margin-bottom: 28px; }
+.price-desc { font-size: 14px; color: #888; line-height: 1.6; margin-bottom: 28px; }
+
+.price-features { list-style: none; }
+.price-features li {
+  font-size: 13px;
+  color: #999;
+  padding: 8px 0;
+  border-bottom: 1px solid #0f0f18;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+.price-features li::before { content: '✓'; color: var(--green); font-weight: 700; }
+
+/* ── CTA SECTION ── */
+.cta-section {
+  text-align: center;
+  padding: 120px 32px;
+  position: relative;
+  overflow: hidden;
+}
+
+.cta-bg {
+  position: absolute;
+  inset: 0;
+  background: radial-gradient(ellipse 60% 80% at 50% 50%, rgba(255,107,0,0.08) 0%, transparent 70%);
+}
+
+.cta-title {
+  font-family: 'DM Serif Display', serif;
+  font-size: clamp(36px, 6vw, 72px);
+  line-height: 1.1;
+  margin-bottom: 24px;
+  position: relative;
+}
+
+.cta-title em { font-style: italic; color: var(--orange); }
+
+.cta-sub {
+  font-size: 17px;
+  color: var(--muted);
+  max-width: 480px;
+  margin: 0 auto 48px;
+  line-height: 1.6;
+  position: relative;
+}
+
+.cta-buttons {
+  display: flex;
+  gap: 16px;
+  justify-content: center;
+  flex-wrap: wrap;
+  position: relative;
+}
+
+.btn-primary {
+  background: var(--orange);
+  color: #000;
+  font-weight: 700;
+  font-size: 14px;
+  letter-spacing: 1px;
+  text-transform: uppercase;
+  padding: 16px 36px;
+  border-radius: 8px;
+  text-decoration: none;
+  display: inline-block;
+}
+
+.btn-secondary {
+  background: transparent;
+  color: var(--white);
+  font-size: 14px;
+  letter-spacing: 1px;
+  text-transform: uppercase;
+  padding: 16px 36px;
+  border-radius: 8px;
+  text-decoration: none;
+  border: 1px solid #222;
+  display: inline-block;
+}
+
+/* ── FOOTER ── */
+footer {
+  border-top: 1px solid #111;
+  padding: 40px 32px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  flex-wrap: gap;
+  gap: 16px;
+  max-width: 1100px;
+  margin: 0 auto;
+}
+
+.footer-brand {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 12px;
+  color: var(--orange);
+  letter-spacing: 3px;
+}
+
+.footer-copy { font-size: 12px; color: #333; }
+
+/* ── ANIMATIONS ── */
+@keyframes fadeUp {
+  from { opacity: 0; transform: translateY(24px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+.reveal {
+  opacity: 0;
+  transform: translateY(32px);
+  transition: opacity 0.7s ease, transform 0.7s ease;
+}
+
+.reveal.visible {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+/* ── MOBILE ── */
+@media (max-width: 768px) {
+  nav { padding: 16px 20px; }
+  section { padding: 72px 20px; }
+  .pipeline-inner, .problem-inner, .roi-inner { padding: 72px 20px; }
+  .hero-stats { gap: 28px; }
+  .token-grid { grid-template-columns: 1fr; }
+  footer { flex-direction: column; text-align: center; }
+  .pipeline-step { min-width: 130px; padding: 20px 14px; }
+}
+
+/* ── SCROLLBAR ── */
+::-webkit-scrollbar { width: 4px; height: 4px; }
+::-webkit-scrollbar-track { background: var(--dark); }
+::-webkit-scrollbar-thumb { background: #222; border-radius: 2px; }
+</style>
+</head>
+<body>
+
+<!-- NAV -->
+<nav>
+  <a href="https://botably.github.io" class="nav-logo">BOTABLY</a>
+  <a href="mailto:botablyservices@gmail.com" class="nav-cta">Book a Call</a>
+</nav>
+
+<!-- HERO -->
+<div class="hero">
+  <div class="hero-bg"></div>
+  <div class="hero-grid"></div>
+  <div class="hero-eyebrow">Botably PropTech · 2026</div>
+  <h1 class="hero-title">Real Estate Runs <em>Faster</em> With AI & Blockchain.</h1>
+  <p class="hero-sub">From the first lead to the final token — Botably automates every step of your real estate operation. More closes. Less overhead. New investor markets you've never reached.</p>
+  <div class="hero-stats">
+    <div>
+      <div class="hero-stat-num">7x</div>
+      <div class="hero-stat-label">Faster Closing</div>
+    </div>
+    <div>
+      <div class="hero-stat-num">78%</div>
+      <div class="hero-stat-label">Leads Recovered</div>
+    </div>
+    <div>
+      <div class="hero-stat-num">10M+</div>
+      <div class="hero-stat-label">New OFW Investors</div>
+    </div>
+  </div>
+  <a href="#services" class="hero-btn">See How It Works ↓</a>
+</div>
+
+<!-- PROBLEM -->
+<div class="problem-section">
+  <div class="problem-inner">
+    <div class="reveal">
+      <div class="eyebrow">The Problem</div>
+      <h2 class="section-title">Your deals are dying <em>slowly.</em></h2>
+      <p class="section-sub">Traditional real estate is bleeding money at every step — from the lead that never got called back to the deal stuck in escrow for 60 days.</p>
+    </div>
+
+    <div style="display:grid;grid-template-columns:1fr 1fr;gap:60px;align-items:start;flex-wrap:wrap;" class="reveal">
+
+      <!-- Traditional Timeline -->
+      <div>
+        <div style="font-size:11px;color:#ff4444;letter-spacing:3px;text-transform:uppercase;margin-bottom:28px;">Traditional Process</div>
+        <div class="timeline">
+          <div class="timeline-item">
+            <div class="timeline-dot">📋</div>
+            <div class="timeline-content">
+              <div class="timeline-label">Lead Comes In</div>
+              <div class="timeline-text">Sits in a spreadsheet. Agent calls — 2 days later.</div>
+              <div class="timeline-time" style="color:#ff4444;">+48 hrs</div>
+            </div>
+          </div>
+          <div class="timeline-item">
+            <div class="timeline-dot">📞</div>
+            <div class="timeline-content">
+              <div class="timeline-label">Follow-up</div>
+              <div class="timeline-text">Manual calls. 78% never get a second touchpoint.</div>
+              <div class="timeline-time" style="color:#ff4444;">+1 week</div>
+            </div>
+          </div>
+          <div class="timeline-item">
+            <div class="timeline-dot">🏠</div>
+            <div class="timeline-content">
+              <div class="timeline-label">Offer to Escrow</div>
+              <div class="timeline-text">Title search. Mortgage approval. Lawyers. Wire transfers.</div>
+              <div class="timeline-time" style="color:#ff4444;">+45 days</div>
+            </div>
+          </div>
+          <div class="timeline-item">
+            <div class="timeline-dot">✍️</div>
+            <div class="timeline-content">
+              <div class="timeline-label">Final Close</div>
+              <div class="timeline-text">If the deal didn't fall apart. Which it often does.</div>
+              <div class="timeline-time" style="color:#ff4444;">60–90 days total</div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Botably Timeline -->
+      <div>
+        <div style="font-size:11px;color:var(--green);letter-spacing:3px;text-transform:uppercase;margin-bottom:28px;">With Botably</div>
+        <div class="timeline">
+          <div class="timeline-item">
+            <div class="timeline-dot">🤖</div>
+            <div class="timeline-content">
+              <div class="timeline-label">Lead Comes In</div>
+              <div class="timeline-text">AI responds in 60 seconds. Qualifies. Books viewing.</div>
+              <div class="timeline-time" style="color:var(--green);">+60 sec</div>
+            </div>
+          </div>
+          <div class="timeline-item">
+            <div class="timeline-dot">📅</div>
+            <div class="timeline-content">
+              <div class="timeline-label">Viewing & Offer</div>
+              <div class="timeline-text">Agent shows up to warm, pre-qualified appointments only.</div>
+              <div class="timeline-time" style="color:var(--green);">+2 days</div>
+            </div>
+          </div>
+          <div class="timeline-item">
+            <div class="timeline-dot">⛓️</div>
+            <div class="timeline-content">
+              <div class="timeline-label">Smart Contract Escrow</div>
+              <div class="timeline-text">Funds locked on-chain. Conditions auto-execute. No delays.</div>
+              <div class="timeline-time" style="color:var(--green);">+3 days</div>
+            </div>
+          </div>
+          <div class="timeline-item">
+            <div class="timeline-dot">🎉</div>
+            <div class="timeline-content">
+              <div class="timeline-label">Deal Closed</div>
+              <div class="timeline-text">Title on blockchain. Funds released. Done.</div>
+              <div class="timeline-time" style="color:var(--green);">7 days total</div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+    </div>
+  </div>
+</div>
+
+<!-- SERVICES -->
+<section id="services">
+  <div class="reveal">
+    <div class="eyebrow">Five Services</div>
+    <h2 class="section-title">Everything your operation <em>needs.</em></h2>
+    <p class="section-sub">From automating your first lead response to tokenizing your listings for a global investor market — Botably is your complete PropTech stack.</p>
+  </div>
+
+  <div class="services-grid reveal">
+
+    <div class="service-card">
+      <span class="card-icon">🤖</span>
+      <div class="card-tag">Lead Generation</div>
+      <h3 class="card-title">AI Lead Capture & Follow-Up</h3>
+      <p class="card-desc">Every lead from Facebook, your website, or Zillow gets an instant AI response. Qualified, scheduled, and delivered to your agent warm — in under 60 seconds.</p>
+      <div class="card-metrics">
+        <div class="metric"><div class="metric-num">60s</div><div class="metric-label">Response Time</div></div>
+        <div class="metric"><div class="metric-num">3x</div><div class="metric-label">More Conversions</div></div>
+      </div>
+    </div>
+
+    <div class="service-card">
+      <span class="card-icon">📧</span>
+      <div class="card-tag">Operations</div>
+      <h3 class="card-title">Email & Contract Automation</h3>
+      <p class="card-desc">Contract follow-ups, billing reminders, document generation — automated. Your clerical team handles exceptions, not repetitive tasks that a bot does better.</p>
+      <div class="card-metrics">
+        <div class="metric"><div class="metric-num">80%</div><div class="metric-label">Admin Reduced</div></div>
+        <div class="metric"><div class="metric-num">24/7</div><div class="metric-label">Always Running</div></div>
+      </div>
+    </div>
+
+    <div class="service-card">
+      <span class="card-icon">📸</span>
+      <div class="card-tag">Marketing</div>
+      <h3 class="card-title">AI Listing Photo Workflow</h3>
+      <p class="card-desc">Send us raw listing photos. We return enhanced, staged, marketing-ready images using AI tools. Same quality as a $200 shoot. At a fraction of the cost.</p>
+      <div class="card-metrics">
+        <div class="metric"><div class="metric-num">$75</div><div class="metric-label">Per Listing</div></div>
+        <div class="metric"><div class="metric-num">vs $200</div><div class="metric-label">Traditional Cost</div></div>
+      </div>
+    </div>
+
+    <div class="service-card" style="border-color:rgba(139,92,246,0.2);">
+      <span class="card-icon">⛓️</span>
+      <div class="card-tag" style="background:rgba(139,92,246,0.1);border-color:rgba(139,92,246,0.3);color:#8B5CF6;">Blockchain</div>
+      <h3 class="card-title">Smart Contract Fast Close</h3>
+      <p class="card-desc">Replace traditional escrow with a smart contract. Funds lock instantly. Conditions execute automatically. Close deals in 7 days instead of 60. Zero wire transfer delays.</p>
+      <div class="card-metrics">
+        <div class="metric"><div class="metric-num" style="color:#8B5CF6;">7 days</div><div class="metric-label">To Close</div></div>
+        <div class="metric"><div class="metric-num" style="color:#8B5CF6;">vs 60</div><div class="metric-label">Traditional</div></div>
+      </div>
+    </div>
+
+    <div class="service-card" style="border-color:rgba(201,168,76,0.2);grid-column:span 1;">
+      <span class="card-icon">🏛️</span>
+      <div class="card-tag" style="background:rgba(201,168,76,0.1);border-color:rgba(201,168,76,0.3);color:var(--gold);">Tokenization</div>
+      <h3 class="card-title">Fractional Ownership & Tokenization</h3>
+      <p class="card-desc">Turn any listing into a tokenized asset. Fractional shares sold to OFW diaspora, expats, and micro-investors worldwide. Unlock a buyer pool your competitors don't have.</p>
+      <div class="card-metrics">
+        <div class="metric"><div class="metric-num" style="color:var(--gold);">10M+</div><div class="metric-label">OFW Investors</div></div>
+        <div class="metric"><div class="metric-num" style="color:var(--gold);">Global</div><div class="metric-label">Buyer Reach</div></div>
+      </div>
+    </div>
+
+  </div>
+</section>
+
+<!-- PIPELINE -->
+<div class="pipeline-section">
+  <div class="pipeline-inner">
+    <div class="reveal">
+      <div class="eyebrow">End-to-End Pipeline</div>
+      <h2 class="section-title">One <em>connected</em> system.</h2>
+      <p class="section-sub">Every service connects into a single deal pipeline. Lead comes in — deal gets closed — property gets tokenized. Automated at every step.</p>
+    </div>
+    <div class="pipeline-flow reveal" style="margin-top:48px;">
+      <div class="pipeline-step">
+        <span class="pipeline-emoji">📲</span>
+        <div class="pipeline-label">Lead In</div>
+        <div class="pipeline-sub">Facebook, website, Zillow</div>
+        <div class="pipeline-time">0 sec</div>
+      </div>
+      <div class="pipeline-step">
+        <span class="pipeline-emoji">🤖</span>
+        <div class="pipeline-label">AI Qualifies</div>
+        <div class="pipeline-sub">Budget, timeline, intent</div>
+        <div class="pipeline-time">60 sec</div>
+      </div>
+      <div class="pipeline-step">
+        <span class="pipeline-emoji">📅</span>
+        <div class="pipeline-label">Viewing Booked</div>
+        <div class="pipeline-sub">Agent gets warm alert</div>
+        <div class="pipeline-time">Day 1</div>
+      </div>
+      <div class="pipeline-step">
+        <span class="pipeline-emoji">📸</span>
+        <div class="pipeline-label">AI Photos</div>
+        <div class="pipeline-sub">Listing marketed fast</div>
+        <div class="pipeline-time">Day 2</div>
+      </div>
+      <div class="pipeline-step">
+        <span class="pipeline-emoji">⛓️</span>
+        <div class="pipeline-label">Smart Escrow</div>
+        <div class="pipeline-sub">Funds locked on-chain</div>
+        <div class="pipeline-time">Day 3</div>
+      </div>
+      <div class="pipeline-step">
+        <span class="pipeline-emoji">🏛️</span>
+        <div class="pipeline-label">Tokenized</div>
+        <div class="pipeline-sub">Global investor access</div>
+        <div class="pipeline-time">Day 7 ✓</div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- BLOCKCHAIN DEEP DIVE -->
+<section class="blockchain-section">
+  <div class="blockchain-bg"></div>
+  <div class="reveal">
+    <div class="eyebrow">Blockchain Closing</div>
+    <h2 class="section-title">Your deal on <em>chain.</em></h2>
+    <p class="section-sub">Every step of your closing is recorded on an immutable ledger. No fraud. No disputes. No lost documents. The smart contract executes automatically when conditions are met.</p>
+  </div>
+
+  <div class="chain-visual reveal">
+    <div class="block">
+      <div class="block-hash">#0x4f2a...c891</div>
+      <div class="block-content">
+        <div class="block-title">Earnest Money Deposited</div>
+        <div class="block-desc">Buyer deposits $15,000 to smart contract. Locked until conditions met.</div>
+      </div>
+      <div class="block-status status-confirmed">Confirmed</div>
+    </div>
+    <div class="chain-line" style="margin-left:28px;"></div>
+    <div class="block">
+      <div class="block-hash">#0x9c1b...f340</div>
+      <div class="block-content">
+        <div class="block-title">Inspection Condition Cleared</div>
+        <div class="block-desc">Inspector submits digital report. Smart contract reads result automatically.</div>
+      </div>
+      <div class="block-status status-confirmed">Confirmed</div>
+    </div>
+    <div class="chain-line" style="margin-left:28px;"></div>
+    <div class="block">
+      <div class="block-hash">#0x7e3d...a204</div>
+      <div class="block-content">
+        <div class="block-title">Title Transferred On-Chain</div>
+        <div class="block-desc">Ownership recorded immutably. Cannot be forged, lost, or disputed.</div>
+      </div>
+      <div class="block-status status-confirmed">Confirmed</div>
+    </div>
+    <div class="chain-line" style="margin-left:28px;"></div>
+    <div class="block" style="border-color:rgba(0,229,160,0.3);">
+      <div class="block-hash" style="color:rgba(0,229,160,0.6);">#0x2a8f...d671</div>
+      <div class="block-content">
+        <div class="block-title">Funds Released — Deal Closed</div>
+        <div class="block-desc">All conditions met. Smart contract releases funds to seller automatically.</div>
+      </div>
+      <div class="block-status status-confirmed">✓ CLOSED</div>
+    </div>
+  </div>
+</section>
+
+<!-- TOKENIZATION -->
+<section>
+  <div class="reveal">
+    <div class="eyebrow">Tokenization</div>
+    <h2 class="section-title">Sell to <em>everyone,</em> everywhere.</h2>
+    <p class="section-sub">Fractional real estate ownership via blockchain opens your listings to 10 million OFW investors, expats, and global micro-investors who can't buy a full property but can buy a piece.</p>
+  </div>
+
+  <div class="token-grid reveal">
+    <div class="token-visual">
+      <div style="font-size:11px;color:var(--gold);letter-spacing:3px;text-transform:uppercase;margin-bottom:24px;">Sample Tokenized Listing</div>
+      <div style="font-family:'DM Serif Display',serif;font-size:28px;margin-bottom:4px;">2BR Condo — Cebu IT Park</div>
+      <div style="font-size:13px;color:var(--muted);margin-bottom:28px;">Total Value: $180,000 · 10,000 tokens at $18 each</div>
+
+      <div class="token-bar-label"><span>OFW Investors (Dubai, Riyadh, HK)</span><span style="color:var(--orange);">45%</span></div>
+      <div class="token-bar-track"><div class="token-bar-fill" style="width:45%;"></div></div>
+
+      <div class="token-bar-label"><span>US-Based Filipinos</span><span style="color:var(--orange);">30%</span></div>
+      <div class="token-bar-track"><div class="token-bar-fill" style="width:30%;"></div></div>
+
+      <div class="token-bar-label"><span>Local Philippine Investors</span><span style="color:var(--orange);">25%</span></div>
+      <div class="token-bar-track"><div class="token-bar-fill" style="width:25%;"></div></div>
+
+      <div style="background:var(--dark3);border-radius:10px;padding:16px;margin-top:16px;display:flex;justify-content:space-between;">
+        <div><div style="font-size:11px;color:var(--muted);text-transform:uppercase;letter-spacing:1px;">Raise Complete</div><div style="font-family:'DM Serif Display',serif;font-size:28px;color:var(--green);">$180,000</div></div>
+        <div><div style="font-size:11px;color:var(--muted);text-transform:uppercase;letter-spacing:1px;">Time to Raise</div><div style="font-family:'DM Serif Display',serif;font-size:28px;color:var(--orange);">14 days</div></div>
+      </div>
+    </div>
+
+    <div class="token-visual">
+      <div style="font-size:11px;color:var(--gold);letter-spacing:3px;text-transform:uppercase;margin-bottom:24px;">Investor Breakdown</div>
+      <div class="investor-row">
+        <div class="investor-flag">🇦🇪</div>
+        <div class="investor-info"><div class="investor-name">Maria S. — Dubai</div><div class="investor-type">OFW Nurse · 50 tokens</div></div>
+        <div class="investor-amount">$900</div>
+      </div>
+      <div class="investor-row">
+        <div class="investor-flag">🇺🇸</div>
+        <div class="investor-info"><div class="investor-name">Ramon C. — California</div><div class="investor-type">Diaspora Investor · 200 tokens</div></div>
+        <div class="investor-amount">$3,600</div>
+      </div>
+      <div class="investor-row">
+        <div class="investor-flag">🇸🇦</div>
+        <div class="investor-info"><div class="investor-name">Elena R. — Riyadh</div><div class="investor-type">OFW Engineer · 100 tokens</div></div>
+        <div class="investor-amount">$1,800</div>
+      </div>
+      <div class="investor-row">
+        <div class="investor-flag">🇭🇰</div>
+        <div class="investor-info"><div class="investor-name">Jose M. — Hong Kong</div><div class="investor-type">OFW Finance · 300 tokens</div></div>
+        <div class="investor-amount">$5,400</div>
+      </div>
+      <div style="margin-top:20px;background:rgba(201,168,76,0.08);border:1px solid rgba(201,168,76,0.2);border-radius:10px;padding:16px;font-size:13px;color:#999;line-height:1.6;">
+        Every investor earns <strong style="color:var(--gold);">proportional rental yield</strong> monthly. Tracked automatically on-chain. No spreadsheets. No manual distributions.
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ROI -->
+<div class="roi-section">
+  <div class="roi-inner">
+    <div class="reveal">
+      <div class="eyebrow">Return on Investment</div>
+      <h2 class="section-title">Numbers that <em>close deals.</em></h2>
+    </div>
+    <div class="roi-grid reveal">
+      <div class="roi-card">
+        <div class="roi-before">Before</div>
+        <div class="roi-num-before">60 days</div>
+        <div class="roi-after">After</div>
+        <div class="roi-num-after">7 days</div>
+        <div class="roi-label">Time to Close</div>
+      </div>
+      <div class="roi-card">
+        <div class="roi-before">Before</div>
+        <div class="roi-num-before">$200</div>
+        <div class="roi-after">After</div>
+        <div class="roi-num-after">$75</div>
+        <div class="roi-label">Per Listing Photos</div>
+      </div>
+      <div class="roi-card">
+        <div class="roi-before">Before</div>
+        <div class="roi-num-before">22%</div>
+        <div class="roi-after">After</div>
+        <div class="roi-num-after">78%</div>
+        <div class="roi-label">Lead Follow-Up Rate</div>
+      </div>
+      <div class="roi-card">
+        <div class="roi-before">Before</div>
+        <div class="roi-num-before">Local</div>
+        <div class="roi-after">After</div>
+        <div class="roi-num-after">Global</div>
+        <div class="roi-label">Investor Reach</div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- PRICING -->
+<section>
+  <div class="reveal">
+    <div class="eyebrow">Transparent Pricing</div>
+    <h2 class="section-title">Start small. <em>Scale fast.</em></h2>
+    <p class="section-sub">No long contracts. No hidden fees. Start with what solves your biggest problem today and expand when you're ready.</p>
+  </div>
+  <div class="pricing-grid reveal">
+    <div class="price-card">
+      <div class="price-name">Starter</div>
+      <div class="price-num"><span>$</span>299</div>
+      <div class="price-period">per month · 14-day free trial</div>
+      <div class="price-desc">Fix your lead follow-up problem immediately. AI responds to every lead in 60 seconds.</div>
+      <ul class="price-features">
+        <li>AI lead capture bot</li>
+        <li>Instant follow-up automation</li>
+        <li>Lead qualification & booking</li>
+        <li>Daily owner report to phone</li>
+        <li>Facebook lead form integration</li>
+      </ul>
+    </div>
+    <div class="price-card featured">
+      <div class="price-name">Full Stack</div>
+      <div class="price-num"><span>$</span>599</div>
+      <div class="price-period">per month · 14-day free trial</div>
+      <div class="price-desc">Complete automation for your entire operation. Lead gen, photos, email, and contracts.</div>
+      <ul class="price-features">
+        <li>Everything in Starter</li>
+        <li>Email & contract automation</li>
+        <li>AI listing photo workflow</li>
+        <li>Market intelligence briefings</li>
+        <li>Priority WhatsApp support</li>
+      </ul>
+    </div>
+    <div class="price-card" style="border-color:rgba(201,168,76,0.3);">
+      <div class="price-name" style="color:var(--gold);">PropTech Partner</div>
+      <div class="price-num" style="font-size:36px;">Revenue Share</div>
+      <div class="price-period">No upfront · We win when you win</div>
+      <div class="price-desc">Full stack + blockchain closing + tokenization. We take a % of each deal and token raise.</div>
+      <ul class="price-features">
+        <li>Everything in Full Stack</li>
+        <li>Smart contract escrow setup</li>
+        <li>Blockchain title integration</li>
+        <li>Tokenization platform</li>
+        <li>OFW investor network access</li>
+      </ul>
+    </div>
+  </div>
+</section>
+
+<!-- CTA -->
+<div class="cta-section">
+  <div class="cta-bg"></div>
+  <h2 class="cta-title reveal">Ready to close <em>faster?</em></h2>
+  <p class="cta-sub reveal">I'll build a live demo with your company name before our first call. No cost. No commitment. See exactly what your agents would use every day.</p>
+  <div class="cta-buttons reveal">
+    <a href="mailto:botablyservices@gmail.com" class="btn-primary">Book a Free Demo</a>
+    <a href="https://botably.github.io" class="btn-secondary">Back to Botably</a>
+  </div>
+  <div style="margin-top:40px;font-size:12px;color:#333;letter-spacing:2px;text-transform:uppercase;" class="reveal">
+    Allen Simmons · Botably · botablyservices@gmail.com · WhatsApp +1 (321) 266-1767
+  </div>
+</div>
+
+<!-- FOOTER -->
+<footer>
+  <div class="footer-brand">BOTABLY PROPTECH</div>
+  <div class="footer-copy">© 2026 Botably. All rights reserved.</div>
+</footer>
+
+<script>
+// Scroll reveal
+const reveals = document.querySelectorAll('.reveal');
+const observer = new IntersectionObserver((entries) => {
+  entries.forEach((entry, i) => {
+    if (entry.isIntersecting) {
+      setTimeout(() => entry.target.classList.add('visible'), i * 80);
+      observer.unobserve(entry.target);
+    }
+  });
+}, { threshold: 0.1 });
+reveals.forEach(el => observer.observe(el));
+</script>
+</body>
+</html>
