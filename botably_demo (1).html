@@ -1,0 +1,1117 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Botably — AI Automation Demo</title>
+    <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700;900&family=Exo+2:ital,wght@0,300;0,400;0,600;1,300&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --bg:         #080808;
+            --orange:     #FF6B00;
+            --orange-dim: rgba(255,107,0,0.12);
+            --green:      #4CD964;
+            --green-dim:  rgba(76,217,100,0.12);
+            --white:      #FFFFFF;
+            --grey-1:     #111111;
+            --grey-2:     #1C1C1C;
+            --grey-3:     #2A2A2A;
+            --text-dim:   rgba(255,255,255,0.45);
+            --phone-w:    320px;
+            --phone-h:    580px;
+        }
+
+        *, *::before, *::after { margin:0; padding:0; box-sizing:border-box; }
+
+        body {
+            background: var(--bg);
+            color: var(--white);
+            font-family: 'Exo 2', sans-serif;
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            overflow: hidden;
+            position: relative;
+            user-select: none;
+        }
+
+        /* ── Orange grid ── */
+        body::before {
+            content: '';
+            position: fixed;
+            inset: 0;
+            background-image:
+                linear-gradient(rgba(255,107,0,0.035) 1px, transparent 1px),
+                linear-gradient(90deg, rgba(255,107,0,0.035) 1px, transparent 1px);
+            background-size: 40px 40px;
+            pointer-events: none;
+            z-index: 0;
+        }
+
+        /* ── Radial glow ── */
+        body::after {
+            content: '';
+            position: fixed;
+            top: 50%; left: 50%;
+            transform: translate(-50%,-50%);
+            width: 700px; height: 700px;
+            background: radial-gradient(circle, rgba(255,107,0,0.05) 0%, transparent 65%);
+            pointer-events: none;
+            z-index: 0;
+        }
+
+        /* ══════════════════════════════
+           HEADER
+        ══════════════════════════════ */
+        .header {
+            position: relative;
+            z-index: 10;
+            text-align: center;
+            margin-bottom: 18px;
+        }
+
+        .logo {
+            font-family: 'Orbitron', sans-serif;
+            font-size: 26px;
+            font-weight: 900;
+            color: var(--orange);
+            letter-spacing: 5px;
+            text-transform: uppercase;
+        }
+
+        .logo span { color: var(--white); }
+
+        .tagline {
+            font-size: 10px;
+            font-weight: 300;
+            color: var(--text-dim);
+            letter-spacing: 3.5px;
+            text-transform: uppercase;
+            margin-top: 4px;
+        }
+
+        /* ══════════════════════════════
+           SCENE LABEL
+        ══════════════════════════════ */
+        .scene-label {
+            position: relative;
+            z-index: 10;
+            text-align: center;
+            height: 44px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            margin-bottom: 12px;
+        }
+
+        .scene-title {
+            font-family: 'Orbitron', sans-serif;
+            font-size: 11px;
+            font-weight: 700;
+            color: var(--orange);
+            letter-spacing: 2px;
+            text-transform: uppercase;
+            opacity: 0;
+            transform: translateY(-6px);
+            transition: opacity 0.5s ease, transform 0.5s ease;
+        }
+
+        .scene-title.visible { opacity: 1; transform: translateY(0); }
+
+        .scene-subtitle {
+            font-size: 10px;
+            font-weight: 300;
+            color: var(--text-dim);
+            letter-spacing: 1.5px;
+            margin-top: 4px;
+            opacity: 0;
+            transition: opacity 0.5s ease 0.15s;
+        }
+
+        .scene-subtitle.visible { opacity: 1; }
+
+        /* ══════════════════════════════
+           PHONE SHELL
+        ══════════════════════════════ */
+        .phone-wrap {
+            position: relative;
+            z-index: 10;
+        }
+
+        /* Outer glow ring — pulses */
+        .phone-wrap::before {
+            content: '';
+            position: absolute;
+            inset: -2px;
+            border-radius: 44px;
+            background: transparent;
+            border: 1px solid rgba(255,107,0,0.2);
+            animation: phonePulse 3s ease-in-out infinite;
+            pointer-events: none;
+        }
+
+        @keyframes phonePulse {
+            0%,100% { box-shadow: 0 0 0 0 rgba(255,107,0,0); }
+            50%      { box-shadow: 0 0 20px 4px rgba(255,107,0,0.12); }
+        }
+
+        .phone {
+            width: var(--phone-w);
+            height: var(--phone-h);
+            background: #0D0D0D;
+            border-radius: 40px;
+            border: 1.5px solid rgba(255,107,0,0.28);
+            box-shadow:
+                0 0 0 1px rgba(255,255,255,0.03),
+                0 25px 60px rgba(0,0,0,0.85),
+                inset 0 1px 0 rgba(255,255,255,0.04);
+            overflow: hidden;
+            display: flex;
+            flex-direction: column;
+            position: relative;
+        }
+
+        /* ── Status bar ── */
+        .phone-statusbar {
+            padding: 10px 20px 6px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            flex-shrink: 0;
+        }
+
+        .statusbar-time {
+            font-family: 'Orbitron', sans-serif;
+            font-size: 10px;
+            font-weight: 700;
+            color: rgba(255,255,255,0.6);
+            letter-spacing: 1px;
+        }
+
+        .statusbar-icons {
+            font-size: 9px;
+            color: rgba(255,255,255,0.4);
+            letter-spacing: 3px;
+        }
+
+        /* ── Chat header bar ── */
+        .phone-bar {
+            background: rgba(10,10,10,0.95);
+            padding: 8px 16px 10px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            border-bottom: 1px solid rgba(255,107,0,0.12);
+            flex-shrink: 0;
+        }
+
+        .phone-avatar {
+            width: 34px; height: 34px;
+            border-radius: 50%;
+            background: linear-gradient(135deg, var(--orange), #FF8C35);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-family: 'Orbitron', sans-serif;
+            font-size: 12px;
+            font-weight: 900;
+            color: #000;
+            flex-shrink: 0;
+            box-shadow: 0 0 12px rgba(255,107,0,0.35);
+        }
+
+        .phone-bar-info { flex: 1; }
+
+        .phone-bar-name {
+            font-family: 'Orbitron', sans-serif;
+            font-size: 11px;
+            font-weight: 700;
+            color: var(--white);
+            letter-spacing: 1px;
+        }
+
+        .phone-bar-status {
+            font-size: 10px;
+            color: var(--green);
+            font-weight: 300;
+            letter-spacing: 1px;
+            margin-top: 2px;
+        }
+
+        .status-dot {
+            display: inline-block;
+            width: 6px; height: 6px;
+            border-radius: 50%;
+            background: var(--green);
+            margin-right: 4px;
+            vertical-align: middle;
+            box-shadow: 0 0 6px rgba(76,217,100,0.6);
+            animation: statusPulse 2s ease-in-out infinite;
+        }
+
+        @keyframes statusPulse {
+            0%,100% { opacity:1; }
+            50%      { opacity:0.5; }
+        }
+
+        /* ── Chat area ── */
+        .chat-area {
+            flex: 1;
+            overflow: hidden;
+            padding: 14px 13px 14px;
+            display: flex;
+            flex-direction: column;
+            gap: 9px;
+            position: relative;
+        }
+
+        /* ══════════════════════════════
+           MESSAGES
+        ══════════════════════════════ */
+        .msg {
+            opacity: 0;
+            transform: translateY(8px);
+            transition: opacity 0.3s ease, transform 0.3s ease;
+            max-width: 82%;
+        }
+
+        .msg.visible {
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        /* Alert / system notice */
+        .msg.alert {
+            align-self: center;
+            max-width: 100%;
+        }
+
+        .msg-alert-inner {
+            background: rgba(255,107,0,0.08);
+            border: 1px solid rgba(255,107,0,0.35);
+            border-radius: 8px;
+            padding: 7px 14px;
+            text-align: center;
+        }
+
+        .alert-label {
+            font-family: 'Orbitron', sans-serif;
+            font-size: 9px;
+            font-weight: 700;
+            color: var(--orange);
+            letter-spacing: 2px;
+            text-transform: uppercase;
+        }
+
+        .alert-time {
+            font-family: 'Exo 2', sans-serif;
+            font-size: 9px;
+            color: var(--text-dim);
+            font-weight: 300;
+            margin-top: 2px;
+            letter-spacing: 0.5px;
+        }
+
+        /* Customer (left) */
+        .msg.customer { align-self: flex-start; }
+
+        .msg-name {
+            font-size: 9px;
+            font-weight: 600;
+            color: var(--text-dim);
+            letter-spacing: 0.5px;
+            text-transform: uppercase;
+            margin-bottom: 4px;
+            padding-left: 4px;
+        }
+
+        .msg-bubble {
+            padding: 9px 13px;
+            border-radius: 16px;
+            font-size: 12.5px;
+            font-weight: 400;
+            line-height: 1.5;
+            position: relative;
+            word-break: break-word;
+        }
+
+        .msg.customer .msg-bubble {
+            background: var(--grey-2);
+            border: 1px solid var(--grey-3);
+            border-bottom-left-radius: 4px;
+            color: rgba(255,255,255,0.82);
+        }
+
+        /* Bot (right) */
+        .msg.bot { align-self: flex-end; }
+
+        .msg.bot .msg-bubble {
+            background: linear-gradient(135deg, #FF6B00 0%, #FF8633 100%);
+            color: #000;
+            font-weight: 600;
+            border-bottom-right-radius: 4px;
+            box-shadow: 0 4px 18px rgba(255,107,0,0.28);
+        }
+
+        /* Typing cursor */
+        .cursor {
+            display: inline-block;
+            width: 2px;
+            height: 13px;
+            background: currentColor;
+            margin-left: 1px;
+            vertical-align: middle;
+            animation: blink 0.55s infinite;
+        }
+
+        .msg.bot .cursor   { background: rgba(0,0,0,0.7); }
+        .msg.customer .cursor { background: rgba(255,255,255,0.6); }
+
+        @keyframes blink {
+            0%,49% { opacity:1; }
+            50%,100% { opacity:0; }
+        }
+
+        /* Typing indicator (3 dots) */
+        .typing-indicator {
+            display: flex;
+            align-items: center;
+            gap: 4px;
+            padding: 10px 14px;
+            background: linear-gradient(135deg, #FF6B00, #FF8633);
+            border-radius: 16px;
+            border-bottom-right-radius: 4px;
+            width: fit-content;
+            align-self: flex-end;
+            opacity: 0;
+            transition: opacity 0.25s ease;
+            flex-shrink: 0;
+        }
+
+        .typing-indicator.visible { opacity: 1; }
+
+        .tdot {
+            width: 5px; height: 5px;
+            background: rgba(0,0,0,0.6);
+            border-radius: 50%;
+            animation: tdotBounce 1s infinite;
+        }
+
+        .tdot:nth-child(2) { animation-delay: 0.15s; }
+        .tdot:nth-child(3) { animation-delay: 0.30s; }
+
+        @keyframes tdotBounce {
+            0%,100% { transform:translateY(0); opacity:0.4; }
+            50%      { transform:translateY(-4px); opacity:1; }
+        }
+
+        /* ══════════════════════════════
+           RESULT CARD (absolute overlay)
+        ══════════════════════════════ */
+        .result-card {
+            position: absolute;
+            bottom: 0; left: 0; right: 0;
+            background: linear-gradient(
+                to top,
+                rgba(13,13,13,1)   0%,
+                rgba(13,13,13,0.96) 70%,
+                transparent        100%
+            );
+            padding: 14px 13px 16px;
+            opacity: 0;
+            transform: translateY(16px);
+            transition: opacity 0.5s ease, transform 0.5s ease;
+            pointer-events: none;
+        }
+
+        .result-card.visible {
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        .result-inner {
+            background: rgba(76,217,100,0.07);
+            border: 1px solid rgba(76,217,100,0.3);
+            border-radius: 12px;
+            padding: 12px 14px;
+            display: flex;
+            align-items: flex-start;
+            gap: 11px;
+        }
+
+        .result-check {
+            width: 30px; height: 30px;
+            border-radius: 50%;
+            background: var(--green);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 15px;
+            flex-shrink: 0;
+            box-shadow: 0 0 14px rgba(76,217,100,0.45);
+        }
+
+        .result-text { flex: 1; }
+
+        .result-main {
+            font-family: 'Orbitron', sans-serif;
+            font-size: 10px;
+            font-weight: 700;
+            color: var(--green);
+            letter-spacing: 1px;
+            text-transform: uppercase;
+        }
+
+        .result-stat {
+            font-size: 10px;
+            font-weight: 300;
+            color: var(--text-dim);
+            margin-top: 3px;
+            letter-spacing: 0.5px;
+        }
+
+        .result-progress {
+            margin-top: 9px;
+            display: flex;
+            flex-direction: column;
+            gap: 5px;
+        }
+
+        .prog-item {
+            display: flex;
+            align-items: center;
+            gap: 7px;
+        }
+
+        .prog-label {
+            font-size: 9px;
+            color: var(--text-dim);
+            font-weight: 300;
+            letter-spacing: 0.3px;
+            width: 72px;
+            flex-shrink: 0;
+        }
+
+        .prog-bar {
+            flex: 1;
+            height: 3px;
+            background: rgba(255,255,255,0.07);
+            border-radius: 2px;
+            overflow: hidden;
+        }
+
+        .prog-fill {
+            height: 100%;
+            border-radius: 2px;
+            width: 0%;
+            transition: width 1s ease 0.3s;
+        }
+
+        .prog-fill.orange { background: var(--orange); }
+        .prog-fill.green  { background: var(--green); }
+
+        .prog-val {
+            font-family: 'Orbitron', sans-serif;
+            font-size: 9px;
+            font-weight: 700;
+            color: var(--white);
+            width: 34px;
+            text-align: right;
+            flex-shrink: 0;
+        }
+
+        /* ══════════════════════════════
+           STATS SCENE (Scene 5)
+        ══════════════════════════════ */
+        .stats-header {
+            text-align: center;
+            padding: 6px 0 10px;
+            opacity: 0;
+            transition: opacity 0.5s ease;
+            flex-shrink: 0;
+        }
+
+        .stats-header.visible { opacity: 1; }
+
+        .stats-header-title {
+            font-family: 'Orbitron', sans-serif;
+            font-size: 11px;
+            font-weight: 700;
+            color: var(--orange);
+            letter-spacing: 2px;
+        }
+
+        .stats-header-sub {
+            font-size: 10px;
+            color: var(--text-dim);
+            font-weight: 300;
+            margin-top: 3px;
+            letter-spacing: 1px;
+        }
+
+        .stats-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 9px;
+        }
+
+        .stat-card {
+            background: var(--grey-2);
+            border: 1px solid var(--grey-3);
+            border-radius: 12px;
+            padding: 13px 11px 11px;
+            text-align: center;
+            opacity: 0;
+            transform: scale(0.94);
+            transition: opacity 0.4s ease, transform 0.4s ease;
+        }
+
+        .stat-card.visible {
+            opacity: 1;
+            transform: scale(1);
+        }
+
+        .stat-num {
+            font-family: 'Orbitron', sans-serif;
+            font-size: 22px;
+            font-weight: 900;
+            color: var(--orange);
+            line-height: 1;
+        }
+
+        .stat-num.green { color: var(--green); }
+
+        .stat-label {
+            font-size: 9px;
+            color: var(--text-dim);
+            margin-top: 5px;
+            font-weight: 300;
+            letter-spacing: 0.3px;
+            line-height: 1.4;
+        }
+
+        .stat-bar {
+            height: 3px;
+            background: rgba(255,255,255,0.07);
+            border-radius: 2px;
+            margin-top: 10px;
+            overflow: hidden;
+        }
+
+        .stat-bar-fill {
+            height: 100%;
+            border-radius: 2px;
+            width: 0%;
+            transition: width 1.2s ease;
+        }
+
+        .stat-bar-fill.orange { background: var(--orange); }
+        .stat-bar-fill.green  { background: var(--green); }
+
+        /* ══════════════════════════════
+           SCENE TRANSITION OVERLAY
+        ══════════════════════════════ */
+        .scene-overlay {
+            position: absolute;
+            inset: 0;
+            background: #080808;
+            z-index: 30;
+            border-radius: 39px;
+            opacity: 0;
+            pointer-events: none;
+            transition: opacity 0.4s ease;
+        }
+
+        .scene-overlay.flash { opacity: 1; }
+
+        /* ══════════════════════════════
+           SCENE PROGRESS DOTS
+        ══════════════════════════════ */
+        .scene-dots {
+            position: relative;
+            z-index: 10;
+            display: flex;
+            gap: 7px;
+            margin-top: 18px;
+            align-items: center;
+        }
+
+        .dot-item {
+            width: 6px; height: 6px;
+            border-radius: 3px;
+            background: rgba(255,107,0,0.2);
+            transition: all 0.4s ease;
+        }
+
+        .dot-item.active {
+            width: 22px;
+            background: var(--orange);
+            box-shadow: 0 0 8px rgba(255,107,0,0.5);
+        }
+
+        /* ══════════════════════════════
+           FOOTER
+        ══════════════════════════════ */
+        .footer-brand {
+            position: relative;
+            z-index: 10;
+            text-align: center;
+            margin-top: 16px;
+        }
+
+        .footer-text {
+            font-size: 9px;
+            color: var(--text-dim);
+            letter-spacing: 3px;
+            text-transform: uppercase;
+            font-weight: 300;
+        }
+
+        .footer-url {
+            font-family: 'Orbitron', sans-serif;
+            font-size: 11px;
+            color: var(--orange);
+            letter-spacing: 2px;
+            margin-top: 3px;
+        }
+    </style>
+</head>
+<body>
+
+    <div class="header">
+        <div class="logo">BOT<span>ABLY</span></div>
+        <div class="tagline">AI Automation for Small Business</div>
+    </div>
+
+    <div class="scene-label">
+        <div class="scene-title" id="sceneTitle"></div>
+        <div class="scene-subtitle" id="sceneSubtitle"></div>
+    </div>
+
+    <div class="phone-wrap">
+        <div class="phone">
+
+            <div class="scene-overlay" id="sceneOverlay"></div>
+
+            <div class="phone-statusbar">
+                <div class="statusbar-time" id="clockDisplay">9:41</div>
+                <div class="statusbar-icons">▲▲▲ ▊</div>
+            </div>
+
+            <div class="phone-bar">
+                <div class="phone-avatar">B</div>
+                <div class="phone-bar-info">
+                    <div class="phone-bar-name">BOTABLY AI</div>
+                    <div class="phone-bar-status">
+                        <span class="status-dot"></span>online now
+                    </div>
+                </div>
+            </div>
+
+            <div class="chat-area" id="chatArea">
+                <div class="typing-indicator" id="typingIndicator">
+                    <div class="tdot"></div>
+                    <div class="tdot"></div>
+                    <div class="tdot"></div>
+                </div>
+                <div class="result-card" id="resultCard"></div>
+            </div>
+
+        </div>
+    </div>
+
+    <div class="scene-dots" id="sceneDots"></div>
+
+    <div class="footer-brand">
+        <div class="footer-text">See it live at</div>
+        <div class="footer-url">botably.io</div>
+    </div>
+
+    <script>
+    // ═══════════════════════════════════════════════════════
+    //  LIVE CLOCK
+    // ═══════════════════════════════════════════════════════
+
+    function updateClock() {
+        const now = new Date();
+        let h = now.getHours(), m = now.getMinutes();
+        document.getElementById('clockDisplay').textContent =
+            h + ':' + (m < 10 ? '0' + m : m);
+    }
+    updateClock();
+    setInterval(updateClock, 30000);
+
+    // ═══════════════════════════════════════════════════════
+    //  SCENE DATA
+    // ═══════════════════════════════════════════════════════
+
+    const SCENES = [
+        {
+            title:    '🏡  REALTOR — THE 2AM LEAD',
+            subtitle: 'Your bot answers while you sleep',
+            messages: [
+                { type: 'alert',    text: 'NEW LEAD ALERT',  time: '2:14 AM' },
+                { type: 'customer', name: 'Sarah M.',  text: "Hi! I saw your listing for the 4BR on Oak Drive. Is it still available?" },
+                { type: 'bot',                         text: "Hi Sarah! Yes, 123 Oak Drive is still available 🏡 Want to schedule a viewing? I have openings this week." },
+                { type: 'customer', name: 'Sarah M.',  text: "Tomorrow at 10am works!" },
+                { type: 'bot',                         text: "Done! ✅ Viewing confirmed — tomorrow 10:00 AM at 123 Oak Drive. See you then!" },
+            ],
+            result: {
+                text: 'Lead Captured & Booked',
+                stat: 'Response time: 8 seconds',
+                bars: [
+                    { label: 'Lead score', val: '94%',  fill: 94,  color: 'orange' },
+                    { label: 'Booking',    val: '100%', fill: 100, color: 'green'  },
+                ]
+            }
+        },
+        {
+            title:    '🔧  PLUMBER — BURST PIPE',
+            subtitle: 'Emergency booked in under 15 seconds',
+            messages: [
+                { type: 'alert',    text: 'EMERGENCY LEAD',  time: '11:47 PM' },
+                { type: 'customer', name: 'Mike T.',   text: "HELP!! Water is flooding my kitchen RIGHT NOW!!" },
+                { type: 'bot',                         text: "On it Mike. Our emergency crew is available NOW. What's your address?" },
+                { type: 'customer', name: 'Mike T.',   text: "456 Maple Street" },
+                { type: 'bot',                         text: "Dispatching to 456 Maple St. ETA 20 min 🔧 Technician Dave will call you in 2 minutes." },
+            ],
+            result: {
+                text: 'Emergency Job Booked',
+                stat: 'Response time: 12 seconds',
+                bars: [
+                    { label: 'Urgency',    val: '100%', fill: 100, color: 'orange' },
+                    { label: 'Dispatched', val: '100%', fill: 100, color: 'green'  },
+                ]
+            }
+        },
+        {
+            title:    '🏡  REALTOR — COLD LEAD WIN',
+            subtitle: 'Reactivating leads you forgot about',
+            messages: [
+                { type: 'alert',    text: 'AUTO FOLLOW-UP', time: '3 days later' },
+                { type: 'bot',                         text: "Hi David 👋 Just following up on the Riverside property. Still interested?" },
+                { type: 'customer', name: 'David K.',  text: "Actually yeah, we've been thinking about it" },
+                { type: 'bot',                         text: "Great! I have Saturday at 2pm open. Want me to lock that in?" },
+                { type: 'customer', name: 'David K.',  text: "Yes please!" },
+                { type: 'bot',                         text: "✅ Saturday 2:00 PM confirmed. See you at the Riverside property!" },
+            ],
+            result: {
+                text: 'Cold Lead Reactivated',
+                stat: 'Would have been lost forever',
+                bars: [
+                    { label: 'Recovery',  val: '88%',  fill: 88, color: 'green'  },
+                    { label: 'Deal size', val: '$12K+', fill: 76, color: 'orange' },
+                ]
+            }
+        },
+        {
+            title:    '🔧  PLUMBER — QUOTE TO CASH',
+            subtitle: 'Turn inquiries into booked jobs automatically',
+            messages: [
+                { type: 'alert',    text: 'NEW INQUIRY',   time: '10:22 AM' },
+                { type: 'customer', name: 'Linda R.',  text: "How much does it cost to replace a water heater?" },
+                { type: 'bot',                         text: "Hi Linda! Tankless water heater replacement runs $800–$1,200 in your area. Want a free on-site estimate?" },
+                { type: 'customer', name: 'Linda R.',  text: "Yes that would be great!" },
+                { type: 'bot',                         text: "Booked! 📅 Free estimate Friday at 9:00 AM. Confirmation text on its way. We'll take it from there!" },
+            ],
+            result: {
+                text: 'Inquiry → Job Booked',
+                stat: 'No manual follow-up needed',
+                bars: [
+                    { label: 'Convert rate', val: '73%',  fill: 73, color: 'orange' },
+                    { label: 'Job value',    val: '$950',  fill: 65, color: 'green'  },
+                ]
+            }
+        },
+        {
+            title:    '📊  YOUR WEEK IN NUMBERS',
+            subtitle: 'While you focused on the actual work',
+            isStats:  true,
+            stats: [
+                { num: '23',    label: 'Leads\nCaptured',        bar: 92, color: 'orange' },
+                { num: '9s',    label: 'Avg Response\nTime',     bar: 98, color: 'green'  },
+                { num: '8',     label: 'Appointments\nBooked',   bar: 75, color: 'orange' },
+                { num: '$14.2K',label: 'Revenue\nProtected',     bar: 85, color: 'green'  },
+            ],
+            result: {
+                text: 'Running 24/7 — Zero Effort',
+                stat: 'Set it up once. We handle everything.',
+            }
+        }
+    ];
+
+    // ═══════════════════════════════════════════════════════
+    //  DOM REFS
+    // ═══════════════════════════════════════════════════════
+
+    const chatArea        = document.getElementById('chatArea');
+    const typingIndicator = document.getElementById('typingIndicator');
+    const resultCard      = document.getElementById('resultCard');
+    const sceneOverlay    = document.getElementById('sceneOverlay');
+    const sceneTitle      = document.getElementById('sceneTitle');
+    const sceneSubtitle   = document.getElementById('sceneSubtitle');
+    const sceneDots       = document.getElementById('sceneDots');
+
+    let currentScene = 0;
+    let alive        = true;
+
+    // ═══════════════════════════════════════════════════════
+    //  BUILD DOTS
+    // ═══════════════════════════════════════════════════════
+
+    SCENES.forEach((_, i) => {
+        const d = document.createElement('div');
+        d.className = 'dot-item';
+        d.id = 'dot-' + i;
+        sceneDots.appendChild(d);
+    });
+
+    function setActiveDot(idx) {
+        SCENES.forEach((_, i) => {
+            document.getElementById('dot-' + i)
+                .classList.toggle('active', i === idx);
+        });
+    }
+
+    // ═══════════════════════════════════════════════════════
+    //  UTILITIES
+    // ═══════════════════════════════════════════════════════
+
+    function sleep(ms) {
+        return new Promise(r => setTimeout(r, ms));
+    }
+
+    function typeText(el, text, speed) {
+        speed = speed || 26;
+        return new Promise(resolve => {
+            let i = 0;
+            const cursor = document.createElement('span');
+            cursor.className = 'cursor';
+            el.appendChild(cursor);
+            function next() {
+                if (!alive) { cursor.remove(); resolve(); return; }
+                if (i < text.length) {
+                    cursor.before(document.createTextNode(text[i]));
+                    i++;
+                    setTimeout(next, speed + Math.random() * 14);
+                } else {
+                    cursor.remove();
+                    resolve();
+                }
+            }
+            next();
+        });
+    }
+
+    // ═══════════════════════════════════════════════════════
+    //  CLEAR CHAT
+    // ═══════════════════════════════════════════════════════
+
+    function clearChat() {
+        Array.from(chatArea.children).forEach(c => {
+            if (c !== typingIndicator && c !== resultCard) c.remove();
+        });
+        typingIndicator.classList.remove('visible');
+        resultCard.classList.remove('visible');
+        resultCard.innerHTML = '';
+    }
+
+    // ═══════════════════════════════════════════════════════
+    //  SHOW RESULT CARD
+    // ═══════════════════════════════════════════════════════
+
+    function showResult(result) {
+        const barsHTML = result.bars ? `
+            <div class="result-progress">
+                ${result.bars.map(b => `
+                <div class="prog-item">
+                    <span class="prog-label">${b.label}</span>
+                    <div class="prog-bar">
+                        <div class="prog-fill ${b.color}" data-fill="${b.fill}"></div>
+                    </div>
+                    <span class="prog-val">${b.val}</span>
+                </div>`).join('')}
+            </div>` : '';
+
+        resultCard.innerHTML = `
+            <div class="result-inner">
+                <div class="result-check">✓</div>
+                <div class="result-text">
+                    <div class="result-main">${result.text}</div>
+                    <div class="result-stat">${result.stat}</div>
+                    ${barsHTML}
+                </div>
+            </div>`;
+
+        resultCard.classList.add('visible');
+
+        setTimeout(() => {
+            resultCard.querySelectorAll('.prog-fill').forEach(bar => {
+                bar.style.width = bar.dataset.fill + '%';
+            });
+        }, 350);
+    }
+
+    // ═══════════════════════════════════════════════════════
+    //  PLAY CHAT SCENE
+    // ═══════════════════════════════════════════════════════
+
+    async function playChatScene(scene) {
+        for (const msg of scene.messages) {
+            if (!alive) return;
+
+            if (msg.type === 'alert') {
+                const el = document.createElement('div');
+                el.className = 'msg alert';
+                el.innerHTML = `
+                    <div class="msg-alert-inner">
+                        <div class="alert-label">${msg.text}</div>
+                        <div class="alert-time">${msg.time}</div>
+                    </div>`;
+                chatArea.insertBefore(el, typingIndicator);
+                await sleep(40);
+                el.classList.add('visible');
+                await sleep(750);
+                continue;
+            }
+
+            if (msg.type === 'customer') {
+                const el = document.createElement('div');
+                el.className = 'msg customer';
+                el.innerHTML = `
+                    <div class="msg-name">${msg.name}</div>
+                    <div class="msg-bubble"></div>`;
+                chatArea.insertBefore(el, typingIndicator);
+                await sleep(40);
+                el.classList.add('visible');
+                await typeText(el.querySelector('.msg-bubble'), msg.text, 24);
+                await sleep(550);
+                continue;
+            }
+
+            if (msg.type === 'bot') {
+                typingIndicator.classList.add('visible');
+                await sleep(850);
+                typingIndicator.classList.remove('visible');
+                await sleep(80);
+
+                const el = document.createElement('div');
+                el.className = 'msg bot';
+                el.innerHTML = `<div class="msg-bubble"></div>`;
+                chatArea.insertBefore(el, typingIndicator);
+                await sleep(40);
+                el.classList.add('visible');
+                await typeText(el.querySelector('.msg-bubble'), msg.text, 20);
+                await sleep(600);
+                continue;
+            }
+        }
+    }
+
+    // ═══════════════════════════════════════════════════════
+    //  PLAY STATS SCENE
+    // ═══════════════════════════════════════════════════════
+
+    async function playStatsScene(scene) {
+        const header = document.createElement('div');
+        header.className = 'stats-header';
+        header.innerHTML = `
+            <div class="stats-header-title">BOTABLY WEEKLY REPORT</div>
+            <div class="stats-header-sub">Automated. While you worked.</div>`;
+        chatArea.insertBefore(header, typingIndicator);
+        await sleep(80);
+        header.classList.add('visible');
+        await sleep(450);
+
+        const grid = document.createElement('div');
+        grid.className = 'stats-grid';
+
+        scene.stats.forEach((s, i) => {
+            const card = document.createElement('div');
+            card.className = 'stat-card';
+            card.id = 'scard-' + i;
+            const labelFormatted = s.label.replace('\n', '<br>');
+            card.innerHTML = `
+                <div class="stat-num ${s.color === 'green' ? 'green' : ''}">${s.num}</div>
+                <div class="stat-label">${labelFormatted}</div>
+                <div class="stat-bar">
+                    <div class="stat-bar-fill ${s.color}" data-fill="${s.bar}"></div>
+                </div>`;
+            grid.appendChild(card);
+        });
+
+        chatArea.insertBefore(grid, typingIndicator);
+
+        for (let i = 0; i < scene.stats.length; i++) {
+            await sleep(220);
+            const card = document.getElementById('scard-' + i);
+            card.classList.add('visible');
+            setTimeout(() => {
+                const fill = card.querySelector('.stat-bar-fill');
+                fill.style.width = fill.dataset.fill + '%';
+            }, 400);
+        }
+
+        await sleep(1400);
+        showResult(scene.result);
+    }
+
+    // ═══════════════════════════════════════════════════════
+    //  TRANSITIONS
+    // ═══════════════════════════════════════════════════════
+
+    async function fadeOut() {
+        sceneOverlay.classList.add('flash');
+        sceneTitle.classList.remove('visible');
+        sceneSubtitle.classList.remove('visible');
+        await sleep(420);
+    }
+
+    async function fadeIn(scene) {
+        clearChat();
+        sceneTitle.textContent    = scene.title;
+        sceneSubtitle.textContent = scene.subtitle;
+        sceneOverlay.classList.remove('flash');
+        await sleep(280);
+        sceneTitle.classList.add('visible');
+        sceneSubtitle.classList.add('visible');
+        await sleep(350);
+    }
+
+    // ═══════════════════════════════════════════════════════
+    //  SCENE RUNNER
+    // ═══════════════════════════════════════════════════════
+
+    async function runScene(idx) {
+        const scene = SCENES[idx];
+        setActiveDot(idx);
+        await fadeIn(scene);
+        await sleep(300);
+
+        if (scene.isStats) {
+            await playStatsScene(scene);
+        } else {
+            await playChatScene(scene);
+            if (alive) showResult(scene.result);
+        }
+
+        await sleep(3200);
+        await fadeOut();
+        await sleep(280);
+
+        currentScene = (idx + 1) % SCENES.length;
+        if (alive) runScene(currentScene);
+    }
+
+    // ═══════════════════════════════════════════════════════
+    //  START
+    // ═══════════════════════════════════════════════════════
+
+    document.fonts.ready.then(() => setTimeout(() => runScene(0), 500));
+
+    </script>
+</body>
+</html>
