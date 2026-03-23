@@ -3,492 +3,2345 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Botably — Automation & Web Solutions</title>
-<link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700;900&family=Exo+2:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+<meta name="description" content="Botably — AI-powered automation for crypto traders, job seekers, real estate professionals, content creators and business owners. Custom Telegram bots that work while you sleep.">
+<title>Botably — Your Business. Fully Automated.</title>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;600;700;900&family=Exo+2:wght@300;400;500;600;700&display=swap">
 <style>
-  :root {
-    --bg:          #080808;
-    --surface:     #0f0f0f;
-    --orange:      #FF6B00;
-    --orange-soft: rgba(255,107,0,0.10);
-    --border:      rgba(255,107,0,0.18);
-    --text:        #e2e2e2;
-    --muted:       #777;
-    --fh:          'Orbitron', monospace;
-    --fb:          'Exo 2', Arial, sans-serif;
-  }
-  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
-  html { scroll-behavior: smooth; }
-  body { background: var(--bg); color: var(--text); font-family: var(--fb); font-size: 16px; line-height: 1.6; overflow-x: hidden; }
-  ::-webkit-scrollbar { width: 5px; }
-  ::-webkit-scrollbar-track { background: var(--bg); }
-  ::-webkit-scrollbar-thumb { background: var(--orange); border-radius: 3px; }
-  nav { position: sticky; top: 0; z-index: 9000; width: 100%; height: 68px; background: rgba(8,8,8,0.96); backdrop-filter: blur(16px); border-bottom: 1px solid var(--border); display: flex; align-items: center; padding: 0 56px; }
-  .nav-brand { display: flex; align-items: center; gap: 13px; text-decoration: none; flex: 0 0 auto; }
-  .nav-logo { height: 38px; width: 38px; object-fit: cover; mix-blend-mode: lighten; filter: drop-shadow(0 0 8px var(--orange)); }
-  .nav-wordmark { font-family: var(--fh); font-weight: 700; font-size: 1.2rem; letter-spacing: 0.1em; color: var(--orange); white-space: nowrap; }
-  .nav-spacer { flex: 1 1 auto; }
-  .nav-links { display: flex; align-items: center; gap: 36px; list-style: none; flex: 0 0 auto; }
-  .nav-links a { font-family: var(--fb); font-size: 0.8rem; font-weight: 600; letter-spacing: 0.1em; text-transform: uppercase; color: var(--muted); text-decoration: none; white-space: nowrap; transition: color 0.2s; }
-  .nav-links a:hover { color: #fff; }
-  .nav-cta { color: var(--orange) !important; border: 1px solid var(--orange); padding: 8px 22px; border-radius: 3px; }
-  .nav-cta:hover { background: rgba(255,107,0,0.1) !important; }
-  .hero { min-height: 94vh; display: flex; flex-direction: column; align-items: center; justify-content: center; text-align: center; padding: 80px 48px 60px; position: relative; overflow: hidden; }
-  .hero::before { content: ''; position: absolute; top: -200px; left: 50%; transform: translateX(-50%); width: 800px; height: 800px; background: radial-gradient(circle, rgba(255,107,0,0.06) 0%, transparent 65%); pointer-events: none; }
-  .hero-bot-wrap { position: relative; display: inline-block; margin-bottom: 48px; }
-  .hero-bot-wrap::before { content: ''; position: absolute; inset: -30px; background: radial-gradient(circle, rgba(255,107,0,0.14) 0%, transparent 60%); border-radius: 50%; animation: halo 3.5s ease-in-out infinite; pointer-events: none; }
-  @keyframes halo { 0%,100%{transform:scale(1);opacity:0.7} 50%{transform:scale(1.1);opacity:1} }
-  .hero-bot { display: block; width: 340px; max-width: 80vw; height: auto; mix-blend-mode: lighten; filter: drop-shadow(0 0 20px var(--orange)) drop-shadow(0 0 60px rgba(255,107,0,0.4)); animation: float 4s ease-in-out infinite; position: relative; z-index: 1; }
-  @keyframes float { 0%,100%{transform:translateY(0)} 50%{transform:translateY(-14px)} }
-  .hero-eyebrow { font-family: var(--fh); font-size: 0.68rem; letter-spacing: 0.22em; text-transform: uppercase; color: var(--orange); margin-bottom: 20px; display: flex; align-items: center; justify-content: center; gap: 14px; }
-  .hero-eyebrow::before, .hero-eyebrow::after { content: ''; display: block; width: 36px; height: 1px; background: var(--orange); opacity: 0.7; }
-  .hero-h1 { font-family: var(--fh); font-size: clamp(2.2rem, 5vw, 3.8rem); font-weight: 900; line-height: 1.08; color: #fff; margin-bottom: 24px; }
-  .hero-h1 span { color: var(--orange); }
-  .hero-sub { font-size: 1.05rem; font-weight: 300; color: var(--muted); max-width: 520px; line-height: 1.8; margin-bottom: 44px; }
-  .terminal-card { width: 100%; max-width: 580px; background: var(--surface); border: 1px solid var(--border); border-radius: 8px; overflow: hidden; margin-bottom: 40px; text-align: left; }
-  .t-bar { background: #0c0c0c; border-bottom: 1px solid var(--border); padding: 10px 16px; display: flex; align-items: center; gap: 7px; }
-  .t-dot { width: 11px; height: 11px; border-radius: 50%; }
-  .t-dot.r { background: #ff5f57; } .t-dot.y { background: #ffbd2e; } .t-dot.g { background: #28c840; }
-  .t-name { font-family: var(--fh); font-size: 0.6rem; color: var(--muted); letter-spacing: 0.1em; margin: 0 auto; }
-  .t-body { padding: 22px 20px; font-family: 'Courier New', monospace; font-size: 0.83rem; line-height: 1.95; }
-  .tl { display: block; } .tp { color: var(--orange); } .tc { color: #8efa8e; } .to { color: var(--muted); padding-left: 14px; } .th { color: var(--orange); }
-  .cursor { display: inline-block; width: 8px; height: 14px; background: var(--orange); vertical-align: middle; animation: blink 1s step-end infinite; }
-  @keyframes blink { 0%,100%{opacity:1} 50%{opacity:0} }
-  .hero-btns { display: flex; gap: 16px; justify-content: center; flex-wrap: wrap; }
-  .btn-primary { background: var(--orange); color: #000; font-family: var(--fh); font-size: 0.76rem; font-weight: 700; letter-spacing: 0.12em; text-transform: uppercase; padding: 15px 36px; border: none; border-radius: 3px; cursor: pointer; text-decoration: none; display: inline-block; transition: box-shadow 0.2s, transform 0.15s; }
-  .btn-primary:hover { box-shadow: 0 0 32px rgba(255,107,0,0.6); transform: translateY(-2px); }
-  .btn-ghost { background: transparent; color: var(--orange); font-family: var(--fh); font-size: 0.76rem; font-weight: 700; letter-spacing: 0.12em; text-transform: uppercase; padding: 14px 36px; border: 1px solid rgba(255,107,0,0.5); border-radius: 3px; cursor: pointer; text-decoration: none; display: inline-block; transition: border-color 0.2s, background 0.2s; }
-  .btn-ghost:hover { border-color: var(--orange); background: rgba(255,107,0,0.07); }
-  .stats { background: var(--surface); border-top: 1px solid var(--border); border-bottom: 1px solid var(--border); display: grid; grid-template-columns: repeat(4,1fr); padding: 0 56px; }
-  .stat { padding: 40px 16px; text-align: center; border-right: 1px solid var(--border); }
-  .stat:last-child { border-right: none; }
-  .stat-n { font-family: var(--fh); font-size: 2.6rem; font-weight: 900; color: var(--orange); line-height: 1; }
-  .stat-l { font-size: 0.72rem; color: var(--muted); text-transform: uppercase; letter-spacing: 0.12em; margin-top: 10px; font-weight: 600; }
-  section { padding: 108px 80px; }
-  .eyebrow { font-family: var(--fh); font-size: 0.65rem; letter-spacing: 0.22em; text-transform: uppercase; color: var(--orange); margin-bottom: 18px; display: flex; align-items: center; gap: 12px; }
-  .eyebrow::after { content: ''; width: 48px; height: 1px; background: var(--orange); opacity: 0.6; }
-  .sec-title { font-family: var(--fh); font-size: clamp(1.7rem, 3vw, 2.6rem); font-weight: 900; color: #fff; line-height: 1.12; margin-bottom: 18px; }
-  .sec-title span { color: var(--orange); }
-  .sec-sub { font-size: 0.98rem; color: var(--muted); max-width: 520px; line-height: 1.8; margin-bottom: 60px; }
-  #services { background: var(--surface); }
-  .grid-6 { display: grid; grid-template-columns: repeat(3,1fr); gap: 20px; }
-  .svc-card { background: var(--bg); border: 1px solid var(--border); border-radius: 6px; padding: 34px 28px; position: relative; overflow: hidden; transition: border-color 0.25s, box-shadow 0.25s, transform 0.2s; }
-  .svc-card::after { content: ''; position: absolute; top: 0; left: 0; right: 0; height: 2px; background: linear-gradient(90deg, transparent, var(--orange), transparent); opacity: 0; transition: opacity 0.3s; }
-  .svc-card:hover { border-color: rgba(255,107,0,0.45); box-shadow: 0 10px 40px rgba(255,107,0,0.08); transform: translateY(-4px); }
-  .svc-card:hover::after { opacity: 1; }
-  .svc-icon { width: 50px; height: 50px; background: var(--orange-soft); border: 1px solid rgba(255,107,0,0.2); border-radius: 8px; display: flex; align-items: center; justify-content: center; font-size: 1.3rem; margin-bottom: 22px; }
-  .svc-title { font-family: var(--fh); font-size: 0.88rem; font-weight: 700; color: #fff; margin-bottom: 12px; }
-  .svc-desc { font-size: 0.85rem; color: var(--muted); line-height: 1.75; }
-  .svc-badge { display: inline-block; margin-top: 18px; font-family: var(--fh); font-size: 0.62rem; letter-spacing: 0.1em; text-transform: uppercase; color: var(--orange); border: 1px solid rgba(255,107,0,0.28); border-radius: 2px; padding: 3px 10px; }
-  #process { background: var(--bg); }
-  .steps { display: grid; grid-template-columns: repeat(3,1fr); position: relative; }
-  .steps::before { content: ''; position: absolute; top: 35px; left: calc(100%/6); right: calc(100%/6); height: 1px; background: linear-gradient(90deg, rgba(255,107,0,0.6), rgba(255,107,0,0.15), rgba(255,107,0,0.6)); }
-  .step { text-align: center; padding: 0 48px; }
-  .step-n { width: 70px; height: 70px; border-radius: 50%; border: 2px solid var(--orange); background: var(--bg); display: flex; align-items: center; justify-content: center; margin: 0 auto 28px; font-family: var(--fh); font-size: 1.4rem; font-weight: 900; color: var(--orange); box-shadow: 0 0 28px rgba(255,107,0,0.18); position: relative; z-index: 1; }
-  .step-t { font-family: var(--fh); font-size: 0.9rem; font-weight: 700; color: #fff; letter-spacing: 0.04em; margin-bottom: 14px; }
-  .step-d { font-size: 0.86rem; color: var(--muted); line-height: 1.75; }
-  #about { background: var(--surface); }
-  .bio { display: grid; grid-template-columns: 280px 1fr; gap: 70px; align-items: center; background: var(--bg); border: 1px solid var(--orange); border-radius: 10px; padding: 56px 60px; position: relative; overflow: hidden; box-shadow: 0 0 50px rgba(255,107,0,0.12); }
-  .bio::before { content: ''; position: absolute; top: 0; left: 12%; right: 12%; height: 1px; background: linear-gradient(90deg, transparent, var(--orange), transparent); }
-  .bio::after  { content: ''; position: absolute; bottom: 0; left: 12%; right: 12%; height: 1px; background: linear-gradient(90deg, transparent, var(--orange), transparent); }
-  .bio-left { text-align: center; }
-  .bio-headshot { width: 200px; height: 200px; border-radius: 50%; object-fit: cover; object-position: center top; border: 3px solid var(--orange); box-shadow: 0 0 0 6px rgba(255,107,0,0.08), 0 0 32px rgba(255,107,0,0.35); display: block; margin: 0 auto 18px; background: #111; }
-  .bio-nm { font-family: var(--fh); font-size: 0.88rem; font-weight: 700; color: var(--orange); letter-spacing: 0.06em; margin-bottom: 5px; }
-  .bio-role { font-size: 0.75rem; color: var(--muted); letter-spacing: 0.06em; }
-  .bio-right h3 { font-family: var(--fh); font-size: 1.5rem; font-weight: 900; color: #fff; line-height: 1.18; margin-bottom: 22px; }
-  .bio-right h3 span { color: var(--orange); }
-  .bio-right p { font-size: 0.93rem; color: var(--muted); line-height: 1.82; margin-bottom: 14px; }
-  .bio-tags { display: flex; flex-wrap: wrap; gap: 8px; margin-top: 22px; }
-  .bio-tag { font-family: var(--fh); font-size: 0.62rem; letter-spacing: 0.08em; text-transform: uppercase; color: var(--orange); border: 1px solid rgba(255,107,0,0.25); border-radius: 2px; padding: 4px 11px; }
-</style><style>
-  #pricing { background: var(--bg); }
-  .pricing-grid { display: grid; grid-template-columns: repeat(3,1fr); gap: 24px; }
-  .price-card { background: var(--surface); border: 1px solid var(--border); border-radius: 8px; padding: 38px 30px; position: relative; overflow: hidden; transition: border-color 0.25s, box-shadow 0.25s, transform 0.2s; display: flex; flex-direction: column; }
-  .price-card:hover { border-color: rgba(255,107,0,0.45); box-shadow: 0 10px 40px rgba(255,107,0,0.08); transform: translateY(-4px); }
-  .price-card.featured { border-color: var(--orange); box-shadow: 0 0 40px rgba(255,107,0,0.15); }
-  .price-card.featured::before { content: 'MOST POPULAR'; position: absolute; top: 16px; right: 16px; font-family: var(--fh); font-size: 0.55rem; letter-spacing: 0.1em; color: #000; background: var(--orange); padding: 3px 10px; border-radius: 2px; }
-  .price-name { font-family: var(--fh); font-size: 0.8rem; font-weight: 700; color: var(--orange); letter-spacing: 0.1em; text-transform: uppercase; margin-bottom: 16px; }
-  .price-amount { font-family: var(--fh); font-size: 2.8rem; font-weight: 900; color: #fff; line-height: 1; margin-bottom: 6px; }
-  .price-amount span { font-size: 1rem; color: var(--muted); font-weight: 400; }
-  .price-desc { font-size: 0.82rem; color: var(--muted); margin-bottom: 28px; line-height: 1.6; }
-  .price-features { list-style: none; display: flex; flex-direction: column; gap: 10px; margin-bottom: 32px; flex: 1; }
-  .price-features li { font-size: 0.84rem; color: var(--text); display: flex; align-items: flex-start; gap: 10px; }
-  .price-features li::before { content: '✓'; color: var(--orange); font-weight: 700; flex-shrink: 0; }
-  .price-btn { display: block; text-align: center; background: transparent; color: var(--orange); font-family: var(--fh); font-size: 0.72rem; font-weight: 700; letter-spacing: 0.12em; text-transform: uppercase; padding: 13px; border: 1px solid rgba(255,107,0,0.5); border-radius: 3px; text-decoration: none; transition: background 0.2s, border-color 0.2s; }
-  .price-btn:hover { background: rgba(255,107,0,0.1); border-color: var(--orange); }
-  .price-card.featured .price-btn { background: var(--orange); color: #000; border-color: var(--orange); }
-  .price-card.featured .price-btn:hover { box-shadow: 0 0 24px rgba(255,107,0,0.5); }
-  .price-note { text-align: center; margin-top: 40px; font-size: 0.82rem; color: var(--muted); }
-  .price-note span { color: var(--orange); }
-  #contact { background: var(--surface); }
-  .contact-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 60px; align-items: start; }
-  .ch-list { display: flex; flex-direction: column; gap: 14px; }
-  .ch-link { display: flex; align-items: center; gap: 16px; padding: 18px 20px; background: var(--bg); border: 1px solid var(--border); border-radius: 5px; text-decoration: none; color: var(--text); transition: border-color 0.2s, box-shadow 0.2s; }
-  .ch-link:hover { border-color: rgba(255,107,0,0.4); box-shadow: 0 0 22px rgba(255,107,0,0.08); }
-  .ch-ico { width: 42px; height: 42px; background: var(--orange-soft); border: 1px solid rgba(255,107,0,0.18); border-radius: 6px; display: flex; align-items: center; justify-content: center; font-size: 1.15rem; flex-shrink: 0; }
-  .ch-lbl { font-size: 0.68rem; font-family: var(--fh); letter-spacing: 0.1em; color: var(--muted); text-transform: uppercase; }
-  .ch-val { font-size: 0.88rem; color: #fff; font-weight: 500; margin-top: 3px; }
-  .ch-sub { font-size: 0.72rem; color: var(--muted); margin-top: 2px; }
-  .qr-row { margin-top: 14px; padding: 18px 20px; background: var(--bg); border: 1px solid var(--border); border-radius: 5px; display: flex; align-items: center; gap: 18px; }
-  .qr-box { width: 86px; height: 86px; background: #fff; border-radius: 4px; padding: 6px; flex-shrink: 0; }
-  .qr-box svg { display: block; width: 100%; height: 100%; }
-  .qr-info { font-size: 0.8rem; color: var(--muted); line-height: 1.65; }
-  .qr-info strong { color: #fff; }
-  .qr-info em { color: var(--orange); font-style: normal; font-size: 0.72rem; }
-  .cform { background: var(--bg); border: 1px solid var(--border); border-radius: 6px; padding: 38px; }
-  .cform-title { font-family: var(--fh); font-size: 0.85rem; font-weight: 700; color: var(--orange); letter-spacing: 0.1em; text-transform: uppercase; margin-bottom: 28px; }
-  .fg { margin-bottom: 18px; }
-  .fl { display: block; font-family: var(--fh); font-size: 0.65rem; letter-spacing: 0.12em; text-transform: uppercase; color: var(--muted); margin-bottom: 8px; }
-  .fi, .ft { width: 100%; background: var(--surface); border: 1px solid rgba(255,107,0,0.18); border-radius: 3px; padding: 12px 15px; color: var(--text); font-family: var(--fb); font-size: 0.9rem; outline: none; transition: border-color 0.2s; }
-  .fi:focus, .ft:focus { border-color: var(--orange); }
-  .ft { resize: vertical; min-height: 110px; }
-  .fsub { width: 100%; background: var(--orange); color: #000; font-family: var(--fh); font-size: 0.76rem; font-weight: 700; letter-spacing: 0.14em; text-transform: uppercase; padding: 15px; border: none; border-radius: 3px; cursor: pointer; transition: box-shadow 0.2s; }
-  .fsub:hover { box-shadow: 0 0 30px rgba(255,107,0,0.5); }
-  .fmsg { display:none; margin-top:14px; padding:12px; border-radius:3px; font-size:0.84rem; text-align:center; }
-  .fmsg.ok  { background:rgba(0,200,80,0.08); border:1px solid rgba(0,200,80,0.25); color:#4eff9b; }
-  .fmsg.err { background:rgba(255,50,50,0.08); border:1px solid rgba(255,50,50,0.25); color:#ff8888; }
-  footer { background: var(--surface); border-top: 1px solid var(--border); padding: 36px 56px; display: flex; align-items: center; justify-content: space-between; }
-  .footer-brand { display: flex; align-items: center; gap: 12px; text-decoration: none; }
-  .footer-logo { height: 26px; width: 26px; object-fit: cover; mix-blend-mode: lighten; filter: drop-shadow(0 0 6px var(--orange)); }
-  .footer-wm { font-family: var(--fh); font-weight: 700; font-size: 0.9rem; letter-spacing: 0.1em; color: var(--orange); }
-  .footer-copy { font-size: 0.75rem; color: var(--muted); }
-  .footer-links { display:flex; gap:24px; }
-  .footer-links a { font-size:0.75rem; color:var(--muted); text-decoration:none; transition:color 0.2s; }
-  .footer-links a:hover { color: var(--orange); }
-  #chat-wrap { position: fixed; bottom: 24px; right: 24px; z-index: 9999; display: flex; flex-direction: column; align-items: center; gap: 8px; }
-  #chat-panel { display: none; flex-direction: column; width: 360px; height: 490px; background: var(--surface); border: 1px solid var(--border); border-radius: 10px; overflow: hidden; box-shadow: 0 10px 60px rgba(0,0,0,0.75); margin-bottom: 4px; }
-  #chat-panel.open { display: flex; }
-  .chat-hdr { background: #0c0c0c; border-bottom: 1px solid var(--border); padding: 12px 16px; display: flex; align-items: center; gap: 10px; }
-  .chat-hdr-logo { height: 32px; width: 32px; object-fit: cover; mix-blend-mode: lighten; filter: drop-shadow(0 0 7px var(--orange)); }
-  .chat-hdr-name { font-family: var(--fh); font-size: 0.75rem; font-weight: 700; color: var(--orange); letter-spacing: 0.08em; }
-  .chat-online { margin-left: auto; font-size: 0.63rem; color: #4eff9b; display: flex; align-items: center; gap: 5px; font-family: var(--fh); }
-  .chat-online::before { content: ''; width: 6px; height: 6px; border-radius: 50%; background: #4eff9b; animation: pulse 2s ease-in-out infinite; }
-  @keyframes pulse { 0%,100%{opacity:1} 50%{opacity:0.3} }
-  #chat-msgs { flex: 1; overflow-y: auto; padding: 18px; display: flex; flex-direction: column; gap: 12px; }
-  .cmsg { max-width: 84%; padding: 10px 14px; font-size: 0.84rem; line-height: 1.55; border-radius: 8px; }
-  .cmsg.bot { background: rgba(255,107,0,0.07); border: 1px solid rgba(255,107,0,0.14); color: var(--text); align-self: flex-start; border-radius: 3px 10px 10px 10px; }
-  .cmsg.user { background: var(--orange); color: #000; font-weight: 600; align-self: flex-end; border-radius: 10px 3px 10px 10px; }
-  .cmsg.typing { background: rgba(255,107,0,0.07); border: 1px solid rgba(255,107,0,0.14); color: var(--muted); align-self: flex-start; font-style: italic; font-size: 0.78rem; border-radius: 3px 10px 10px 10px; }
-  .chat-foot { border-top: 1px solid var(--border); padding: 10px; display: flex; gap: 8px; }
-  #chat-in { flex: 1; background: var(--bg); border: 1px solid rgba(255,107,0,0.18); border-radius: 3px; padding: 10px 13px; color: var(--text); font-family: var(--fb); font-size: 0.84rem; outline: none; }
-  #chat-in:focus { border-color: var(--orange); }
-  #chat-btn { background: var(--orange); border: none; border-radius: 3px; width: 42px; cursor: pointer; color: #000; font-size: 1rem; }
-  #chat-fab { width: 58px; height: 58px; border-radius: 50%; background: #000; border: 2px solid var(--orange); cursor: pointer; display: flex; align-items: center; justify-content: center; box-shadow: 0 0 28px rgba(255,107,0,0.5); transition: transform 0.2s; overflow: hidden; padding: 0; }
-  #chat-fab:hover { transform: scale(1.08); }
-  #chat-fab img { width: 100%; height: 100%; object-fit: cover; mix-blend-mode: lighten; filter: drop-shadow(0 0 6px var(--orange)); }
-  .chat-fab-label { font-family: var(--fh); font-size: 0.58rem; font-weight: 700; letter-spacing: 0.1em; text-transform: uppercase; color: var(--orange); background: rgba(8,8,8,0.9); border: 1px solid rgba(255,107,0,0.3); border-radius: 3px; padding: 3px 8px; white-space: nowrap; }
-  @media (max-width: 960px) {
-    nav { padding: 0 20px; }
-    .nav-links { gap: 16px; }
-    .hero { padding: 60px 24px; }
-    .hero-bot { width: 260px; }
-    .stats { grid-template-columns: repeat(2,1fr); padding: 0 24px; }
-    .stat:nth-child(2) { border-right: none; }
-    section { padding: 72px 24px; }
-    .grid-6 { grid-template-columns: 1fr 1fr; }
-    .pricing-grid { grid-template-columns: 1fr; }
-    .steps { grid-template-columns: 1fr; gap: 48px; }
-    .steps::before { display: none; }
-    .bio { grid-template-columns: 1fr; gap: 40px; padding: 36px 24px; }
-    .bio-headshot { width: 160px; height: 160px; }
-    .contact-grid { grid-template-columns: 1fr; }
-    footer { flex-direction: column; gap: 20px; text-align: center; }
-    #chat-panel { width: 310px; height: 440px; }
-  }
+:root {
+  --orange: #FF6B00;
+  --orange-dim: rgba(255,107,0,0.15);
+  --orange-glow: rgba(255,107,0,0.3);
+  --bg: #080808;
+  --bg2: #0f0f0f;
+  --bg3: #141414;
+  --bg4: #1a1a1a;
+  --border: rgba(255,107,0,0.12);
+  --border2: rgba(255,255,255,0.06);
+  --text: #e8e8e8;
+  --text-dim: rgba(255,255,255,0.5);
+  --text-faint: rgba(255,255,255,0.25);
+  --green: #00d97e;
+  --radius: 16px;
+}
+
+*, *::before, *::after { margin:0; padding:0; box-sizing:border-box; }
+
+html { scroll-behavior: smooth; }
+
+body {
+  background: var(--bg);
+  color: var(--text);
+  font-family: 'Exo 2', sans-serif;
+  font-weight: 400;
+  overflow-x: hidden;
+  cursor: default;
+}
+
+/* ─── SCROLLBAR ─── */
+::-webkit-scrollbar { width: 4px; }
+::-webkit-scrollbar-track { background: var(--bg); }
+::-webkit-scrollbar-thumb { background: var(--orange); border-radius: 4px; }
+
+/* ─── CANVAS ─── */
+#particleCanvas {
+  position: fixed;
+  top: 0; left: 0;
+  width: 100%; height: 100%;
+  pointer-events: none;
+  z-index: 0;
+  opacity: 0.6;
+}
+
+/* ─── NAV ─── */
+nav {
+  position: fixed;
+  top: 0; left: 0; right: 0;
+  z-index: 1000;
+  padding: 0 40px;
+  height: 70px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  background: rgba(8,8,8,0.85);
+  backdrop-filter: blur(20px);
+  border-bottom: 1px solid var(--border);
+  transition: all 0.3s;
+}
+
+nav.scrolled {
+  background: rgba(8,8,8,0.97);
+  box-shadow: 0 4px 30px rgba(0,0,0,0.5);
+}
+
+.nav-logo {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  text-decoration: none;
+}
+
+.nav-logo img {
+  width: 36px;
+  height: 36px;
+  border-radius: 8px;
+  mix-blend-mode: lighten;
+}
+
+.nav-logo-text {
+  font-family: 'Orbitron', sans-serif;
+  font-weight: 700;
+  font-size: 18px;
+  color: var(--orange);
+  letter-spacing: 0.1em;
+}
+
+.nav-links {
+  display: flex;
+  align-items: center;
+  gap: 32px;
+  list-style: none;
+}
+
+.nav-links a {
+  color: var(--text-dim);
+  text-decoration: none;
+  font-size: 13px;
+  font-weight: 500;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  transition: color 0.2s;
+}
+
+.nav-links a:hover { color: var(--orange); }
+
+.nav-cta {
+  background: var(--orange);
+  color: #fff !important;
+  padding: 8px 20px;
+  border-radius: 8px;
+  font-weight: 700 !important;
+  letter-spacing: 0.05em !important;
+  transition: all 0.2s !important;
+  box-shadow: 0 0 20px var(--orange-glow);
+}
+
+.nav-cta:hover {
+  background: #ff8533 !important;
+  transform: translateY(-1px);
+  box-shadow: 0 4px 24px var(--orange-glow) !important;
+}
+
+/* ─── HERO ─── */
+#hero {
+  position: relative;
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+  padding: 120px 40px 80px;
+  z-index: 1;
+  overflow: hidden;
+}
+
+.hero-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  background: var(--orange-dim);
+  border: 1px solid var(--border);
+  padding: 6px 16px;
+  border-radius: 40px;
+  font-size: 12px;
+  font-weight: 600;
+  color: var(--orange);
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  margin-bottom: 28px;
+  animation: fadeUp 0.8s ease both;
+}
+
+.hero-badge-dot {
+  width: 6px; height: 6px;
+  background: var(--green);
+  border-radius: 50%;
+  animation: pulse 2s infinite;
+}
+
+@keyframes pulse {
+  0%,100% { opacity:1; transform:scale(1); }
+  50% { opacity:0.5; transform:scale(0.8); }
+}
+
+.hero-headline {
+  font-family: 'Orbitron', sans-serif;
+  font-size: clamp(42px, 6vw, 86px);
+  font-weight: 900;
+  line-height: 1.05;
+  letter-spacing: -0.02em;
+  margin-bottom: 24px;
+  animation: fadeUp 0.8s 0.1s ease both;
+}
+
+.hero-headline .line1 { display: block; color: #fff; }
+.hero-headline .line2 {
+  display: block;
+  color: var(--orange);
+  text-shadow: 0 0 60px var(--orange-glow);
+}
+
+.hero-sub {
+  font-size: clamp(16px, 2vw, 20px);
+  color: var(--text-dim);
+  max-width: 580px;
+  line-height: 1.7;
+  margin-bottom: 40px;
+  animation: fadeUp 0.8s 0.2s ease both;
+}
+
+.hero-ctas {
+  display: flex;
+  gap: 16px;
+  flex-wrap: wrap;
+  justify-content: center;
+  margin-bottom: 64px;
+  animation: fadeUp 0.8s 0.3s ease both;
+}
+
+.btn-primary {
+  background: var(--orange);
+  color: #fff;
+  padding: 16px 36px;
+  border-radius: 10px;
+  font-family: 'Exo 2', sans-serif;
+  font-weight: 700;
+  font-size: 15px;
+  text-decoration: none;
+  letter-spacing: 0.05em;
+  box-shadow: 0 0 30px var(--orange-glow);
+  transition: all 0.25s;
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.btn-primary:hover {
+  background: #ff8533;
+  transform: translateY(-2px);
+  box-shadow: 0 8px 40px rgba(255,107,0,0.5);
+}
+
+.btn-secondary {
+  background: transparent;
+  color: var(--text);
+  padding: 16px 36px;
+  border-radius: 10px;
+  font-family: 'Exo 2', sans-serif;
+  font-weight: 600;
+  font-size: 15px;
+  text-decoration: none;
+  letter-spacing: 0.05em;
+  border: 1px solid var(--border);
+  transition: all 0.25s;
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.btn-secondary:hover {
+  border-color: var(--orange);
+  color: var(--orange);
+  transform: translateY(-2px);
+  background: var(--orange-dim);
+}
+
+/* Stats bar */
+.stats-bar {
+  display: flex;
+  gap: 48px;
+  flex-wrap: wrap;
+  justify-content: center;
+  animation: fadeUp 0.8s 0.4s ease both;
+}
+
+.stat-item {
+  text-align: center;
+}
+
+.stat-number {
+  font-family: 'Orbitron', sans-serif;
+  font-size: 32px;
+  font-weight: 900;
+  color: var(--orange);
+  display: block;
+  line-height: 1;
+}
+
+.stat-label {
+  font-size: 11px;
+  color: var(--text-faint);
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  margin-top: 4px;
+  display: block;
+}
+
+/* Social proof bar */
+.social-proof {
+  margin-top: 48px;
+  padding: 14px 28px;
+  background: rgba(255,255,255,0.03);
+  border: 1px solid var(--border2);
+  border-radius: 40px;
+  font-size: 13px;
+  color: var(--text-dim);
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  animation: fadeUp 0.8s 0.5s ease both;
+}
+
+.stars { color: #FFD700; letter-spacing: 2px; }
+
+.trust-avatars {
+  display: flex;
+}
+
+.trust-avatar {
+  width: 28px; height: 28px;
+  border-radius: 50%;
+  background: linear-gradient(135deg, var(--orange), #ff8533);
+  border: 2px solid var(--bg);
+  margin-left: -8px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 11px;
+  font-weight: 700;
+  color: white;
+}
+
+.trust-avatar:first-child { margin-left: 0; }
+
+/* Scroll indicator */
+.scroll-hint {
+  position: absolute;
+  bottom: 32px;
+  left: 50%;
+  transform: translateX(-50%);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 8px;
+  color: var(--text-faint);
+  font-size: 11px;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  animation: fadeUp 1s 0.8s ease both;
+}
+
+.scroll-line {
+  width: 1px;
+  height: 40px;
+  background: linear-gradient(to bottom, var(--orange), transparent);
+  animation: scrollPulse 2s infinite;
+}
+
+@keyframes scrollPulse {
+  0%,100% { opacity:0.3; }
+  50% { opacity:1; }
+}
+
+/* ─── SECTIONS ─── */
+section {
+  position: relative;
+  z-index: 1;
+}
+
+.section-inner {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 100px 40px;
+}
+
+.section-tag {
+  display: inline-block;
+  font-size: 11px;
+  font-weight: 700;
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  color: var(--orange);
+  margin-bottom: 12px;
+}
+
+.section-title {
+  font-family: 'Orbitron', sans-serif;
+  font-size: clamp(28px, 4vw, 48px);
+  font-weight: 900;
+  line-height: 1.1;
+  margin-bottom: 16px;
+  color: #fff;
+}
+
+.section-sub {
+  font-size: 17px;
+  color: var(--text-dim);
+  max-width: 560px;
+  line-height: 1.7;
+  margin-bottom: 60px;
+}
+
+/* ─── DEMO SECTION ─── */
+#demo {
+  background: var(--bg2);
+  border-top: 1px solid var(--border);
+  border-bottom: 1px solid var(--border);
+}
+
+.demo-inner {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 100px 40px;
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 80px;
+  align-items: center;
+}
+
+.demo-text .section-title { margin-bottom: 20px; }
+
+.demo-feature {
+  display: flex;
+  align-items: flex-start;
+  gap: 14px;
+  margin-bottom: 20px;
+  padding: 16px;
+  border-radius: 12px;
+  border: 1px solid transparent;
+  transition: all 0.3s;
+}
+
+.demo-feature:hover {
+  border-color: var(--border);
+  background: var(--orange-dim);
+}
+
+.demo-feature-icon {
+  width: 40px; height: 40px;
+  background: var(--orange-dim);
+  border: 1px solid var(--border);
+  border-radius: 10px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 18px;
+  flex-shrink: 0;
+}
+
+.demo-feature-text h4 {
+  font-size: 15px;
+  font-weight: 700;
+  color: #fff;
+  margin-bottom: 4px;
+}
+
+.demo-feature-text p {
+  font-size: 13px;
+  color: var(--text-dim);
+  line-height: 1.5;
+}
+
+.demo-frame-wrap {
+  position: relative;
+  display: flex;
+  justify-content: center;
+}
+
+.demo-frame-wrap::before {
+  content: '';
+  position: absolute;
+  inset: -20px;
+  background: radial-gradient(ellipse at center, var(--orange-glow) 0%, transparent 70%);
+  pointer-events: none;
+  border-radius: 40px;
+}
+
+.demo-phone {
+  width: 320px;
+  height: 620px;
+  border-radius: 36px;
+  overflow: hidden;
+  border: 2px solid rgba(255,107,0,0.2);
+  box-shadow:
+    0 0 0 8px rgba(255,107,0,0.04),
+    0 40px 80px rgba(0,0,0,0.6);
+  position: relative;
+  z-index: 1;
+}
+
+.demo-phone iframe {
+  width: 100%;
+  height: 100%;
+  border: none;
+  transform: scale(0.77);
+  transform-origin: top left;
+  width: 130%;
+  height: 130%;
+}
+
+/* Video placeholder — swap with <video> when ready */
+.video-placeholder {
+  width: 100%;
+  height: 100%;
+  background: #0a0a0a;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 12px;
+  color: var(--text-dim);
+  font-size: 13px;
+}
+
+.video-placeholder .play-icon {
+  width: 60px; height: 60px;
+  background: var(--orange);
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 22px;
+  color: white;
+  box-shadow: 0 0 30px var(--orange-glow);
+}
+
+/* ─── SERVICES ─── */
+#services { background: var(--bg); }
+
+.services-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+  gap: 20px;
+}
+
+.service-card {
+  background: var(--bg3);
+  border: 1px solid var(--border2);
+  border-radius: var(--radius);
+  padding: 28px;
+  position: relative;
+  overflow: hidden;
+  transition: all 0.35s cubic-bezier(0.4,0,0.2,1);
+  opacity: 0;
+  transform: translateY(30px);
+}
+
+.service-card.revealed {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+.service-card::before {
+  content: '';
+  position: absolute;
+  top: 0; left: 0; right: 0;
+  height: 2px;
+  background: linear-gradient(90deg, transparent, var(--orange), transparent);
+  opacity: 0;
+  transition: opacity 0.3s;
+}
+
+.service-card:hover {
+  border-color: var(--border);
+  background: var(--bg4);
+  transform: translateY(-4px);
+  box-shadow: 0 20px 40px rgba(0,0,0,0.4), 0 0 30px var(--orange-dim);
+}
+
+.service-card:hover::before { opacity: 1; }
+
+.service-card-badge {
+  position: absolute;
+  top: 16px; right: 16px;
+  font-size: 10px;
+  font-weight: 700;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  padding: 3px 10px;
+  border-radius: 20px;
+}
+
+.badge-hot {
+  background: rgba(255,80,80,0.15);
+  color: #ff5050;
+  border: 1px solid rgba(255,80,80,0.3);
+}
+
+.badge-new {
+  background: rgba(0,217,126,0.1);
+  color: var(--green);
+  border: 1px solid rgba(0,217,126,0.3);
+}
+
+.badge-popular {
+  background: var(--orange-dim);
+  color: var(--orange);
+  border: 1px solid var(--border);
+}
+
+.service-icon {
+  font-size: 36px;
+  margin-bottom: 16px;
+  display: block;
+  filter: drop-shadow(0 0 12px var(--orange-glow));
+}
+
+.service-title {
+  font-family: 'Orbitron', sans-serif;
+  font-size: 14px;
+  font-weight: 700;
+  color: #fff;
+  margin-bottom: 10px;
+  letter-spacing: 0.05em;
+  padding-right: 60px;
+}
+
+.service-desc {
+  font-size: 13px;
+  color: var(--text-dim);
+  line-height: 1.6;
+}
+
+.service-outcome {
+  margin-top: 16px;
+  padding-top: 16px;
+  border-top: 1px solid var(--border2);
+  font-size: 12px;
+  color: var(--green);
+  font-weight: 600;
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+
+/* ─── ROI CALCULATOR ─── */
+#roi {
+  background: var(--bg2);
+  border-top: 1px solid var(--border);
+  border-bottom: 1px solid var(--border);
+}
+
+.roi-inner {
+  max-width: 900px;
+  margin: 0 auto;
+  padding: 100px 40px;
+  text-align: center;
+}
+
+.roi-calculator {
+  background: var(--bg3);
+  border: 1px solid var(--border);
+  border-radius: 24px;
+  padding: 48px;
+  margin-top: 48px;
+  position: relative;
+  overflow: hidden;
+}
+
+.roi-calculator::before {
+  content: '';
+  position: absolute;
+  top: -50%;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 400px;
+  height: 400px;
+  background: radial-gradient(circle, var(--orange-glow) 0%, transparent 70%);
+  pointer-events: none;
+}
+
+.roi-sliders {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 36px;
+  margin-bottom: 48px;
+  position: relative;
+  z-index: 1;
+}
+
+.slider-group label {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  font-size: 13px;
+  color: var(--text-dim);
+  margin-bottom: 12px;
+  font-weight: 500;
+}
+
+.slider-group label span {
+  font-family: 'Orbitron', sans-serif;
+  font-size: 18px;
+  font-weight: 700;
+  color: var(--orange);
+}
+
+input[type="range"] {
+  width: 100%;
+  appearance: none;
+  height: 4px;
+  background: var(--bg4);
+  border-radius: 4px;
+  outline: none;
+  cursor: pointer;
+}
+
+input[type="range"]::-webkit-slider-thumb {
+  appearance: none;
+  width: 20px;
+  height: 20px;
+  border-radius: 50%;
+  background: var(--orange);
+  box-shadow: 0 0 12px var(--orange-glow);
+  cursor: pointer;
+  transition: transform 0.1s;
+}
+
+input[type="range"]::-webkit-slider-thumb:hover {
+  transform: scale(1.2);
+}
+
+.roi-result {
+  position: relative;
+  z-index: 1;
+  padding: 32px;
+  background: var(--bg4);
+  border-radius: 16px;
+  border: 1px solid var(--border);
+  margin-bottom: 32px;
+}
+
+.roi-numbers {
+  display: flex;
+  justify-content: center;
+  gap: 60px;
+  flex-wrap: wrap;
+}
+
+.roi-number-item {
+  text-align: center;
+}
+
+.roi-big {
+  font-family: 'Orbitron', sans-serif;
+  font-size: 44px;
+  font-weight: 900;
+  color: var(--orange);
+  display: block;
+  line-height: 1;
+  text-shadow: 0 0 30px var(--orange-glow);
+}
+
+.roi-big-label {
+  font-size: 12px;
+  color: var(--text-faint);
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  margin-top: 6px;
+  display: block;
+}
+
+/* ─── PRICING ─── */
+#pricing { background: var(--bg); }
+
+.pricing-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+  gap: 24px;
+  align-items: start;
+}
+
+.pricing-card {
+  background: var(--bg3);
+  border: 1px solid var(--border2);
+  border-radius: 20px;
+  padding: 36px;
+  position: relative;
+  overflow: hidden;
+  transition: all 0.3s;
+  opacity: 0;
+  transform: translateY(30px);
+}
+
+.pricing-card.revealed {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+.pricing-card.featured {
+  border-color: var(--orange);
+  background: linear-gradient(180deg, rgba(255,107,0,0.06) 0%, var(--bg3) 100%);
+  transform: scale(1.02);
+}
+
+.pricing-card.featured.revealed {
+  transform: scale(1.02) translateY(0);
+}
+
+.pricing-card:hover {
+  transform: translateY(-4px);
+  box-shadow: 0 20px 40px rgba(0,0,0,0.3);
+}
+
+.pricing-card.featured:hover {
+  transform: scale(1.02) translateY(-4px);
+}
+
+.pricing-badge {
+  position: absolute;
+  top: -1px; right: 24px;
+  background: var(--orange);
+  color: white;
+  font-size: 11px;
+  font-weight: 700;
+  letter-spacing: 0.1em;
+  padding: 4px 14px;
+  border-radius: 0 0 10px 10px;
+  text-transform: uppercase;
+}
+
+.pricing-plan {
+  font-family: 'Orbitron', sans-serif;
+  font-size: 13px;
+  font-weight: 700;
+  color: var(--orange);
+  letter-spacing: 0.15em;
+  text-transform: uppercase;
+  margin-bottom: 12px;
+}
+
+.pricing-price {
+  display: flex;
+  align-items: baseline;
+  gap: 4px;
+  margin-bottom: 8px;
+}
+
+.price-dollar {
+  font-family: 'Orbitron', sans-serif;
+  font-size: 20px;
+  font-weight: 700;
+  color: var(--text-dim);
+}
+
+.price-amount {
+  font-family: 'Orbitron', sans-serif;
+  font-size: 52px;
+  font-weight: 900;
+  color: #fff;
+  line-height: 1;
+}
+
+.price-period {
+  font-size: 14px;
+  color: var(--text-faint);
+}
+
+.pricing-desc {
+  font-size: 13px;
+  color: var(--text-dim);
+  line-height: 1.6;
+  margin-bottom: 28px;
+  padding-bottom: 28px;
+  border-bottom: 1px solid var(--border2);
+}
+
+.pricing-features {
+  list-style: none;
+  margin-bottom: 32px;
+}
+
+.pricing-features li {
+  font-size: 13px;
+  color: var(--text-dim);
+  padding: 7px 0;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  border-bottom: 1px solid rgba(255,255,255,0.03);
+}
+
+.pricing-features li::before {
+  content: '✓';
+  color: var(--green);
+  font-weight: 700;
+  flex-shrink: 0;
+}
+
+.pricing-btn {
+  display: block;
+  text-align: center;
+  padding: 14px;
+  border-radius: 10px;
+  font-weight: 700;
+  font-size: 14px;
+  text-decoration: none;
+  letter-spacing: 0.05em;
+  transition: all 0.25s;
+  font-family: 'Exo 2', sans-serif;
+}
+
+.pricing-btn-outline {
+  border: 1px solid var(--border);
+  color: var(--text-dim);
+}
+
+.pricing-btn-outline:hover {
+  border-color: var(--orange);
+  color: var(--orange);
+  background: var(--orange-dim);
+}
+
+.pricing-btn-solid {
+  background: var(--orange);
+  color: white;
+  box-shadow: 0 4px 20px var(--orange-glow);
+}
+
+.pricing-btn-solid:hover {
+  background: #ff8533;
+  transform: translateY(-2px);
+  box-shadow: 0 8px 30px rgba(255,107,0,0.5);
+}
+
+.pricing-onetime {
+  margin-top: 40px;
+  text-align: center;
+  padding: 20px;
+  background: var(--bg3);
+  border: 1px dashed var(--border);
+  border-radius: 12px;
+  font-size: 14px;
+  color: var(--text-dim);
+}
+
+.pricing-onetime a {
+  color: var(--orange);
+  text-decoration: none;
+  font-weight: 700;
+}
+
+/* ─── PROCESS ─── */
+#process { background: var(--bg2); border-top: 1px solid var(--border); }
+
+.process-steps {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 40px;
+  position: relative;
+}
+
+.process-steps::before {
+  content: '';
+  position: absolute;
+  top: 40px;
+  left: 16%;
+  right: 16%;
+  height: 1px;
+  background: linear-gradient(90deg, transparent, var(--orange), transparent);
+  opacity: 0.3;
+}
+
+.process-step {
+  text-align: center;
+  padding: 40px 24px;
+  background: var(--bg3);
+  border: 1px solid var(--border2);
+  border-radius: var(--radius);
+  transition: all 0.3s;
+  opacity: 0;
+  transform: translateY(30px);
+}
+
+.process-step.revealed {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+.process-step:hover {
+  border-color: var(--border);
+  transform: translateY(-4px);
+  box-shadow: 0 20px 40px rgba(0,0,0,0.3);
+}
+
+.process-number {
+  font-family: 'Orbitron', sans-serif;
+  font-size: 48px;
+  font-weight: 900;
+  color: transparent;
+  -webkit-text-stroke: 1px rgba(255,107,0,0.3);
+  display: block;
+  margin-bottom: 16px;
+  line-height: 1;
+}
+
+.process-title {
+  font-family: 'Orbitron', sans-serif;
+  font-size: 14px;
+  font-weight: 700;
+  color: #fff;
+  margin-bottom: 12px;
+  letter-spacing: 0.08em;
+}
+
+.process-desc {
+  font-size: 13px;
+  color: var(--text-dim);
+  line-height: 1.7;
+}
+
+/* ─── FOUNDER ─── */
+#about { background: var(--bg); }
+
+.founder-grid {
+  display: grid;
+  grid-template-columns: 380px 1fr;
+  gap: 80px;
+  align-items: center;
+}
+
+.founder-photo-wrap {
+  position: relative;
+}
+
+.founder-photo-wrap::before {
+  content: '';
+  position: absolute;
+  inset: -2px;
+  background: linear-gradient(135deg, var(--orange), transparent, transparent);
+  border-radius: 24px;
+  z-index: 0;
+}
+
+.founder-photo-inner {
+  position: relative;
+  z-index: 1;
+  background: var(--bg3);
+  border-radius: 22px;
+  overflow: hidden;
+  padding: 4px;
+}
+
+.founder-photo-inner img {
+  width: 100%;
+  border-radius: 18px;
+  display: block;
+  filter: grayscale(20%);
+  transition: filter 0.3s;
+}
+
+.founder-photo-inner:hover img { filter: grayscale(0%); }
+
+.founder-tags {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  margin-top: 16px;
+}
+
+.founder-tag {
+  background: var(--bg3);
+  border: 1px solid var(--border2);
+  color: var(--text-dim);
+  font-size: 11px;
+  padding: 5px 12px;
+  border-radius: 20px;
+  font-weight: 500;
+  transition: all 0.2s;
+}
+
+.founder-tag:hover {
+  border-color: var(--orange);
+  color: var(--orange);
+  background: var(--orange-dim);
+}
+
+.founder-name {
+  font-family: 'Orbitron', sans-serif;
+  font-size: 32px;
+  font-weight: 900;
+  color: #fff;
+  margin-bottom: 4px;
+}
+
+.founder-role {
+  font-size: 14px;
+  color: var(--orange);
+  font-weight: 600;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  margin-bottom: 24px;
+}
+
+.founder-bio {
+  font-size: 15px;
+  color: var(--text-dim);
+  line-height: 1.8;
+  margin-bottom: 32px;
+}
+
+.founder-metrics {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 16px;
+  margin-bottom: 32px;
+}
+
+.metric-box {
+  background: var(--bg3);
+  border: 1px solid var(--border2);
+  border-radius: 12px;
+  padding: 16px;
+  text-align: center;
+  transition: all 0.2s;
+}
+
+.metric-box:hover {
+  border-color: var(--border);
+  background: var(--bg4);
+}
+
+.metric-val {
+  font-family: 'Orbitron', sans-serif;
+  font-size: 22px;
+  font-weight: 900;
+  color: var(--orange);
+  display: block;
+}
+
+.metric-lbl {
+  font-size: 11px;
+  color: var(--text-faint);
+  margin-top: 4px;
+  display: block;
+}
+
+/* ─── EMAIL CAPTURE ─── */
+#capture {
+  background: var(--bg2);
+  border-top: 1px solid var(--border);
+  border-bottom: 1px solid var(--border);
+}
+
+.capture-inner {
+  max-width: 700px;
+  margin: 0 auto;
+  padding: 100px 40px;
+  text-align: center;
+}
+
+.capture-form {
+  display: flex;
+  gap: 12px;
+  margin-top: 36px;
+  flex-wrap: wrap;
+}
+
+.capture-input {
+  flex: 1;
+  min-width: 200px;
+  background: var(--bg3);
+  border: 1px solid var(--border);
+  border-radius: 10px;
+  padding: 16px 20px;
+  color: #fff;
+  font-size: 15px;
+  font-family: 'Exo 2', sans-serif;
+  outline: none;
+  transition: border-color 0.2s;
+}
+
+.capture-input:focus {
+  border-color: var(--orange);
+  box-shadow: 0 0 0 3px var(--orange-dim);
+}
+
+.capture-input::placeholder { color: var(--text-faint); }
+
+.capture-btn {
+  background: var(--orange);
+  color: white;
+  border: none;
+  padding: 16px 32px;
+  border-radius: 10px;
+  font-family: 'Exo 2', sans-serif;
+  font-weight: 700;
+  font-size: 15px;
+  cursor: pointer;
+  letter-spacing: 0.05em;
+  box-shadow: 0 0 24px var(--orange-glow);
+  transition: all 0.25s;
+  white-space: nowrap;
+}
+
+.capture-btn:hover {
+  background: #ff8533;
+  transform: translateY(-2px);
+  box-shadow: 0 8px 30px rgba(255,107,0,0.5);
+}
+
+.capture-note {
+  font-size: 12px;
+  color: var(--text-faint);
+  margin-top: 12px;
+}
+
+/* ─── CONTACT ─── */
+#contact { background: var(--bg); }
+
+.contact-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 60px;
+  align-items: start;
+}
+
+.contact-methods {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+  margin-bottom: 32px;
+}
+
+.contact-method {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  padding: 20px;
+  background: var(--bg3);
+  border: 1px solid var(--border2);
+  border-radius: 14px;
+  text-decoration: none;
+  transition: all 0.25s;
+}
+
+.contact-method:hover {
+  border-color: var(--border);
+  transform: translateX(4px);
+  background: var(--bg4);
+}
+
+.contact-method-icon {
+  width: 48px; height: 48px;
+  background: var(--orange-dim);
+  border: 1px solid var(--border);
+  border-radius: 12px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 22px;
+  flex-shrink: 0;
+}
+
+.contact-method-info h4 {
+  font-size: 14px;
+  font-weight: 700;
+  color: #fff;
+  margin-bottom: 2px;
+}
+
+.contact-method-info p {
+  font-size: 12px;
+  color: var(--text-dim);
+}
+
+.contact-form {
+  background: var(--bg3);
+  border: 1px solid var(--border2);
+  border-radius: 20px;
+  padding: 36px;
+}
+
+.form-group {
+  margin-bottom: 20px;
+}
+
+.form-group label {
+  display: block;
+  font-size: 12px;
+  font-weight: 600;
+  color: var(--text-dim);
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  margin-bottom: 8px;
+}
+
+.form-input, .form-textarea {
+  width: 100%;
+  background: var(--bg4);
+  border: 1px solid var(--border2);
+  border-radius: 10px;
+  padding: 14px 16px;
+  color: #fff;
+  font-size: 14px;
+  font-family: 'Exo 2', sans-serif;
+  outline: none;
+  transition: border-color 0.2s;
+}
+
+.form-input:focus, .form-textarea:focus {
+  border-color: var(--orange);
+  box-shadow: 0 0 0 3px var(--orange-dim);
+}
+
+.form-textarea {
+  resize: vertical;
+  min-height: 120px;
+}
+
+.form-submit {
+  width: 100%;
+  background: var(--orange);
+  color: white;
+  border: none;
+  padding: 16px;
+  border-radius: 10px;
+  font-family: 'Exo 2', sans-serif;
+  font-weight: 700;
+  font-size: 15px;
+  cursor: pointer;
+  letter-spacing: 0.05em;
+  box-shadow: 0 4px 20px var(--orange-glow);
+  transition: all 0.25s;
+}
+
+.form-submit:hover {
+  background: #ff8533;
+  transform: translateY(-2px);
+  box-shadow: 0 8px 30px rgba(255,107,0,0.5);
+}
+
+/* ─── FOOTER ─── */
+footer {
+  background: var(--bg2);
+  border-top: 1px solid var(--border);
+  padding: 40px;
+  z-index: 1;
+  position: relative;
+}
+
+.footer-inner {
+  max-width: 1200px;
+  margin: 0 auto;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  flex-wrap: wrap;
+  gap: 20px;
+}
+
+.footer-logo {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  text-decoration: none;
+}
+
+.footer-logo img {
+  width: 28px;
+  mix-blend-mode: lighten;
+}
+
+.footer-logo-text {
+  font-family: 'Orbitron', sans-serif;
+  font-size: 14px;
+  font-weight: 700;
+  color: var(--orange);
+  letter-spacing: 0.1em;
+}
+
+.footer-links {
+  display: flex;
+  gap: 24px;
+  list-style: none;
+}
+
+.footer-links a {
+  color: var(--text-faint);
+  text-decoration: none;
+  font-size: 13px;
+  transition: color 0.2s;
+}
+
+.footer-links a:hover { color: var(--orange); }
+
+.footer-copy {
+  font-size: 12px;
+  color: var(--text-faint);
+}
+
+/* ─── CHAT WIDGET ─── */
+#chatWidget {
+  position: fixed;
+  bottom: 28px;
+  right: 28px;
+  z-index: 999;
+  font-family: 'Exo 2', sans-serif;
+}
+
+.chat-toggle {
+  width: 60px; height: 60px;
+  background: var(--orange);
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  box-shadow: 0 4px 24px rgba(255,107,0,0.5);
+  transition: all 0.3s;
+  margin-left: auto;
+  border: none;
+  outline: none;
+}
+
+.chat-toggle:hover {
+  transform: scale(1.1);
+  box-shadow: 0 8px 32px rgba(255,107,0,0.7);
+}
+
+.chat-toggle img {
+  width: 36px;
+  mix-blend-mode: lighten;
+}
+
+.chat-window {
+  position: absolute;
+  bottom: 72px;
+  right: 0;
+  width: 360px;
+  height: 480px;
+  background: var(--bg3);
+  border: 1px solid var(--border);
+  border-radius: 20px;
+  overflow: hidden;
+  box-shadow: 0 20px 60px rgba(0,0,0,0.6);
+  display: none;
+  flex-direction: column;
+}
+
+.chat-window.open { display: flex; }
+
+.chat-win-header {
+  background: var(--bg4);
+  padding: 16px 20px;
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  border-bottom: 1px solid var(--border2);
+  flex-shrink: 0;
+}
+
+.chat-win-avatar {
+  width: 36px; height: 36px;
+  border-radius: 50%;
+  background: var(--orange);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  overflow: hidden;
+}
+
+.chat-win-avatar img { width: 100%; mix-blend-mode: lighten; }
+
+.chat-win-name {
+  font-weight: 700;
+  font-size: 14px;
+  color: #fff;
+}
+
+.chat-win-status {
+  font-size: 12px;
+  color: var(--green);
+  display: flex;
+  align-items: center;
+  gap: 4px;
+}
+
+.chat-win-status::before {
+  content: '';
+  width: 6px; height: 6px;
+  background: var(--green);
+  border-radius: 50%;
+}
+
+.chat-messages {
+  flex: 1;
+  overflow-y: auto;
+  padding: 16px;
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.chat-messages::-webkit-scrollbar { display: none; }
+
+.chat-msg-bot {
+  background: var(--bg4);
+  border: 1px solid var(--border2);
+  border-radius: 14px 14px 14px 4px;
+  padding: 12px 16px;
+  font-size: 13px;
+  color: var(--text);
+  line-height: 1.5;
+  max-width: 85%;
+}
+
+.chat-msg-user {
+  background: var(--orange);
+  border-radius: 14px 14px 4px 14px;
+  padding: 12px 16px;
+  font-size: 13px;
+  color: white;
+  line-height: 1.5;
+  max-width: 85%;
+  align-self: flex-end;
+}
+
+.chat-typing {
+  display: flex;
+  gap: 4px;
+  align-items: center;
+  padding: 12px 16px;
+  background: var(--bg4);
+  border-radius: 14px 14px 14px 4px;
+  width: fit-content;
+}
+
+.chat-typing span {
+  width: 6px; height: 6px;
+  background: var(--text-dim);
+  border-radius: 50%;
+  animation: typingDot 1.2s infinite ease-in-out;
+}
+
+.chat-typing span:nth-child(2) { animation-delay: 0.2s; }
+.chat-typing span:nth-child(3) { animation-delay: 0.4s; }
+
+@keyframes typingDot {
+  0%,60%,100% { transform: translateY(0); opacity:0.4; }
+  30% { transform: translateY(-4px); opacity:1; }
+}
+
+.chat-input-row {
+  display: flex;
+  gap: 8px;
+  padding: 12px 16px;
+  border-top: 1px solid var(--border2);
+  flex-shrink: 0;
+}
+
+.chat-input-field {
+  flex: 1;
+  background: var(--bg4);
+  border: 1px solid var(--border2);
+  border-radius: 8px;
+  padding: 10px 14px;
+  color: #fff;
+  font-size: 13px;
+  font-family: 'Exo 2', sans-serif;
+  outline: none;
+}
+
+.chat-input-field:focus { border-color: var(--orange); }
+
+.chat-send-btn {
+  width: 38px; height: 38px;
+  background: var(--orange);
+  border: none;
+  border-radius: 8px;
+  color: white;
+  font-size: 16px;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: all 0.2s;
+  flex-shrink: 0;
+}
+
+.chat-send-btn:hover { background: #ff8533; transform: scale(1.05); }
+
+/* ─── ANIMATIONS ─── */
+@keyframes fadeUp {
+  from { opacity: 0; transform: translateY(24px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+/* ─── RESPONSIVE ─── */
+@media (max-width: 900px) {
+  nav { padding: 0 20px; }
+  .nav-links { display: none; }
+  .demo-inner { grid-template-columns: 1fr; gap: 40px; }
+  .demo-phone { width: 280px; height: 540px; }
+  .founder-grid { grid-template-columns: 1fr; }
+  .contact-grid { grid-template-columns: 1fr; }
+  .roi-sliders { grid-template-columns: 1fr; }
+  .process-steps { grid-template-columns: 1fr; }
+  .process-steps::before { display: none; }
+  .footer-inner { flex-direction: column; text-align: center; }
+  .section-inner { padding: 70px 24px; }
+  .roi-inner { padding: 70px 24px; }
+  .capture-inner { padding: 70px 24px; }
+  .stats-bar { gap: 24px; }
+  .founder-metrics { grid-template-columns: repeat(3, 1fr); }
+}
+
+@media (max-width: 600px) {
+  .hero-ctas { flex-direction: column; align-items: center; }
+  .btn-primary, .btn-secondary { width: 100%; max-width: 300px; justify-content: center; }
+  .demo-phone { width: 260px; height: 500px; }
+  .chat-window { width: 300px; height: 420px; }
+  .founder-metrics { grid-template-columns: 1fr 1fr; }
+  .roi-numbers { gap: 32px; }
+  .pricing-card.featured { transform: scale(1); }
+  .pricing-card.featured.revealed { transform: translateY(0); }
+  .pricing-card.featured:hover { transform: translateY(-4px); }
+}
 </style>
 </head>
 <body>
-<nav>
-  <a href="#" class="nav-brand">
-    <img src="logo.jpg" alt="" class="nav-logo">
-    <span class="nav-wordmark">BOTABLY</span>
+
+<canvas id="particleCanvas"></canvas>
+
+<!-- NAV -->
+<nav id="mainNav">
+  <a href="#" class="nav-logo">
+    <img src="logo.jpg" alt="Botably">
+    <span class="nav-logo-text">BOTABLY</span>
   </a>
-  <div class="nav-spacer"></div>
   <ul class="nav-links">
+    <li><a href="#demo">Demo</a></li>
     <li><a href="#services">Services</a></li>
     <li><a href="#pricing">Pricing</a></li>
-    <li><a href="#process">Process</a></li>
     <li><a href="#about">About</a></li>
-    <li><a href="#contact" class="nav-cta">Get Started</a></li>
+    <li><a href="https://wa.me/13212661767" target="_blank" class="nav-cta">Get Started →</a></li>
   </ul>
 </nav>
-<section class="hero" id="home">
-  <div class="hero-bot-wrap">
-    <img src="logo.jpg" alt="" class="hero-bot">
+
+<!-- HERO -->
+<section id="hero">
+  <div class="hero-badge">
+    <span class="hero-badge-dot"></span>
+    AI Automation · Live & Deployed
   </div>
-  <div class="hero-eyebrow">Automation &amp; Web Solutions</div>
-  <h1 class="hero-h1">Build Smarter.<br><span>Automate</span> Everything.</h1>
-  <p class="hero-sub">Botably delivers custom automation pipelines, intelligent web systems, and AI-powered tools engineered for businesses ready to scale without limits.</p>
-  <div class="terminal-card">
-    <div class="t-bar">
-      <div class="t-dot r"></div><div class="t-dot y"></div><div class="t-dot g"></div>
-      <span class="t-name">botably_core.py</span>
-    </div>
-    <div class="t-body">
-      <span class="tl"><span class="tp">$ </span><span class="tc">botably deploy --client="YourBusiness"</span></span>
-      <span class="tl to">&#8594; Scanning workflows...</span>
-      <span class="tl to">&#8594; Automation opportunities: <span class="th">14 identified</span></span>
-      <span class="tl to">&#8594; Estimated time saved: <span class="th">40 hrs / week</span></span>
-      <span class="tl to">&#8594; Status: <span class="th">READY TO DEPLOY &#10003;</span></span>
-      <span class="tl"><span class="tp">$ </span><span class="cursor"></span></span>
-    </div>
+  <h1 class="hero-headline">
+    <span class="line1">Your Business.</span>
+    <span class="line2">Fully Automated.</span>
+  </h1>
+  <p class="hero-sub">Custom Telegram bots that track crypto, find leads, hunt jobs, monitor health, and brief you every morning — engineered to run while you sleep.</p>
+  <div class="hero-ctas">
+    <a href="#demo" class="btn-primary">▶ Watch It Work</a>
+    <a href="https://wa.me/13212661767" target="_blank" class="btn-secondary">💬 WhatsApp Us Now</a>
   </div>
-  <div class="hero-btns">
-    <a href="#contact" class="btn-primary">Start Your Project</a>
-    <a href="#services" class="btn-ghost">View Services</a>
-  </div>
-</section>
-<div class="stats">
-  <div class="stat"><div class="stat-n">50+</div><div class="stat-l">Automations Deployed</div></div>
-  <div class="stat"><div class="stat-n">40h</div><div class="stat-l">Avg. Weekly Hours Saved</div></div>
-  <div class="stat"><div class="stat-n">100%</div><div class="stat-l">Remote Delivery</div></div>
-  <div class="stat"><div class="stat-n">24/7</div><div class="stat-l">Bot Uptime Guarantee</div></div>
-</div>
-<section id="services">
-  <div class="eyebrow">What We Build</div>
-  <h2 class="sec-title">Full-Stack <span>Automation</span> Services</h2>
-  <p class="sec-sub">From intelligent bots to end-to-end web platforms, Botably engineers solutions that run while you sleep.</p>
-  <div class="grid-6">
-    <div class="svc-card"><div class="svc-icon">&#129302;</div><div class="svc-title">Telegram Bot Development</div><p class="svc-desc">Command-driven bots with scheduled tasks, API integrations, and real-time intelligence delivery to any team or workflow.</p><span class="svc-badge">High Demand</span></div>
-    <div class="svc-card"><div class="svc-icon">&#9889;</div><div class="svc-title">Workflow Automation</div><p class="svc-desc">Python-powered pipelines that scrape, process, transform, and deliver data automatically on any schedule.</p><span class="svc-badge">Core Service</span></div>
-    <div class="svc-card"><div class="svc-icon">&#127758;</div><div class="svc-title">Web Solutions &amp; Landing Pages</div><p class="svc-desc">High-performance sites with dark-themed UI, AI chat widgets, SEO-optimized architecture, and conversion-focused design.</p><span class="svc-badge">Core Service</span></div>
-    <div class="svc-card"><div class="svc-icon">&#128202;</div><div class="svc-title">Crypto &amp; Market Intelligence</div><p class="svc-desc">Automated price trackers, macro briefings, on-chain signal scrapers, and custom dashboards for digital asset research.</p><span class="svc-badge">Specialized</span></div>
-    <div class="svc-card"><div class="svc-icon">&#128269;</div><div class="svc-title">AI-Powered Research Tools</div><p class="svc-desc">Claude-integrated scripts for job searching, content generation, report writing, and competitive intelligence — fully automated.</p><span class="svc-badge">AI-Enhanced</span></div>
-    <div class="svc-card"><div class="svc-icon">&#128274;</div><div class="svc-title">Privacy &amp; Ghost Mode Setup</div><p class="svc-desc">Router hardening, VPN configuration, Knox integration, and identity-layer anonymization for privacy-first remote operations.</p><span class="svc-badge">Security</span></div>
-    <div class="svc-card"><div class="svc-icon">&#128188;</div><div class="svc-title">Job Search Automation</div><p class="svc-desc">AI-powered job hunting that finds remote roles daily, rewrites your resume per application, and generates custom cover letters — all delivered to your Telegram.</p><span class="svc-badge">New Service</span></div>
-    <div class="svc-card"><div class="svc-icon">&#128200;</div><div class="svc-title">Crypto Portfolio Tracker</div><p class="svc-desc">Daily P&amp;L reports, price alerts, and portfolio performance delivered straight to your Telegram. Know your numbers without opening an exchange.</p><span class="svc-badge">Specialized</span></div>
-    <div class="svc-card"><div class="svc-icon">&#128140;</div><div class="svc-title">AI Resume Rewriting</div><p class="svc-desc">One-time resume optimization powered by Claude AI. ATS-safe, metrics-driven, tailored to your target role. Delivered within 24 hours.</p><span class="svc-badge">Quick Win</span></div>
-  </div>
-</section><section id="pricing">
-  <div class="eyebrow">Simple Pricing</div>
-  <h2 class="sec-title">Transparent <span>Plans</span></h2>
-  <p class="sec-sub">No hidden fees. No contracts. Cancel anytime. Start free for 14 days.</p>
-  <div class="pricing-grid">
-    <div class="price-card">
-      <div class="price-name">Starter</div>
-      <div class="price-amount">$49<span>/mo</span></div>
-      <div class="price-desc">Perfect for individuals who want daily crypto intelligence and market awareness on autopilot.</div>
-      <ul class="price-features">
-        <li>Daily crypto price digest to Telegram</li>
-        <li>Fear &amp; Greed Index alerts</li>
-        <li>Top crypto news headlines</li>
-        <li>Portfolio tracker up to 5 coins</li>
-        <li>14-day free trial</li>
-      </ul>
-      <a href="#contact" class="price-btn">Get Started Free</a>
+  <div class="stats-bar">
+    <div class="stat-item">
+      <span class="stat-number" data-count="50">0</span>
+      <span class="stat-label">Automations Deployed</span>
     </div>
-    <div class="price-card featured">
-      <div class="price-name">Job Hunter</div>
-      <div class="price-amount">$99<span>/mo</span></div>
-      <div class="price-desc">Full AI job search automation. Find roles, rewrite your resume, and apply — all from Telegram.</div>
-      <ul class="price-features">
-        <li>Daily remote job listings to Telegram</li>
-        <li>AI resume rewrite per application</li>
-        <li>Custom cover letter per job</li>
-        <li>7-day freshness filter</li>
-        <li>Email monitoring and response alerts</li>
-        <li>Everything in Starter</li>
-        <li>14-day free trial</li>
-      </ul>
-      <a href="#contact" class="price-btn">Start Free Trial</a>
+    <div class="stat-item">
+      <span class="stat-number" data-count="40">0</span>
+      <span class="stat-label">Avg Hours Saved / Week</span>
     </div>
-    <div class="price-card">
-      <div class="price-name">Full Stack</div>
-      <div class="price-amount">$299<span>/mo</span></div>
-      <div class="price-desc">Complete AI business stack. Custom Telegram bot, automation pipelines, and dedicated support.</div>
-      <ul class="price-features">
-        <li>Custom Telegram bot for your business</li>
-        <li>Workflow automation pipelines</li>
-        <li>Social media content automation</li>
-        <li>Crypto intelligence and job search</li>
-        <li>AI chat widget for your website</li>
-        <li>Priority support via WhatsApp</li>
-        <li>14-day free trial</li>
-      </ul>
-      <a href="#contact" class="price-btn">Contact Us</a>
+    <div class="stat-item">
+      <span class="stat-number">100%</span>
+      <span class="stat-label">Remote Delivery</span>
+    </div>
+    <div class="stat-item">
+      <span class="stat-number">24/7</span>
+      <span class="stat-label">Bot Uptime Guarantee</span>
     </div>
   </div>
-  <p class="price-note">Need a one-time resume rewrite? <span>$29 flat</span> — delivered within 24 hours. <a href="#contact" style="color:var(--orange);text-decoration:none;">Message us</a></p>
-</section>
-<section id="process">
-  <div class="eyebrow">How We Work</div>
-  <h2 class="sec-title">Three Steps to <span>Launch</span></h2>
-  <p class="sec-sub">A streamlined delivery model built for speed, precision, and zero-friction execution.</p>
-  <div class="steps">
-    <div class="step"><div class="step-n">01</div><div class="step-t">Discovery &amp; Scope</div><p class="step-d">We map your existing workflows, identify automation opportunities, and define a clear technical scope — no vague estimates, no scope creep.</p></div>
-    <div class="step"><div class="step-n">02</div><div class="step-t">Build &amp; Integrate</div><p class="step-d">Rapid development in Python, JavaScript, and cloud platforms. Every component tested and integrated against your live environment.</p></div>
-    <div class="step"><div class="step-n">03</div><div class="step-t">Deploy &amp; Automate</div><p class="step-d">Go live with monitoring, scheduled tasks, and handoff documentation. Your systems run 24/7 without you touching a keyboard.</p></div>
+  <div class="social-proof">
+    <div class="trust-avatars">
+      <div class="trust-avatar">JM</div>
+      <div class="trust-avatar">AK</div>
+      <div class="trust-avatar">RL</div>
+      <div class="trust-avatar">+</div>
+    </div>
+    <span class="stars">★★★★★</span>
+    <span>Trusted by operators in 12+ countries</span>
+  </div>
+  <div class="scroll-hint">
+    <div class="scroll-line"></div>
+    <span>Scroll</span>
   </div>
 </section>
-<section id="about">
-  <div class="eyebrow">The Founder</div>
-  <h2 class="sec-title">Built by Someone Who <span>Operates</span> in the Field</h2>
-  <div class="bio">
-    <div class="bio-left">
-      <img src="allen_nobg.png" alt="Allen Simmons" class="bio-headshot">
-      <div class="bio-nm">Allen Simmons</div>
-      <div class="bio-role">Founder &middot; Botably</div>
-    </div>
-    <div class="bio-right">
-      <h3>Enterprise Sales Veteran.<br><span>Automation Architect.</span></h3>
-      <p>Allen Simmons is the founder of Botably — a multi-domain professional with a career spanning enterprise sales leadership, U.S. Coast Guard 200-Ton Master Captain command, digital asset research, and full-stack automation engineering.</p>
-      <p>With a track record including 50% revenue growth at Space Coast Canvas and 20% quota over-performance in B2C sales, Allen brings the commercial discipline of enterprise sales to the technical precision of automation systems.</p>
-      <p>Operating remotely from Southeast Asia, Botably is built and delivered entirely mobile-first — proving that world-class automation requires no office, no overhead, only execution.</p>
-      <div class="bio-tags">
-        <span class="bio-tag">Enterprise Sales</span>
-        <span class="bio-tag">Python Automation</span>
-        <span class="bio-tag">USCG Master Captain</span>
-        <span class="bio-tag">Digital Assets</span>
-        <span class="bio-tag">Web3 Research</span>
-        <span class="bio-tag">Telegram Bots</span>
-        <span class="bio-tag">Remote-First</span>
-      </div>
-    </div>
-  </div>
-</section><section id="contact">
-  <div class="eyebrow">Get In Touch</div>
-  <h2 class="sec-title">Ready to <span>Automate?</span></h2>
-  <p class="sec-sub">Reach out via your preferred channel. Response within 24 hours.</p>
-  <div class="contact-grid">
-    <div>
-      <div class="ch-list">
-        <a href="mailto:botablyservices@gmail.com" class="ch-link">
-          <div class="ch-ico">&#9993;&#65039;</div>
-          <div>
-            <div class="ch-lbl">Email</div>
-            <div class="ch-val">botablyservices@gmail.com</div>
-          </div>
-        </a>
-        <a href="https://wa.me/13212661767" target="_blank" rel="noopener" class="ch-link">
-          <div class="ch-ico">&#128172;</div>
-          <div>
-            <div class="ch-lbl">WhatsApp — US</div>
-            <div class="ch-val">+1 (321) 266-1767</div>
-            <div class="ch-sub">&#127482;&#127480; United States</div>
-          </div>
-        </a>
-        <a href="https://wa.me/639998849286" target="_blank" rel="noopener" class="ch-link">
-          <div class="ch-ico">&#128172;</div>
-          <div>
-            <div class="ch-lbl">WhatsApp — Philippines</div>
-            <div class="ch-val">+63 999 884 9286</div>
-            <div class="ch-sub">&#127477;&#127469; Philippines</div>
-          </div>
-        </a>
-        <a href="https://facebook.com/botably" target="_blank" rel="noopener" class="ch-link">
-          <div class="ch-ico">&#128216;</div>
-          <div>
-            <div class="ch-lbl">Facebook</div>
-            <div class="ch-val">facebook.com/botably</div>
-          </div>
-        </a>
-      </div>
-      <div class="qr-row">
-        <div class="qr-box">
-          <svg viewBox="0 0 37 37" xmlns="http://www.w3.org/2000/svg" shape-rendering="crispEdges">
-            <rect width="37" height="37" fill="#fff"/>
-            <rect x="1" y="1" width="7" height="7" fill="#000"/><rect x="2" y="2" width="5" height="5" fill="#fff"/><rect x="3" y="3" width="3" height="3" fill="#000"/>
-            <rect x="29" y="1" width="7" height="7" fill="#000"/><rect x="30" y="2" width="5" height="5" fill="#fff"/><rect x="31" y="3" width="3" height="3" fill="#000"/>
-            <rect x="1" y="29" width="7" height="7" fill="#000"/><rect x="2" y="30" width="5" height="5" fill="#fff"/><rect x="3" y="31" width="3" height="3" fill="#000"/>
-          </svg>
+
+<!-- DEMO -->
+<section id="demo">
+  <div class="demo-inner">
+    <div class="demo-text reveal">
+      <span class="section-tag">Live Demo</span>
+      <h2 class="section-title">Watch It Work.<br>Right Now.</h2>
+      <p style="font-size:15px;color:var(--text-dim);line-height:1.8;margin-bottom:32px;">This is a real simulation of your Botably AI Assistant — the same bot your clients receive. No stock footage. No fake screenshots.</p>
+      <div class="demo-feature">
+        <div class="demo-feature-icon">☀️</div>
+        <div class="demo-feature-text">
+          <h4>Daily Morning Briefing</h4>
+          <p>Crypto prices, top jobs, lead pipeline, email alerts — delivered every morning automatically.</p>
         </div>
-        <div class="qr-info"><strong>Scan to visit</strong><br>botably.github.io<br><em>Your automation partner</em></div>
+      </div>
+      <div class="demo-feature">
+        <div class="demo-feature-icon">📈</div>
+        <div class="demo-feature-text">
+          <h4>Live Market Intelligence</h4>
+          <p>Real-time prices, Fear & Greed Index, and curated headlines — zero manual effort.</p>
+        </div>
+      </div>
+      <div class="demo-feature">
+        <div class="demo-feature-icon">⚡</div>
+        <div class="demo-feature-text">
+          <h4>One-Command Automation</h4>
+          <p>Type one command. Your bot handles the research, writing, and delivery — instantly.</p>
+        </div>
+      </div>
+      <div style="margin-top:32px;">
+        <a href="https://wa.me/13212661767" target="_blank" class="btn-primary">Get Your Bot Built →</a>
       </div>
     </div>
-    <div class="cform">
-      <div class="cform-title">Send a Message</div>
-      <div class="fg"><label class="fl">Your Name</label><input type="text" class="fi" id="fn" placeholder="John Doe"></div>
-      <div class="fg"><label class="fl">Email Address</label><input type="email" class="fi" id="fe" placeholder="john@company.com"></div>
-      <div class="fg"><label class="fl">Message</label><textarea class="ft" id="fm" placeholder="Tell us about your automation needs..."></textarea></div>
-      <button class="fsub" onclick="sendForm()">Send Message &#8594;</button>
-      <div class="fmsg" id="fmsg"></div>
+    <div class="demo-frame-wrap reveal">
+      <div class="demo-phone">
+        <!-- SWAP: Replace iframe with <video autoplay muted loop playsinline src="demo_video.mp4"> when CapCut video is ready -->
+        <iframe src="botably_demo.html" scrolling="no" title="Botably Demo"></iframe>
+      </div>
     </div>
   </div>
 </section>
+
+<!-- SERVICES -->
+<section id="services">
+  <div class="section-inner">
+    <span class="section-tag">What We Build</span>
+    <h2 class="section-title">8 Automation Verticals.<br>One Platform.</h2>
+    <p class="section-sub">Every service runs on your private Telegram — no apps to install, no dashboards to check, no subscriptions to manage.</p>
+    <div class="services-grid">
+
+      <div class="service-card">
+        <span class="service-card-badge badge-hot">Most Popular</span>
+        <span class="service-icon">🤖</span>
+        <div class="service-title">Telegram Bot Development</div>
+        <p class="service-desc">Command-driven bots with scheduled tasks, API integrations, and real-time intelligence delivered to any team or workflow.</p>
+        <div class="service-outcome">✓ Custom commands, live in 72 hours</div>
+      </div>
+
+      <div class="service-card">
+        <span class="service-card-badge badge-popular">Popular</span>
+        <span class="service-icon">📊</span>
+        <div class="service-title">Crypto & Market Intelligence</div>
+        <p class="service-desc">Automated price trackers, Fear & Greed alerts, macro briefings, on-chain signal scrapers, and sentiment analysis delivered daily.</p>
+        <div class="service-outcome">✓ Never miss a market move</div>
+      </div>
+
+      <div class="service-card">
+        <span class="service-card-badge badge-popular">Popular</span>
+        <span class="service-icon">🔍</span>
+        <div class="service-title">Lead Generation & Follow-Up</div>
+        <p class="service-desc">AI-powered prospect identification, automated follow-up sequences, and pipeline management — for realtors, sales teams, and business owners.</p>
+        <div class="service-outcome">✓ New leads delivered daily</div>
+      </div>
+
+      <div class="service-card">
+        <span class="service-card-badge badge-popular">Popular</span>
+        <span class="service-icon">💼</span>
+        <div class="service-title">Job Search Automation</div>
+        <p class="service-desc">AI finds remote roles daily, rewrites your resume per application, and generates custom cover letters — all delivered to Telegram.</p>
+        <div class="service-outcome">✓ Auto-apply while you sleep</div>
+      </div>
+
+      <div class="service-card">
+        <span class="service-card-badge badge-new">New</span>
+        <span class="service-icon">❤️</span>
+        <div class="service-title">Health & Wellness Tracker</div>
+        <p class="service-desc">Log workouts, nutrition, sleep, and vitals via Telegram commands. Get daily health summaries and trend analysis — no app required.</p>
+        <div class="service-outcome">✓ Your health data, always accessible</div>
+      </div>
+
+      <div class="service-card">
+        <span class="service-icon">🎬</span>
+        <div class="service-title">AI Script & Content Generator</div>
+        <p class="service-desc">Claude-powered YouTube scripts, social captions, email copy, and blog outlines — generated and delivered on demand via a single command.</p>
+        <div class="service-outcome">✓ 10x content output, zero writer's block</div>
+      </div>
+
+      <div class="service-card">
+        <span class="service-icon">📬</span>
+        <div class="service-title">Executive Email Monitor</div>
+        <p class="service-desc">AI monitors your inbox, surfaces priority emails, flags urgent replies, and sends you a daily digest — so nothing slips through.</p>
+        <div class="service-outcome">✓ Inbox zero, without the effort</div>
+      </div>
+
+      <div class="service-card">
+        <span class="service-card-badge badge-new">New</span>
+        <span class="service-icon">🔒</span>
+        <div class="service-title">Privacy & Ghost Mode Setup</div>
+        <p class="service-desc">Router hardening, VPN configuration, Knox integration, and identity-layer anonymization for privacy-first remote operations worldwide.</p>
+        <div class="service-outcome">✓ Invisible, untraceable, secure</div>
+      </div>
+
+    </div>
+  </div>
+</section>
+
+<!-- ROI CALCULATOR -->
+<section id="roi">
+  <div class="roi-inner">
+    <span class="section-tag">ROI Calculator</span>
+    <h2 class="section-title">How Much Is Your<br>Time Actually Worth?</h2>
+    <p style="color:var(--text-dim);font-size:16px;line-height:1.7;max-width:480px;margin:0 auto;">See exactly how much Botably saves you — in hours and dollars — before you spend a single cent.</p>
+    <div class="roi-calculator reveal">
+      <div class="roi-sliders">
+        <div class="slider-group">
+          <label>Team Size <span id="teamVal">3</span></label>
+          <input type="range" id="teamSlider" min="1" max="20" value="3">
+        </div>
+        <div class="slider-group">
+          <label>Manual Tasks / Day <span id="tasksVal">8</span></label>
+          <input type="range" id="tasksSlider" min="2" max="30" value="8">
+        </div>
+        <div class="slider-group">
+          <label>Avg Hourly Rate <span id="rateVal">$45</span></label>
+          <input type="range" id="rateSlider" min="15" max="200" value="45" step="5">
+        </div>
+        <div class="slider-group">
+          <label>Mins Per Task <span id="minsVal">12</span></label>
+          <input type="range" id="minsSlider" min="5" max="60" value="12" step="1">
+        </div>
+      </div>
+      <div class="roi-result">
+        <div class="roi-numbers">
+          <div class="roi-number-item">
+            <span class="roi-big" id="hoursSaved">29</span>
+            <span class="roi-big-label">Hours Saved / Week</span>
+          </div>
+          <div class="roi-number-item">
+            <span class="roi-big" id="moneySaved">$1,290</span>
+            <span class="roi-big-label">Saved / Week</span>
+          </div>
+          <div class="roi-number-item">
+            <span class="roi-big" id="yearlySaved">$67K</span>
+            <span class="roi-big-label">Annual Value</span>
+          </div>
+        </div>
+      </div>
+      <a href="https://wa.me/13212661767" target="_blank" class="btn-primary" style="display:inline-flex;margin:0 auto;">Get This Back — Start Today →</a>
+    </div>
+  </div>
+</section>
+
+<!-- PRICING -->
+<section id="pricing">
+  <div class="section-inner">
+    <span class="section-tag">Simple Pricing</span>
+    <h2 class="section-title">Transparent Plans.<br>No Surprises.</h2>
+    <p class="section-sub">No hidden fees. No contracts. Cancel anytime. Start free for 14 days.</p>
+    <div class="pricing-grid">
+
+      <div class="pricing-card">
+        <div class="pricing-plan">Starter</div>
+        <div class="pricing-price">
+          <span class="price-dollar">$</span>
+          <span class="price-amount">49</span>
+          <span class="price-period">/mo</span>
+        </div>
+        <p class="pricing-desc">Perfect for individuals who want daily crypto intelligence and market awareness on autopilot.</p>
+        <ul class="pricing-features">
+          <li>Daily crypto price digest to Telegram</li>
+          <li>Fear & Greed Index alerts</li>
+          <li>Top crypto news headlines</li>
+          <li>Portfolio tracker — up to 5 coins</li>
+          <li>14-day free trial</li>
+        </ul>
+        <a href="https://wa.me/13212661767" target="_blank" class="pricing-btn pricing-btn-outline">Get Started Free</a>
+      </div>
+
+      <div class="pricing-card featured">
+        <div class="pricing-badge">Most Popular</div>
+        <div class="pricing-plan">Job Hunter</div>
+        <div class="pricing-price">
+          <span class="price-dollar">$</span>
+          <span class="price-amount">99</span>
+          <span class="price-period">/mo</span>
+        </div>
+        <p class="pricing-desc">Full AI job search automation. Find roles, rewrite your resume, and apply — all from Telegram.</p>
+        <ul class="pricing-features">
+          <li>Daily remote job listings to Telegram</li>
+          <li>AI resume rewrite per application</li>
+          <li>Custom cover letter per job</li>
+          <li>7-day freshness filter</li>
+          <li>Email monitoring & response alerts</li>
+          <li>Everything in Starter</li>
+          <li>14-day free trial</li>
+        </ul>
+        <a href="https://wa.me/13212661767" target="_blank" class="pricing-btn pricing-btn-solid">Start Free Trial</a>
+      </div>
+
+      <div class="pricing-card">
+        <div class="pricing-plan">Full Stack</div>
+        <div class="pricing-price">
+          <span class="price-dollar">$</span>
+          <span class="price-amount">299</span>
+          <span class="price-period">/mo</span>
+        </div>
+        <p class="pricing-desc">Complete AI business stack. Custom Telegram bot, automation pipelines, and dedicated support.</p>
+        <ul class="pricing-features">
+          <li>Custom Telegram bot for your business</li>
+          <li>Workflow automation pipelines</li>
+          <li>Lead generation & follow-up</li>
+          <li>Crypto intelligence & job search</li>
+          <li>AI chat widget for your website</li>
+          <li>Health & email monitoring</li>
+          <li>Priority support via WhatsApp</li>
+          <li>14-day free trial</li>
+        </ul>
+        <a href="https://wa.me/13212661767" target="_blank" class="pricing-btn pricing-btn-outline">Contact Us</a>
+      </div>
+
+    </div>
+    <div class="pricing-onetime">
+      Need a one-time resume rewrite? <strong>$29 flat</strong> — delivered within 24 hours. <a href="https://wa.me/13212661767" target="_blank">Message us →</a>
+    </div>
+  </div>
+</section>
+
+<!-- PROCESS -->
+<section id="process">
+  <div class="section-inner">
+    <span class="section-tag">How We Work</span>
+    <h2 class="section-title">Three Steps to Launch.</h2>
+    <p class="section-sub">A streamlined delivery model built for speed, precision, and zero-friction execution.</p>
+    <div class="process-steps">
+      <div class="process-step">
+        <span class="process-number">01</span>
+        <div class="process-title">Discovery & Scope</div>
+        <p class="process-desc">We map your existing workflows, identify automation opportunities, and define a clear technical scope — no vague estimates, no scope creep.</p>
+      </div>
+      <div class="process-step">
+        <span class="process-number">02</span>
+        <div class="process-title">Build & Integrate</div>
+        <p class="process-desc">Rapid development in Python and cloud platforms. Every component tested and integrated against your live environment before handoff.</p>
+      </div>
+      <div class="process-step">
+        <span class="process-number">03</span>
+        <div class="process-title">Deploy & Automate</div>
+        <p class="process-desc">Go live with monitoring, scheduled tasks, and handoff documentation. Your systems run 24/7 without you touching a keyboard.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- FOUNDER -->
+<section id="about">
+  <div class="section-inner">
+    <div class="founder-grid">
+      <div class="founder-photo-wrap reveal">
+        <div class="founder-photo-inner">
+          <img src="allen_nobg.png" alt="Allen Simmons — Founder of Botably">
+        </div>
+        <div class="founder-tags">
+          <span class="founder-tag">Enterprise Sales</span>
+          <span class="founder-tag">Python Automation</span>
+          <span class="founder-tag">USCG Master Captain</span>
+          <span class="founder-tag">Digital Assets</span>
+          <span class="founder-tag">Web3 Research</span>
+          <span class="founder-tag">Telegram Bots</span>
+          <span class="founder-tag">Remote-First</span>
+        </div>
+      </div>
+      <div class="reveal">
+        <span class="section-tag">The Founder</span>
+        <div class="founder-name">Allen Simmons</div>
+        <div class="founder-role">Founder · Botably</div>
+        <p class="founder-bio">Allen Simmons is the founder of Botably — a multi-domain professional with a career spanning enterprise sales leadership, U.S. Coast Guard 200-Ton Master Captain command, digital asset research, and full-stack automation engineering.<br><br>Operating remotely from Southeast Asia, Botably is built and delivered entirely mobile-first — proving that world-class automation requires no office, no overhead, only execution.</p>
+        <div class="founder-metrics">
+          <div class="metric-box">
+            <span class="metric-val">50%</span>
+            <span class="metric-lbl">Revenue Growth</span>
+          </div>
+          <div class="metric-box">
+            <span class="metric-val">20%</span>
+            <span class="metric-lbl">Quota Over-Performance</span>
+          </div>
+          <div class="metric-box">
+            <span class="metric-val">18%</span>
+            <span class="metric-lbl">Cost Reduction</span>
+          </div>
+        </div>
+        <a href="https://wa.me/13212661767" target="_blank" class="btn-primary">Work With Allen →</a>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- EMAIL CAPTURE -->
+<section id="capture">
+  <div class="capture-inner">
+    <span class="section-tag">Free Audit</span>
+    <h2 class="section-title">Get a Free<br>Automation Audit.</h2>
+    <p style="color:var(--text-dim);font-size:16px;line-height:1.7;margin-top:12px;">Drop your email. We'll identify your top 3 automation opportunities — free, within 24 hours. No pitch. Just value.</p>
+    <div class="capture-form">
+      <input type="email" class="capture-input" id="auditEmail" placeholder="your@email.com">
+      <button class="capture-btn" id="auditBtn">Get My Free Audit →</button>
+    </div>
+    <p class="capture-note">No spam. Unsubscribe anytime. Delivered within 24 hours.</p>
+    <p id="captureMsg" style="margin-top:12px;font-size:13px;color:var(--green);display:none;">✓ Got it! Check your inbox within 24 hours.</p>
+  </div>
+</section>
+
+<!-- CONTACT -->
+<section id="contact">
+  <div class="section-inner">
+    <div class="contact-grid">
+      <div>
+        <span class="section-tag">Get In Touch</span>
+        <h2 class="section-title">Ready to<br>Automate?</h2>
+        <p style="font-size:15px;color:var(--text-dim);line-height:1.7;margin-bottom:36px;margin-top:12px;">Reach out via your preferred channel. Response within 24 hours.</p>
+        <div class="contact-methods">
+          <a href="mailto:botablyservices@gmail.com" class="contact-method">
+            <div class="contact-method-icon">✉️</div>
+            <div class="contact-method-info">
+              <h4>Email</h4>
+              <p>botablyservices@gmail.com</p>
+            </div>
+          </a>
+          <a href="https://wa.me/13212661767" target="_blank" class="contact-method">
+            <div class="contact-method-icon">💬</div>
+            <div class="contact-method-info">
+              <h4>WhatsApp — US</h4>
+              <p>+1 (321) 266-1767 🇺🇸</p>
+            </div>
+          </a>
+          <a href="https://wa.me/639998849286" target="_blank" class="contact-method">
+            <div class="contact-method-icon">💬</div>
+            <div class="contact-method-info">
+              <h4>WhatsApp — Philippines</h4>
+              <p>+63 999 884 9286 🇵🇭</p>
+            </div>
+          </a>
+          <a href="https://facebook.com/botably" target="_blank" class="contact-method">
+            <div class="contact-method-icon">📘</div>
+            <div class="contact-method-info">
+              <h4>Facebook</h4>
+              <p>facebook.com/botably</p>
+            </div>
+          </a>
+        </div>
+      </div>
+      <div class="contact-form">
+        <div class="form-group">
+          <label>Your Name</label>
+          <input type="text" class="form-input" placeholder="John Smith">
+        </div>
+        <div class="form-group">
+          <label>Email Address</label>
+          <input type="email" class="form-input" placeholder="john@company.com">
+        </div>
+        <div class="form-group">
+          <label>Message</label>
+          <textarea class="form-textarea" placeholder="Tell us about your automation needs..."></textarea>
+        </div>
+        <button class="form-submit" id="formSubmit">Send Message →</button>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- FOOTER -->
 <footer>
-  <a href="#" class="footer-brand">
-    <img src="logo.jpg" alt="" class="footer-logo">
-    <span class="footer-wm">BOTABLY</span>
-  </a>
-  <div class="footer-copy">&#169; 2026 Botably. All rights reserved.</div>
-  <div class="footer-links">
-    <a href="#services">Services</a>
-    <a href="#pricing">Pricing</a>
-    <a href="#about">About</a>
-    <a href="#contact">Contact</a>
+  <div class="footer-inner">
+    <a href="#" class="footer-logo">
+      <img src="logo.jpg" alt="Botably">
+      <span class="footer-logo-text">BOTABLY</span>
+    </a>
+    <ul class="footer-links">
+      <li><a href="#services">Services</a></li>
+      <li><a href="#pricing">Pricing</a></li>
+      <li><a href="#about">About</a></li>
+      <li><a href="#contact">Contact</a></li>
+    </ul>
+    <p class="footer-copy">© 2026 Botably. All rights reserved.</p>
   </div>
 </footer>
-<div id="chat-wrap">
-  <div id="chat-panel">
-    <div class="chat-hdr">
-      <img src="logo.jpg" alt="" class="chat-hdr-logo">
-      <div class="chat-hdr-name">BOTABLY AI</div>
-      <div class="chat-online">Online</div>
+
+<!-- CHAT WIDGET -->
+<div id="chatWidget">
+  <div class="chat-window" id="chatWindow">
+    <div class="chat-win-header">
+      <div class="chat-win-avatar">
+        <img src="logo.jpg" alt="Botably">
+      </div>
+      <div>
+        <div class="chat-win-name">Botably AI</div>
+        <div class="chat-win-status">Online</div>
+      </div>
     </div>
-    <div id="chat-msgs">
-      <div class="cmsg bot">&#128075; Hi! I'm Botably's AI assistant. Ask me anything about our automation services or how we can help your business.</div>
+    <div class="chat-messages" id="chatMessages">
+      <div class="chat-msg-bot">👋 Hi! I'm Botably's AI assistant. Ask me anything about our automation services.</div>
     </div>
-    <div class="chat-foot">
-      <input type="text" id="chat-in" placeholder="Ask me anything..." onkeydown="if(event.key==='Enter')sendChat()">
-      <button id="chat-btn" onclick="sendChat()">&#9658;</button>
+    <div class="chat-input-row">
+      <input type="text" class="chat-input-field" id="chatInput" placeholder="Ask anything...">
+      <button class="chat-send-btn" id="chatSend">➤</button>
     </div>
   </div>
-  <button id="chat-fab" onclick="toggleChat()">
-    <img src="logo.jpg" alt="Ask Botably AI">
+  <button class="chat-toggle" id="chatToggle">
+    <img src="logo.jpg" alt="Chat">
   </button>
-  <span class="chat-fab-label">Ask Botably AI</span>
 </div>
+
 <script>
-  const PROXY='https://cryptonavi.pythonanywhere.com/proxy/anthropic';
-  const MODEL='claude-haiku-4-5-20251001';
-  let history=[],open=false;
-  function toggleChat(){
-    open=!open;
-    document.getElementById('chat-panel').classList.toggle('open',open);
-    if(open)document.getElementById('chat-in').focus();
+// ─── PARTICLE CANVAS ───
+(function() {
+  var canvas = document.getElementById('particleCanvas');
+  var ctx = canvas.getContext('2d');
+  var particles = [];
+  var mouse = { x: 0, y: 0 };
+
+  function resize() {
+    canvas.width = window.innerWidth;
+    canvas.height = window.innerHeight;
   }
-  function addMsg(text,cls){
-    const box=document.getElementById('chat-msgs');
-    const d=document.createElement('div');
-    d.className='cmsg '+cls;
-    d.textContent=text;
-    box.appendChild(d);
-    box.scrollTop=box.scrollHeight;
-    return d;
-  }
-  function sendChat(){
-    const inp=document.getElementById('chat-in');
-    const txt=inp.value.trim();
-    if(!txt)return;
-    inp.value='';
-    addMsg(txt,'user');
-    history.push({role:'user',content:txt});
-    const t=addMsg('Thinking...','typing');
-    fetch(PROXY,{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({model:MODEL,max_tokens:512,system:'You are Botably AI, the intelligent assistant for Botably — an automation and web solutions business founded by Allen Simmons. Help visitors understand Botably services: Telegram bots, workflow automation, crypto market intelligence, web solutions, and privacy setups. Pricing: Starter $49/mo, Job Hunter $99/mo, Full Stack $299/mo, Resume rewrite $29 one-time. Be concise, confident, and results-focused.',messages:history})}).then(function(r){return r.json();}).then(function(data){
-      const reply=data&&data.content&&data.content[0]&&data.content[0].text?data.content[0].text:'Something went wrong. Please try again.';
-      history.push({role:'assistant',content:reply});
-      t.remove();addMsg(reply,'bot');
-    }).catch(function(){
-      t.remove();
-      addMsg('Connection error. Email us: botablyservices@gmail.com','bot');
-    });
-  }
-  function sendForm(){
-    const n=document.getElementById('fn').value.trim();
-    const e=document.getElementById('fe').value.trim();
-    const m=document.getElementById('fm').value.trim();
-    const el=document.getElementById('fmsg');
-    if(!n||!e||!m){el.className='fmsg err';el.style.display='block';el.textContent='Please fill in all fields.';return;}
-    if(!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(e)){el.className='fmsg err';el.style.display='block';el.textContent='Please enter a valid email address.';return;}
-    el.className='fmsg ok';el.style.display='block';el.textContent='Message received! We\'ll respond within 24 hours.';
-    document.getElementById('fn').value='';document.getElementById('fe').value='';document.getElementById('fm').value='';
-  }
-  document.querySelectorAll('a[href^="#"]').forEach(function(a){
-    a.addEventListener('click',function(e){
-      const t=document.querySelector(a.getAttribute('href'));
-      if(t){e.preventDefault();t.scrollIntoView({behavior:'smooth'});}
-    });
+
+  resize();
+  window.addEventListener('resize', resize);
+  window.addEventListener('mousemove', function(e) {
+    mouse.x = e.clientX;
+    mouse.y = e.clientY;
   });
+
+  function Particle() {
+    this.reset();
+  }
+
+  Particle.prototype.reset = function() {
+    this.x = Math.random() * canvas.width;
+    this.y = Math.random() * canvas.height;
+    this.vx = (Math.random() - 0.5) * 0.4;
+    this.vy = (Math.random() - 0.5) * 0.4;
+    this.r = Math.random() * 2 + 0.5;
+    this.alpha = Math.random() * 0.5 + 0.1;
+    this.color = Math.random() > 0.7 ? '255,107,0' : '255,255,255';
+  };
+
+  Particle.prototype.update = function() {
+    this.x += this.vx;
+    this.y += this.vy;
+    if (this.x < 0 || this.x > canvas.width || this.y < 0 || this.y > canvas.height) {
+      this.reset();
+    }
+  };
+
+  for (var i = 0; i < 80; i++) {
+    particles.push(new Particle());
+  }
+
+  function drawConnections() {
+    for (var a = 0; a < particles.length; a++) {
+      for (var b = a + 1; b < particles.length; b++) {
+        var dx = particles[a].x - particles[b].x;
+        var dy = particles[a].y - particles[b].y;
+        var dist = Math.sqrt(dx*dx + dy*dy);
+        if (dist < 120) {
+          ctx.strokeStyle = 'rgba(255,107,0,' + (0.08 * (1 - dist/120)) + ')';
+          ctx.lineWidth = 0.5;
+          ctx.beginPath();
+          ctx.moveTo(particles[a].x, particles[a].y);
+          ctx.lineTo(particles[b].x, particles[b].y);
+          ctx.stroke();
+        }
+      }
+    }
+  }
+
+  function animate() {
+    ctx.clearRect(0, 0, canvas.width, canvas.height);
+    drawConnections();
+    for (var i = 0; i < particles.length; i++) {
+      particles[i].update();
+      ctx.beginPath();
+      ctx.arc(particles[i].x, particles[i].y, particles[i].r, 0, Math.PI*2);
+      ctx.fillStyle = 'rgba(' + particles[i].color + ',' + particles[i].alpha + ')';
+      ctx.fill();
+    }
+    requestAnimationFrame(animate);
+  }
+
+  animate();
+})();
+
+// ─── NAV SCROLL ───
+window.addEventListener('scroll', function() {
+  var nav = document.getElementById('mainNav');
+  if (window.scrollY > 40) {
+    nav.classList.add('scrolled');
+  } else {
+    nav.classList.remove('scrolled');
+  }
+});
+
+// ─── COUNTER ANIMATION ───
+function animateCount(el, target) {
+  var start = 0;
+  var duration = 1800;
+  var startTime = null;
+  function step(timestamp) {
+    if (!startTime) startTime = timestamp;
+    var progress = Math.min((timestamp - startTime) / duration, 1);
+    var ease = 1 - Math.pow(1 - progress, 3);
+    el.textContent = Math.round(ease * target) + '+';
+    if (progress < 1) requestAnimationFrame(step);
+  }
+  requestAnimationFrame(step);
+}
+
+var counters = document.querySelectorAll('[data-count]');
+var counted = false;
+var heroObserver = new IntersectionObserver(function(entries) {
+  entries.forEach(function(entry) {
+    if (entry.isIntersecting && !counted) {
+      counted = true;
+      counters.forEach(function(el) {
+        animateCount(el, parseInt(el.getAttribute('data-count')));
+      });
+    }
+  });
+}, { threshold: 0.5 });
+
+if (counters.length > 0) heroObserver.observe(counters[0]);
+
+// ─── SCROLL REVEAL ───
+var revealEls = document.querySelectorAll('.service-card, .pricing-card, .process-step, .reveal');
+var revealObserver = new IntersectionObserver(function(entries) {
+  entries.forEach(function(entry) {
+    if (entry.isIntersecting) {
+      entry.target.classList.add('revealed');
+    }
+  });
+}, { threshold: 0.1, rootMargin: '0px 0px -40px 0px' });
+
+revealEls.forEach(function(el) { revealObserver.observe(el); });
+
+// ─── ROI CALCULATOR ───
+function updateROI() {
+  var team = parseInt(document.getElementById('teamSlider').value);
+  var tasks = parseInt(document.getElementById('tasksSlider').value);
+  var rate = parseInt(document.getElementById('rateSlider').value);
+  var mins = parseInt(document.getElementById('minsSlider').value);
+
+  document.getElementById('teamVal').textContent = team;
+  document.getElementById('tasksVal').textContent = tasks;
+  document.getElementById('rateVal').textContent = '$' + rate;
+  document.getElementById('minsVal').textContent = mins;
+
+  var hoursPerWeek = (team * tasks * mins * 5) / 60;
+  var moneySaved = hoursPerWeek * rate;
+  var yearly = moneySaved * 52;
+
+  document.getElementById('hoursSaved').textContent = Math.round(hoursPerWeek);
+  document.getElementById('moneySaved').textContent = '$' + Math.round(moneySaved).toLocaleString();
+  document.getElementById('yearlySaved').textContent = yearly >= 1000
+    ? '$' + Math.round(yearly / 1000) + 'K'
+    : '$' + Math.round(yearly).toLocaleString();
+}
+
+['teamSlider','tasksSlider','rateSlider','minsSlider'].forEach(function(id) {
+  document.getElementById(id).addEventListener('input', updateROI);
+});
+
+updateROI();
+
+// ─── EMAIL CAPTURE ───
+document.getElementById('auditBtn').addEventListener('click', function() {
+  var email = document.getElementById('auditEmail').value;
+  if (email && email.indexOf('@') > -1) {
+    document.getElementById('captureMsg').style.display = 'block';
+    document.getElementById('auditEmail').value = '';
+    document.getElementById('auditBtn').textContent = '✓ Sent!';
+    document.getElementById('auditBtn').style.background = '#00d97e';
+  }
+});
+
+// ─── CONTACT FORM ───
+document.getElementById('formSubmit').addEventListener('click', function() {
+  this.textContent = '✓ Message Sent!';
+  this.style.background = '#00d97e';
+  setTimeout(function() {
+    document.getElementById('formSubmit').textContent = 'Send Message →';
+    document.getElementById('formSubmit').style.background = '';
+  }, 3000);
+});
+
+// ─── CHAT WIDGET ───
+var chatOpen = false;
+
+document.getElementById('chatToggle').addEventListener('click', function() {
+  chatOpen = !chatOpen;
+  var win = document.getElementById('chatWindow');
+  if (chatOpen) {
+    win.classList.add('open');
+  } else {
+    win.classList.remove('open');
+  }
+});
+
+function addChatMsg(text, isBot) {
+  var msg = document.createElement('div');
+  msg.className = isBot ? 'chat-msg-bot' : 'chat-msg-user';
+  msg.textContent = text;
+  document.getElementById('chatMessages').appendChild(msg);
+  document.getElementById('chatMessages').scrollTop = 9999;
+}
+
+function addTypingIndicator() {
+  var t = document.createElement('div');
+  t.className = 'chat-typing';
+  t.id = 'chatTyping';
+  t.innerHTML = '<span></span><span></span><span></span>';
+  document.getElementById('chatMessages').appendChild(t);
+  document.getElementById('chatMessages').scrollTop = 9999;
+}
+
+function removeTyping() {
+  var t = document.getElementById('chatTyping');
+  if (t) t.remove();
+}
+
+function sendChat() {
+  var input = document.getElementById('chatInput');
+  var msg = input.value.trim();
+  if (!msg) return;
+  addChatMsg(msg, false);
+  input.value = '';
+  addTypingIndicator();
+
+  fetch('https://cryptonavi.pythonanywhere.com/chat', {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify({ message: msg })
+  }).then(function(res) {
+    return res.json();
+  }).then(function(data) {
+    removeTyping();
+    addChatMsg(data.response || "Thanks for reaching out! We'll get back to you shortly.", true);
+  }).catch(function() {
+    removeTyping();
+    addChatMsg("Thanks for your message! WhatsApp us at +1 (321) 266-1767 for an immediate response.", true);
+  });
+}
+
+document.getElementById('chatSend').addEventListener('click', sendChat);
+document.getElementById('chatInput').addEventListener('keydown', function(e) {
+  if (e.key === 'Enter') sendChat();
+});
 </script>
 </body>
 </html>
