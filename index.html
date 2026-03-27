@@ -598,34 +598,100 @@ footer{
 .footer-copy{font-size:12px;color:var(--text-faint);}
 
 /* ── CHAT WIDGET ── */
-#chatWidget{position:fixed;bottom:28px;right:28px;z-index:2000;}
+#chatWidget{
+  position:fixed;bottom:28px;right:28px;z-index:2000;
+  display:flex;flex-direction:column;align-items:flex-end;gap:12px;
+}
+.chat-launcher{
+  display:flex;align-items:center;gap:0;
+  cursor:pointer;border:none;background:none;padding:0;
+}
+.chat-launcher-pill{
+  display:flex;align-items:center;gap:10px;
+  background:var(--bg2);
+  border:1px solid var(--cyan);
+  border-right:none;
+  border-radius:40px 0 0 40px;
+  padding:10px 18px 10px 14px;
+  box-shadow:0 0 24px var(--cyan-dim),-4px 0 20px var(--cyan-dim);
+  transition:all 0.25s;
+}
+.chat-launcher:hover .chat-launcher-pill{
+  background:var(--cyan-dim);
+  box-shadow:0 0 40px var(--cyan-glow),-4px 0 30px var(--cyan-glow);
+}
+.chat-live-dot{
+  width:8px;height:8px;border-radius:50%;
+  background:var(--mint);flex-shrink:0;
+  box-shadow:0 0 8px var(--mint);
+  animation:pulse 1.5s infinite;
+}
+.chat-live-label{
+  font-family:'Syne',sans-serif;
+  font-size:11px;font-weight:700;
+  color:var(--mint);letter-spacing:0.14em;
+  text-transform:uppercase;
+}
+.chat-launcher-text{
+  font-family:'DM Sans',sans-serif;
+  font-size:13px;font-weight:600;
+  color:var(--text);white-space:nowrap;
+}
+.chat-launcher-avatar{
+  width:52px;height:52px;border-radius:50%;
+  background:linear-gradient(135deg,var(--cyan),var(--violet));
+  border:2px solid var(--cyan);
+  display:flex;align-items:center;justify-content:center;
+  font-size:22px;
+  box-shadow:0 0 24px var(--cyan-glow);
+  flex-shrink:0;
+  transition:all 0.25s;
+}
+.chat-launcher:hover .chat-launcher-avatar{
+  box-shadow:0 0 40px var(--cyan-glow);
+  transform:scale(1.05);
+}
 .chat-window{
-  position:absolute;bottom:72px;right:0;
   width:340px;background:var(--bg2);
   border:1px solid var(--border);border-radius:16px;
-  box-shadow:0 24px 80px rgba(0,0,0,0.6),0 0 40px var(--cyan-dim);
+  box-shadow:0 24px 80px rgba(0,0,0,0.7),0 0 40px var(--cyan-dim);
   overflow:hidden;display:none;flex-direction:column;
+  animation:slideUp 0.3s ease;
+}
+@keyframes slideUp{
+  from{opacity:0;transform:translateY(16px);}
+  to{opacity:1;transform:translateY(0);}
 }
 .chat-window.open{display:flex;}
 .chat-win-header{
-  background:var(--bg3);padding:14px 16px;
+  background:linear-gradient(135deg,rgba(0,212,255,0.08),rgba(123,47,255,0.08));
+  padding:14px 16px;
   display:flex;align-items:center;gap:10px;
   border-bottom:1px solid var(--border);
 }
 .chat-win-avatar{
-  width:36px;height:36px;border-radius:50%;overflow:hidden;
-  border:2px solid var(--cyan);
+  width:36px;height:36px;border-radius:50%;
+  background:linear-gradient(135deg,var(--cyan),var(--violet));
+  display:flex;align-items:center;justify-content:center;
+  font-size:18px;border:2px solid var(--cyan);
+  box-shadow:0 0 12px var(--cyan-glow);
 }
-.chat-win-avatar img{width:100%;height:100%;object-fit:cover;mix-blend-mode:lighten;}
 .chat-win-name{font-size:13px;font-weight:700;}
 .chat-win-status{font-size:11px;color:var(--mint);display:flex;align-items:center;gap:4px;}
 .chat-win-status::before{content:'';width:5px;height:5px;background:var(--mint);border-radius:50%;animation:pulse 2s infinite;}
+.chat-close{
+  margin-left:auto;background:none;border:none;
+  color:var(--text-faint);font-size:18px;cursor:pointer;
+  padding:4px;transition:color 0.2s;
+}
+.chat-close:hover{color:var(--cyan);}
 .chat-messages{
   flex:1;padding:16px;display:flex;flex-direction:column;
   gap:10px;overflow-y:auto;max-height:280px;
 }
 .chat-msg-bot,.chat-msg-user{
-  padding:10px 14px;border-radius:10px;font-size:13px;line-height:1.55;max-width:85%;
+  padding:10px 14px;border-radius:10px;
+  font-size:13px;line-height:1.55;max-width:85%;
 }
 .chat-msg-bot{
   background:var(--bg3);border:1px solid var(--border);
@@ -655,24 +721,18 @@ footer{
   flex:1;background:var(--bg4);border:1px solid var(--border);
   border-radius:6px;padding:9px 12px;color:var(--text);
   font-family:'DM Sans',sans-serif;font-size:13px;outline:none;
+  transition:border-color 0.2s;
 }
+.chat-input-field:focus{border-color:var(--cyan);}
 .chat-input-field::placeholder{color:var(--text-faint);}
 .chat-send-btn{
   width:34px;height:34px;border-radius:6px;
   background:linear-gradient(135deg,var(--cyan),var(--violet));
   border:none;cursor:pointer;color:#fff;font-size:13px;
   display:flex;align-items:center;justify-content:center;
+  transition:all 0.2s;
 }
-.chat-toggle{
-  width:58px;height:58px;border-radius:50%;
-  background:linear-gradient(135deg,var(--cyan),var(--violet));
-  border:none;cursor:pointer;
-  box-shadow:0 0 32px var(--cyan-glow);
-  overflow:hidden;padding:0;
-  transition:transform 0.2s,box-shadow 0.2s;
-}
-.chat-toggle:hover{transform:scale(1.08);box-shadow:0 0 48px var(--cyan-glow);}
-.chat-toggle img{width:100%;height:100%;object-fit:cover;mix-blend-mode:lighten;}
+.chat-send-btn:hover{box-shadow:0 0 16px var(--cyan-glow);}
 
 /* ── RESPONSIVE ── */
 @media(max-width:900px){
@@ -1114,22 +1174,28 @@ footer{
 <div id="chatWidget">
   <div class="chat-window" id="chatWindow">
     <div class="chat-win-header">
-      <div class="chat-win-avatar"><img src="logo.jpg" alt="Botably"></div>
+      <div class="chat-win-avatar">🤖</div>
       <div>
-        <div class="chat-win-name">Botably AI</div>
+        <div class="chat-win-name">Aria — Botably AI</div>
         <div class="chat-win-status">Online Now</div>
       </div>
+      <button class="chat-close" id="chatClose">✕</button>
     </div>
     <div class="chat-messages" id="chatMessages">
-      <div class="chat-msg-bot">👋 Hey! I'm Aria, Botably's AI assistant. Ask me anything about our voice agent services — or book a free strategy call.</div>
+      <div class="chat-msg-bot">👋 Hey! I'm Aria. Ask me anything about Botably's AI voice agents — or I can book you a free strategy call right now.</div>
     </div>
     <div class="chat-input-row">
-      <input type="text" class="chat-input-field" id="chatInput" placeholder="Ask anything...">
+      <input type="text" class="chat-input-field" id="chatInput" placeholder="Ask Aria anything...">
       <button class="chat-send-btn" id="chatSend">➤</button>
     </div>
   </div>
-  <button class="chat-toggle" id="chatToggle">
-    <img src="logo.jpg" alt="Chat">
+  <button class="chat-launcher" id="chatToggle">
+    <div class="chat-launcher-pill">
+      <span class="chat-live-dot"></span>
+      <span class="chat-live-label">LIVE</span>
+      <span class="chat-launcher-text">Ask Aria Anything →</span>
+    </div>
+    <div class="chat-launcher-avatar">🤖</div>
   </button>
 </div>
 
@@ -1423,11 +1489,17 @@ document.getElementById('auditForm').addEventListener('submit', function(e) {
 
 // ── CHAT WIDGET ──
 var chatOpen = false;
+
 document.getElementById('chatToggle').addEventListener('click', function() {
   chatOpen = !chatOpen;
   var win = document.getElementById('chatWindow');
   if (chatOpen) win.classList.add('open');
   else win.classList.remove('open');
+});
+
+document.getElementById('chatClose').addEventListener('click', function() {
+  chatOpen = false;
+  document.getElementById('chatWindow').classList.remove('open');
 });
 
 function addChatMsg(text, isBot) {
