@@ -1199,7 +1199,7 @@
 
 <!-- CHAT WIDGET -->
 <div id="chat-widget">
-  <div id="chat-bubble">
+  <div id="chat-bubble" style="position:absolute;bottom:72px;right:0;width:340px;background:#0d1424;border:1px solid rgba(0,245,255,0.12);border-radius:16px;overflow:hidden;box-shadow:0 20px 60px rgba(0,0,0,0.5);display:none;flex-direction:column;">
     <div class="chat-header">
       <img src="aria.png" alt="Aria" />
       <div class="chat-header-info">
@@ -1215,7 +1215,7 @@
       <button class="chat-send" onclick="sendMsg()">Send</button>
     </div>
   </div>
-  <button id="chat-toggle">
+  <button id="chat-toggle" onclick="var b=document.getElementById('chat-bubble');b.style.display=b.style.display==='flex'?'none':'flex';">
     <img src="aria.png" alt="Chat with Aria" />
   </button>
 </div>
