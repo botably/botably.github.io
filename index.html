@@ -34,12 +34,46 @@
       line-height: 1.6;
     }
 
-    /* ── CANVAS BG ── */
+    /* ── CSS STAR BG ── */
     #bg-canvas {
       position: fixed;
       inset: 0;
       z-index: 0;
       pointer-events: none;
+      background:
+        radial-gradient(ellipse at 20% 50%, rgba(124,58,237,0.15) 0%, transparent 60%),
+        radial-gradient(ellipse at 80% 20%, rgba(0,245,255,0.1) 0%, transparent 50%),
+        radial-gradient(ellipse at 60% 80%, rgba(0,255,170,0.05) 0%, transparent 40%),
+        var(--dark);
+      overflow: hidden;
+    }
+    #bg-canvas::before {
+      content: '';
+      position: absolute;
+      inset: 0;
+      background-image:
+        radial-gradient(1px 1px at 10% 15%, rgba(0,245,255,0.6) 0%, transparent 100%),
+        radial-gradient(1px 1px at 25% 40%, rgba(167,139,250,0.5) 0%, transparent 100%),
+        radial-gradient(1px 1px at 40% 10%, rgba(0,245,255,0.4) 0%, transparent 100%),
+        radial-gradient(1px 1px at 55% 60%, rgba(0,255,170,0.5) 0%, transparent 100%),
+        radial-gradient(1px 1px at 70% 30%, rgba(0,245,255,0.6) 0%, transparent 100%),
+        radial-gradient(1px 1px at 85% 75%, rgba(167,139,250,0.4) 0%, transparent 100%),
+        radial-gradient(1px 1px at 15% 80%, rgba(0,245,255,0.5) 0%, transparent 100%),
+        radial-gradient(1px 1px at 90% 10%, rgba(0,255,170,0.4) 0%, transparent 100%),
+        radial-gradient(1px 1px at 45% 85%, rgba(0,245,255,0.5) 0%, transparent 100%),
+        radial-gradient(1px 1px at 65% 50%, rgba(167,139,250,0.6) 0%, transparent 100%),
+        radial-gradient(1px 1px at 30% 65%, rgba(0,245,255,0.3) 0%, transparent 100%),
+        radial-gradient(1px 1px at 75% 90%, rgba(0,255,170,0.4) 0%, transparent 100%),
+        radial-gradient(1px 1px at 5% 55%, rgba(167,139,250,0.5) 0%, transparent 100%),
+        radial-gradient(1px 1px at 95% 45%, rgba(0,245,255,0.4) 0%, transparent 100%),
+        radial-gradient(2px 2px at 50% 25%, rgba(0,245,255,0.3) 0%, transparent 100%),
+        radial-gradient(2px 2px at 20% 90%, rgba(167,139,250,0.3) 0%, transparent 100%),
+        radial-gradient(2px 2px at 80% 60%, rgba(0,255,170,0.3) 0%, transparent 100%);
+      animation: starTwinkle 8s ease-in-out infinite alternate;
+    }
+    @keyframes starTwinkle {
+      0% { opacity: 0.6; }
+      100% { opacity: 1; }
     }
 
     /* ── NAV ── */
@@ -956,7 +990,7 @@
 </head>
 <body>
 
-<canvas id="bg-canvas"></canvas>
+<div id="bg-canvas"></div>
 
 <!-- NAV -->
 <nav>
@@ -1220,64 +1254,7 @@
   </button>
 </div>
 
-<script data-cfasync="false" src="/cdn-cgi/scripts/5c5dd728/cloudflare-static/email-decode.min.js"></script><script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
 <script>
-  // ── THREE.JS BACKGROUND ──
-  const canvas = document.getElementById('bg-canvas');
-  const renderer = new THREE.WebGLRenderer({ canvas, alpha: true, antialias: true });
-  renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
-  renderer.setSize(window.innerWidth, window.innerHeight);
-
-  const scene = new THREE.Scene();
-  const camera = new THREE.PerspectiveCamera(75, window.innerWidth / window.innerHeight, 0.1, 1000);
-  camera.position.z = 5;
-
-  const geo = new THREE.BufferGeometry();
-  const count = 1800;
-  const positions = new Float32Array(count * 3);
-  const colors = new Float32Array(count * 3);
-
-  for (let i = 0; i < count; i++) {
-    positions[i * 3] = (Math.random() - 0.5) * 20;
-    positions[i * 3 + 1] = (Math.random() - 0.5) * 20;
-    positions[i * 3 + 2] = (Math.random() - 0.5) * 20;
-    const t = Math.random();
-    if (t < 0.5) {
-      colors[i*3]=0; colors[i*3+1]=0.96; colors[i*3+2]=1;
-    } else {
-      colors[i*3]=0.49; colors[i*3+1]=0.23; colors[i*3+2]=0.93;
-    }
-  }
-
-  geo.setAttribute('position', new THREE.BufferAttribute(positions, 3));
-  geo.setAttribute('color', new THREE.BufferAttribute(colors, 3));
-
-  const mat = new THREE.PointsMaterial({ size: 0.035, vertexColors: true, transparent: true, opacity: 0.65 });
-  const points = new THREE.Points(geo, mat);
-  scene.add(points);
-
-  let mouseX = 0, mouseY = 0;
-  document.addEventListener('mousemove', e => {
-    mouseX = (e.clientX / window.innerWidth - 0.5) * 0.4;
-    mouseY = (e.clientY / window.innerHeight - 0.5) * 0.4;
-  });
-
-  window.addEventListener('resize', () => {
-    camera.aspect = window.innerWidth / window.innerHeight;
-    camera.updateProjectionMatrix();
-    renderer.setSize(window.innerWidth, window.innerHeight);
-  });
-
-  function animate() {
-    requestAnimationFrame(animate);
-    points.rotation.y += 0.0008;
-    points.rotation.x += 0.0003;
-    camera.position.x += (mouseX - camera.position.x) * 0.03;
-    camera.position.y += (-mouseY - camera.position.y) * 0.03;
-    renderer.render(scene, camera);
-  }
-  animate();
-
   // ── ROI CALCULATOR ──
   function calcROI() {
     const leads = parseFloat(document.getElementById('roi-leads').value) || 0;
