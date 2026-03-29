@@ -1249,9 +1249,21 @@
       <button class="chat-send" onclick="sendMsg()">Send</button>
     </div>
   </div>
-  <button id="chat-toggle" onclick="var b=document.getElementById('chat-bubble');b.style.display=b.style.display==='flex'?'none':'flex';">
+  <button id="chat-toggle">
     <img src="aria.png" alt="Chat with Aria" />
   </button>
+  <script>
+    (function(){
+      var btn = document.getElementById('chat-toggle');
+      var bubble = document.getElementById('chat-bubble');
+      function toggle(e){
+        e.preventDefault();
+        bubble.style.display = bubble.style.display === 'flex' ? 'none' : 'flex';
+      }
+      btn.addEventListener('click', toggle);
+      btn.addEventListener('touchend', toggle);
+    })();
+  </script>
 </div>
 
 <script>
