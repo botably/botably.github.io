@@ -1232,39 +1232,192 @@
 </footer>
 
 <!-- CHAT WIDGET -->
-<div id="chat-widget">
-  <div id="chat-bubble" style="position:absolute;bottom:72px;right:0;width:340px;background:#0d1424;border:1px solid rgba(0,245,255,0.12);border-radius:16px;overflow:hidden;box-shadow:0 20px 60px rgba(0,0,0,0.5);display:none;flex-direction:column;">
-    <div class="chat-header">
+<style>
+  #chat-check { display: none; }
+  #chat-check:checked ~ #chat-pop { display: flex; }
+  #chat-widget2 {
+    position: fixed;
+    bottom: 28px;
+    right: 28px;
+    z-index: 9999;
+    display: flex;
+    flex-direction: column;
+    align-items: flex-end;
+  }
+  #chat-pop {
+    display: none;
+    flex-direction: column;
+    width: 320px;
+    background: #0d1424;
+    border: 1px solid rgba(0,245,255,0.2);
+    border-radius: 16px;
+    overflow: hidden;
+    box-shadow: 0 20px 60px rgba(0,0,0,0.6);
+    margin-bottom: 12px;
+  }
+  .cp-head {
+    background: linear-gradient(135deg, rgba(0,245,255,0.1), rgba(124,58,237,0.1));
+    padding: 14px 18px;
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    border-bottom: 1px solid rgba(0,245,255,0.1);
+  }
+  .cp-head img { width: 36px; height: 36px; border-radius: 50%; border: 1px solid #00f5ff; object-fit: cover; }
+  .cp-name { font-family: Syne, sans-serif; font-weight: 700; color: #00f5ff; font-size: 0.9rem; }
+  .cp-status { font-size: 0.72rem; color: #00ffaa; }
+  .cp-msgs {
+    height: 200px;
+    overflow-y: auto;
+    padding: 14px;
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+  }
+  .cp-msg-bot {
+    background: rgba(0,245,255,0.07);
+    border: 1px solid rgba(0,245,255,0.1);
+    color: #e2e8f0;
+    font-size: 0.82rem;
+    padding: 10px 14px;
+    border-radius: 12px;
+    max-width: 85%;
+    line-height: 1.5;
+  }
+  .cp-msg-user {
+    background: rgba(124,58,237,0.2);
+    border: 1px solid rgba(124,58,237,0.25);
+    color: #e2e8f0;
+    font-size: 0.82rem;
+    padding: 10px 14px;
+    border-radius: 12px;
+    max-width: 85%;
+    align-self: flex-end;
+    line-height: 1.5;
+  }
+  .cp-input-row {
+    padding: 10px 14px;
+    display: flex;
+    gap: 8px;
+    border-top: 1px solid rgba(0,245,255,0.1);
+  }
+  .cp-input {
+    flex: 1;
+    background: rgba(255,255,255,0.04);
+    border: 1px solid rgba(0,245,255,0.15);
+    border-radius: 8px;
+    color: #fff;
+    font-size: 0.82rem;
+    padding: 8px 12px;
+    outline: none;
+    font-family: DM Sans, sans-serif;
+  }
+  .cp-send {
+    background: #00f5ff;
+    color: #050810;
+    border: none;
+    border-radius: 8px;
+    padding: 8px 14px;
+    font-weight: 700;
+    font-size: 0.82rem;
+    cursor: pointer;
+  }
+  .chat-fab {
+    width: 60px;
+    height: 60px;
+    border-radius: 50%;
+    background: linear-gradient(135deg, #00f5ff, #7c3aed);
+    border: none;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    box-shadow: 0 4px 24px rgba(0,245,255,0.4);
+    -webkit-tap-highlight-color: transparent;
+    touch-action: manipulation;
+  }
+  .chat-fab img { width: 42px; height: 42px; border-radius: 50%; object-fit: cover; }
+  .chat-fab-label {
+    width: 60px;
+    height: 60px;
+    border-radius: 50%;
+    background: linear-gradient(135deg, #00f5ff, #7c3aed);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    box-shadow: 0 4px 24px rgba(0,245,255,0.4);
+    cursor: pointer;
+    -webkit-tap-highlight-color: transparent;
+    touch-action: manipulation;
+  }
+  .chat-fab-label img { width: 42px; height: 42px; border-radius: 50%; object-fit: cover; }
+</style>
+
+<div id="chat-widget2">
+  <input type="checkbox" id="chat-check" />
+  <div id="chat-pop">
+    <div class="cp-head">
       <img src="aria.png" alt="Aria" />
-      <div class="chat-header-info">
-        <div class="name">Aria</div>
-        <div class="status">Online now</div>
+      <div>
+        <div class="cp-name">Aria</div>
+        <div class="cp-status">● Online now</div>
       </div>
     </div>
-    <div class="chat-messages" id="chat-messages">
-      <div class="msg bot">Hi! I'm Aria, your Botably AI agent. What does your business do? I'll show you exactly what we can automate for you.</div>
+    <div class="cp-msgs" id="cp-msgs">
+      <div class="cp-msg-bot">Hi! I'm Aria. What does your business do? I'll show you exactly what we can automate for you.</div>
     </div>
-    <div class="chat-input-row">
-      <input type="text" id="chat-input" placeholder="Type a message..." onkeydown="if(event.key==='Enter')sendMsg()" />
-      <button class="chat-send" onclick="sendMsg()">Send</button>
+    <div class="cp-input-row">
+      <input class="cp-input" id="cp-input" type="text" placeholder="Type a message..." />
+      <button class="cp-send" onclick="cpSend()">Send</button>
     </div>
   </div>
-  <button id="chat-toggle">
+  <label for="chat-check" class="chat-fab-label">
     <img src="aria.png" alt="Chat with Aria" />
-  </button>
-  <script>
-    (function(){
-      var btn = document.getElementById('chat-toggle');
-      var bubble = document.getElementById('chat-bubble');
-      function toggle(e){
-        e.preventDefault();
-        bubble.style.display = bubble.style.display === 'flex' ? 'none' : 'flex';
-      }
-      btn.addEventListener('click', toggle);
-      btn.addEventListener('touchend', toggle);
-    })();
-  </script>
+  </label>
 </div>
+
+<script>
+function cpSend() {
+  var input = document.getElementById('cp-input');
+  var msg = input.value.trim();
+  if (!msg) return;
+  input.value = '';
+  var msgs = document.getElementById('cp-msgs');
+  var u = document.createElement('div');
+  u.className = 'cp-msg-user';
+  u.textContent = msg;
+  msgs.appendChild(u);
+  var t = document.createElement('div');
+  t.className = 'cp-msg-bot';
+  t.textContent = 'Aria is typing...';
+  t.id = 'cp-typing';
+  msgs.appendChild(t);
+  msgs.scrollTop = msgs.scrollHeight;
+  fetch('https://api.botably.io/chat', {
+    method: 'POST',
+    headers: {'Content-Type': 'application/json'},
+    body: JSON.stringify({message: msg})
+  }).then(function(r){ return r.json(); }).then(function(d){
+    document.getElementById('cp-typing').remove();
+    var b = document.createElement('div');
+    b.className = 'cp-msg-bot';
+    b.textContent = d.reply || d.response || 'Thanks! Email us at hello@botably.io';
+    msgs.appendChild(b);
+    msgs.scrollTop = msgs.scrollHeight;
+  }).catch(function(){
+    document.getElementById('cp-typing').remove();
+    var b = document.createElement('div');
+    b.className = 'cp-msg-bot';
+    b.textContent = 'Having trouble connecting. Email hello@botably.io and we respond within 2 hours.';
+    msgs.appendChild(b);
+    msgs.scrollTop = msgs.scrollHeight;
+  });
+}
+document.getElementById('cp-input').addEventListener('keydown', function(e){
+  if(e.key === 'Enter') cpSend();
+});
+</script>
+
 
 <script>
   // ── ROI CALCULATOR ──
