@@ -1035,11 +1035,33 @@
           <div class="aria-waves">
             <span></span><span></span><span></span><span></span><span></span>
           </div>
+          <button onclick="playAriaDemo(this)" style="margin-top:12px;background:transparent;border:1px solid rgba(0,245,255,0.4);color:#00f5ff;border-radius:6px;padding:7px 16px;font-size:0.78rem;font-weight:600;cursor:pointer;letter-spacing:0.05em;">▶ Hear Aria Speak</button>
+          <audio id="aria-audio"></audio>
         </div>
       </div>
     </div>
   </div>
 </section>
+
+<script>
+function playAriaDemo(btn) {
+  var audio = document.getElementById('aria-audio');
+  btn.textContent = '⏳ Loading...';
+  btn.disabled = true;
+  audio.src = 'https://api.botably.io/aria-demo?' + Date.now();
+  audio.load();
+  audio.play().then(function(){
+    btn.textContent = '🔊 Playing...';
+  }).catch(function(e){
+    btn.textContent = '▶ Hear Aria Speak';
+    btn.disabled = false;
+  });
+  audio.onended = function(){
+    btn.textContent = '▶ Hear Aria Speak';
+    btn.disabled = false;
+  };
+}
+</script>
 
 <!-- INDUSTRIES -->
 <section id="industries">
