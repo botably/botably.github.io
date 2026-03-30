@@ -337,14 +337,14 @@
     <div class="section-label">Get In Touch</div>
     <h2 class="section-title">Ready to Automate?</h2>
     <p class="section-sub" style="margin-bottom:0;">Book a free audit or send us a message. We respond within 2 hours.</p>
-    <div class="contact-email">hello@botably.io</div>
+    <div class="contact-email"><a href="/cdn-cgi/l/email-protection" class="__cf_email__" data-cfemail="99f1fcf5f5f6d9fbf6edf8fbf5e0b7f0f6">[email&#160;protected]</a></div>
     <a href="https://cal.com/allen-aeq4f9/30min" target="_blank" class="btn-primary">Book Your Free Audit</a>
   </div>
 </section>
 
 <footer>
   <div class="footer-logo"><img src="aria.png" alt="Aria" /><span>Botably</span></div>
-  <div class="footer-copy">© 2025 Botably. All rights reserved. · hello@botably.io</div>
+  <div class="footer-copy">© 2025 Botably. All rights reserved. · <a href="/cdn-cgi/l/email-protection" class="__cf_email__" data-cfemail="28404d444447684a475c494a4451064147">[email&#160;protected]</a></div>
 </footer>
 
 <div id="chat-widget2">
@@ -367,7 +367,7 @@
   </label>
 </div>
 
-<script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
+<script data-cfasync="false" src="/cdn-cgi/scripts/5c5dd728/cloudflare-static/email-decode.min.js"></script><script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
 <script>
 try {
   var canvas = document.getElementById('bg-canvas');
@@ -382,7 +382,8 @@ try {
   for(var i=0;i<count;i++){pos[i*3]=(Math.random()-.5)*20;pos[i*3+1]=(Math.random()-.5)*20;pos[i*3+2]=(Math.random()-.5)*20;if(Math.random()<.5){col[i*3]=0;col[i*3+1]=.96;col[i*3+2]=1;}else{col[i*3]=.49;col[i*3+1]=.23;col[i*3+2]=.93;}}
   geo.setAttribute('position',new THREE.BufferAttribute(pos,3));
   geo.setAttribute('color',new THREE.BufferAttribute(col,3));
-  var pts=new THREE.Points(geo,new THREE.PointsMaterial({size:.035,vertexColors:true,transparent:true,opacity:.65}));
+  var sprite=document.createElement('canvas');sprite.width=64;sprite.height=64;var ctx2=sprite.getContext('2d');var grad=ctx2.createRadialGradient(32,32,0,32,32,32);grad.addColorStop(0,'rgba(255,255,255,1)');grad.addColorStop(1,'rgba(255,255,255,0)');ctx2.fillStyle=grad;ctx2.beginPath();ctx2.arc(32,32,32,0,Math.PI*2);ctx2.fill();var tex=new THREE.CanvasTexture(sprite);
+  var pts=new THREE.Points(geo,new THREE.PointsMaterial({size:.12,vertexColors:true,transparent:true,opacity:.7,map:tex,sizeAttenuation:true,depthWrite:false}));
   scene.add(pts);
   var mx=0,my=0;
   document.addEventListener('mousemove',function(e){mx=(e.clientX/window.innerWidth-.5)*.4;my=(e.clientY/window.innerHeight-.5)*.4;});
@@ -415,11 +416,4 @@ function cpSend(){
     var el=document.getElementById('cp-typing');if(el)el.remove();
     var b=document.createElement('div');b.className='cp-msg-bot';b.textContent=d.reply||d.response||'Thanks! Email us at hello@botably.io';msgs.appendChild(b);msgs.scrollTop=msgs.scrollHeight;
   }).catch(function(){
-    var el=document.getElementById('cp-typing');if(el)el.remove();
-    var b=document.createElement('div');b.className='cp-msg-bot';b.textContent='Having trouble connecting. Email hello@botably.io';msgs.appendChild(b);msgs.scrollTop=msgs.scrollHeight;
-  });
-}
-document.getElementById('cp-input').addEventListener('keydown',function(e){if(e.key==='Enter')cpSend();});
-</script>
-</body>
-</html>
+    var el=document.getElementById('cp-typing'
