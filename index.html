@@ -6,7 +6,7 @@
   <title>Botably – AI Automation for Small Business</title>
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-  <link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;600;700;800&family=DM+Sans:ital,wght@0,300;0,400;0,500;1,300&display=swap" rel="stylesheet" />
+  <link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;600;700;800&family=DM+Sans:ital,wght@0,300;0,400;0,500;0,700;1,300&display=swap" rel="stylesheet" />
   <style>
     :root {
       --cyan: #00f5ff;
@@ -144,29 +144,19 @@
 
     .price-tier { font-family: 'Syne', sans-serif; font-weight: 700; font-size: 0.8rem; letter-spacing: 0.12em; text-transform: uppercase; color: var(--cyan); margin-bottom: 12px; }
 
-    /* price-amount: align-items:center forces $ and digits to same vertical midpoint */
+    /* price-amount: DM Sans 700 — geometrically uniform digits, no glyph-weight variance */
     .price-amount {
-      font-family: 'Syne', sans-serif;
+      font-family: 'DM Sans', sans-serif;
       font-size: 3rem;
-      font-weight: 800;
+      font-weight: 700;
       color: #fff;
       letter-spacing: -0.02em;
       line-height: 1;
       margin-bottom: 4px;
-      display: flex;
-      align-items: center;
-      gap: 0;
-      font-variant-numeric: tabular-nums;
-      font-feature-settings: "tnum";
-      font-kerning: none;
-    }
-    .price-amount .price-sym,
-    .price-amount .price-num {
-      font-size: 3rem;
-      font-weight: 800;
-      font-family: 'Syne', sans-serif;
-      line-height: 1;
       display: block;
+    }
+    .price-amount.custom {
+      font-size: 3rem;
       color: #fff;
     }
     .price-amount.custom {
@@ -190,19 +180,15 @@
     .roi-result { margin-top: 28px; background: rgba(0,245,255,0.05); border: 1px solid rgba(0,245,255,0.2); border-radius: 12px; padding: 24px; text-align: center; }
     .roi-label { font-size: 0.8rem; color: var(--muted); text-transform: uppercase; letter-spacing: 0.1em; margin-bottom: 8px; }
 
-    /* roi-value: tabular-nums + kerning:none prevents any per-glyph size variance */
+    /* roi-value: DM Sans 700 — uniform digit rendering */
     .roi-value {
-      font-family: 'Syne', sans-serif;
+      font-family: 'DM Sans', sans-serif;
       font-size: 2.8rem;
-      font-weight: 800;
+      font-weight: 700;
       color: var(--mint);
       letter-spacing: -0.02em;
       line-height: 1;
       display: block;
-      font-variant-numeric: tabular-nums;
-      font-feature-settings: "tnum";
-      font-kerning: none;
-      font-optical-sizing: none;
     }
 
     .roi-note { font-size: 0.8rem; color: var(--muted); margin-top: 6px; }
@@ -245,7 +231,7 @@
     }
     .contact-flag { font-size: 1.25rem; text-align: center; line-height: 1; }
     .contact-label { font-size: 0.72rem; font-weight: 600; letter-spacing: 0.1em; text-transform: uppercase; color: var(--muted); text-align: right; white-space: nowrap; }
-    .contact-value { font-family: 'Syne', sans-serif; font-size: 1rem; font-weight: 700; color: var(--cyan); text-align: left; }
+    .contact-value { font-family: 'DM Sans', sans-serif; font-size: 1rem; font-weight: 700; color: var(--cyan); text-align: left; }
     .contact-value a { color: var(--cyan); text-decoration: none; }
     .contact-value a:hover { text-decoration: underline; }
 
@@ -363,7 +349,7 @@
 
     <div class="price-card">
       <div class="price-tier">Starter</div>
-      <div class="price-amount"><span class="price-sym">$</span><span class="price-num">297</span></div>
+      <div class="price-amount">$297</div>
       <div class="price-period">per month</div>
       <ul class="price-features">
         <li>AI chat agent on your website</li>
@@ -378,7 +364,7 @@
     <div class="price-card featured">
       <span class="featured-badge">Best Value</span>
       <div class="price-tier">Growth</div>
-      <div class="price-amount"><span class="price-sym">$</span><span class="price-num">599</span></div>
+      <div class="price-amount">$599</div>
       <div class="price-period">per month</div>
       <ul class="price-features">
         <li>Everything in Starter</li>
