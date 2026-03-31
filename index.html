@@ -98,32 +98,33 @@
     /* PRICING */
     #pricing { padding: 100px 24px; background: var(--dark2); }
 
-    /* FIX: wrapper gives room above cards for the badge to overflow into */
+    /* padding-top gives room for badge to overflow above card */
     .pricing-grid {
       display: grid;
       grid-template-columns: repeat(3, 1fr);
       gap: 24px;
       max-width: 1000px;
       margin: 0 auto;
-      padding-top: 28px; /* space for badge overflow */
+      padding-top: 32px;
     }
 
-    /* FIX: removed overflow:hidden so badge is never clipped */
+    /* overflow visible so badge never clips */
     .price-card {
       background: var(--card);
       border: 1px solid var(--border);
       border-radius: 20px;
       padding: 36px 28px;
       position: relative;
+      overflow: visible;
       transition: transform 0.25s, box-shadow 0.25s;
     }
     .price-card:hover { transform: translateY(-4px); box-shadow: 0 20px 60px rgba(0,0,0,0.3); }
     .price-card.featured { border-color: var(--cyan); box-shadow: 0 0 40px rgba(0,245,255,0.1); }
 
-    /* FIX: badge now shows above card — overflow visible, top adjusted */
+    /* Best Value badge — centered above card, never clipped */
     .featured-badge {
       position: absolute;
-      top: -14px;
+      top: -16px;
       left: 50%;
       transform: translateX(-50%);
       background: linear-gradient(135deg, var(--cyan), var(--violet-light));
@@ -133,15 +134,16 @@
       font-size: 0.72rem;
       letter-spacing: 0.1em;
       text-transform: uppercase;
-      padding: 4px 16px;
+      padding: 5px 18px;
       border-radius: 100px;
       white-space: nowrap;
       z-index: 2;
+      display: block;
     }
 
     .price-tier { font-family: 'Syne', sans-serif; font-weight: 700; font-size: 0.8rem; letter-spacing: 0.12em; text-transform: uppercase; color: var(--cyan); margin-bottom: 12px; }
 
-    /* FIX: price-amount unified sizing — all characters same font-size, no sup tag */
+    /* price-amount: all characters same size, no sup tag, no size inconsistency */
     .price-amount {
       font-family: 'Syne', sans-serif;
       font-size: 3rem;
@@ -151,6 +153,8 @@
       line-height: 1;
       margin-bottom: 4px;
       display: block;
+      font-variant-numeric: tabular-nums;
+      font-feature-settings: "tnum";
     }
 
     .price-amount.custom {
@@ -162,7 +166,7 @@
     .price-period.starting { color: var(--cyan); font-weight: 700; }
     .price-features { list-style: none; display: flex; flex-direction: column; gap: 11px; margin-bottom: 32px; }
     .price-features li { font-size: 0.85rem; color: var(--text); display: flex; align-items: flex-start; gap: 10px; }
-    .price-features li::before { content: '✓'; color: var(--mint); font-weight: 700; flex-shrink: 0; margin-top: 1px; }
+    .price-features li::before { content: '\2713'; color: var(--mint); font-weight: 700; flex-shrink: 0; margin-top: 1px; }
 
     /* ROI */
     #roi { padding: 100px 24px; background: var(--dark3); }
@@ -174,7 +178,7 @@
     .roi-result { margin-top: 28px; background: rgba(0,245,255,0.05); border: 1px solid rgba(0,245,255,0.2); border-radius: 12px; padding: 24px; text-align: center; }
     .roi-label { font-size: 0.8rem; color: var(--muted); text-transform: uppercase; letter-spacing: 0.1em; margin-bottom: 8px; }
 
-    /* FIX: ROI value — tabular-nums + fixed font-size so $ and digits never shift */
+    /* roi-value: tabular-nums forces all glyphs to same width — $ and digits never shift */
     .roi-value {
       font-family: 'Syne', sans-serif;
       font-size: 2.8rem;
@@ -195,7 +199,7 @@
     .about-photo { width: 100%; max-width: 260px; border-radius: 20px; border: 1px solid var(--border); box-shadow: 0 0 40px rgba(124,58,237,0.2); }
     .about-tag { font-size: 0.75rem; font-weight: 600; letter-spacing: 0.15em; text-transform: uppercase; color: var(--cyan); margin-bottom: 14px; }
 
-    /* FIX: About h2 now matches section-title styling */
+    /* About h2 matches section-title: Syne 800, white, tight tracking */
     .about-content h2 {
       font-family: 'Syne', sans-serif;
       font-size: clamp(1.6rem, 3vw, 2.2rem);
@@ -231,7 +235,7 @@
     .footer-logo span { font-family: 'Syne', sans-serif; font-weight: 800; font-size: 1.1rem; color: var(--cyan); }
     .footer-copy { font-size: 0.8rem; color: var(--muted); }
 
-    /* CHAT WIDGET — FIX: Brave-compatible using JS toggle instead of checkbox hack */
+    /* CHAT WIDGET — JS toggle, works in Chrome, Brave, Samsung Internet */
     #chat-widget2 { position: fixed; bottom: 28px; right: 28px; z-index: 9999; display: flex; flex-direction: column; align-items: flex-end; }
     #chat-pop { display: none; flex-direction: column; width: 320px; background: #0d1424; border: 1px solid rgba(0,245,255,0.2); border-radius: 16px; overflow: hidden; box-shadow: 0 20px 60px rgba(0,0,0,0.6); margin-bottom: 12px; }
     #chat-pop.open { display: flex; }
@@ -351,7 +355,7 @@
     </div>
 
     <div class="price-card featured">
-      <div class="featured-badge">Most Popular</div>
+      <span class="featured-badge">Best Value</span>
       <div class="price-tier">Growth</div>
       <div class="price-amount">$599</div>
       <div class="price-period">per month</div>
@@ -447,13 +451,12 @@
   </div>
 </section>
 
-<!-- FIX: copyright year updated to 2026 -->
 <footer>
   <div class="footer-logo"><img src="aria.png" alt="Aria" /><span>Botably</span></div>
-  <div class="footer-copy">© 2026 Botably. All rights reserved. · <a href="mailto:hello@botably.io" style="color:var(--muted);text-decoration:none;">hello@botably.io</a></div>
+  <div class="footer-copy">© 2026 Botably. All rights reserved. · hello@botably.io</div>
 </footer>
 
-<!-- FIX: chat widget rebuilt with JS toggle — works in Chrome, Brave, Samsung Internet -->
+<!-- Chat widget — JS toggle works in Chrome, Brave, Samsung Internet -->
 <div id="chat-widget2">
   <div id="chat-pop">
     <div class="cp-head">
@@ -464,7 +467,7 @@
       <div class="cp-msg-bot">Hi! I'm Aria. What does your business do? I'll show you exactly what we can automate for you.</div>
     </div>
     <div class="cp-input-row">
-      <input class="cp-input" id="cp-input" type="text" placeholder="Type a message..." />
+      <input class="cp-input" id="cp-input" type="text" placeholder="Type a message..." onkeydown="if(event.key==='Enter')cpSend()" />
       <button class="cp-send" onclick="cpSend()">Send</button>
     </div>
   </div>
@@ -473,9 +476,9 @@
   </button>
 </div>
 
-<script data-cfasync="false" src="/cdn-cgi/scripts/5c5dd728/cloudflare-static/email-decode.min.js"></script><script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
 <script>
-/* THREE.JS STARFIELD — FIX: alphaTest added to prevent square particle boxes */
+/* THREE.JS STARFIELD — circular sprite via alphaTest prevents square boxes */
 try {
   var canvas = document.getElementById('bg-canvas');
   var renderer = new THREE.WebGLRenderer({canvas:canvas,alpha:true,antialias:true});
@@ -486,7 +489,13 @@ try {
   camera.position.z=5;
   var geo=new THREE.BufferGeometry();
   var count=1800,pos=new Float32Array(count*3),col=new Float32Array(count*3);
-  for(var i=0;i<count;i++){pos[i*3]=(Math.random()-.5)*20;pos[i*3+1]=(Math.random()-.5)*20;pos[i*3+2]=(Math.random()-.5)*20;if(Math.random()<.5){col[i*3]=0;col[i*3+1]=.96;col[i*3+2]=1;}else{col[i*3]=.49;col[i*3+1]=.23;col[i*3+2]=.93;}}
+  for(var i=0;i<count;i++){
+    pos[i*3]=(Math.random()-.5)*20;
+    pos[i*3+1]=(Math.random()-.5)*20;
+    pos[i*3+2]=(Math.random()-.5)*20;
+    if(Math.random()<.5){col[i*3]=0;col[i*3+1]=.96;col[i*3+2]=1;}
+    else{col[i*3]=.49;col[i*3+1]=.23;col[i*3+2]=.93;}
+  }
   geo.setAttribute('position',new THREE.BufferAttribute(pos,3));
   geo.setAttribute('color',new THREE.BufferAttribute(col,3));
   var sprite=document.createElement('canvas');sprite.width=64;sprite.height=64;
@@ -495,7 +504,8 @@ try {
   grad.addColorStop(0,'rgba(255,255,255,1)');
   grad.addColorStop(0.4,'rgba(255,255,255,0.8)');
   grad.addColorStop(1,'rgba(255,255,255,0)');
-  ctx2.fillStyle=grad;ctx2.beginPath();ctx2.arc(32,32,32,0,Math.PI*2);ctx2.fill();
+  ctx2.fillStyle=grad;
+  ctx2.beginPath();ctx2.arc(32,32,32,0,Math.PI*2);ctx2.fill();
   var tex=new THREE.CanvasTexture(sprite);
   var pts=new THREE.Points(geo,new THREE.PointsMaterial({
     size:.12,
@@ -509,9 +519,23 @@ try {
   }));
   scene.add(pts);
   var mx=0,my=0;
-  document.addEventListener('mousemove',function(e){mx=(e.clientX/window.innerWidth-.5)*.4;my=(e.clientY/window.innerHeight-.5)*.4;});
-  window.addEventListener('resize',function(){camera.aspect=window.innerWidth/window.innerHeight;camera.updateProjectionMatrix();renderer.setSize(window.innerWidth,window.innerHeight);});
-  (function animate(){requestAnimationFrame(animate);pts.rotation.y+=.0008;pts.rotation.x+=.0003;camera.position.x+=(mx-camera.position.x)*.03;camera.position.y+=(-my-camera.position.y)*.03;renderer.render(scene,camera);})();
+  document.addEventListener('mousemove',function(e){
+    mx=(e.clientX/window.innerWidth-.5)*.4;
+    my=(e.clientY/window.innerHeight-.5)*.4;
+  });
+  window.addEventListener('resize',function(){
+    camera.aspect=window.innerWidth/window.innerHeight;
+    camera.updateProjectionMatrix();
+    renderer.setSize(window.innerWidth,window.innerHeight);
+  });
+  (function animate(){
+    requestAnimationFrame(animate);
+    pts.rotation.y+=.0008;
+    pts.rotation.x+=.0003;
+    camera.position.x+=(mx-camera.position.x)*.03;
+    camera.position.y+=(-my-camera.position.y)*.03;
+    renderer.render(scene,camera);
+  })();
 } catch(e) {}
 
 /* ROI CALCULATOR */
@@ -523,18 +547,32 @@ function calcROI(){
 }
 calcROI();
 
-/* ARIA DEMO */
+/* ARIA VOICE DEMO */
 function playAriaDemo(btn){
   var audio=document.getElementById('aria-audio');
-  btn.textContent='Loading...';btn.disabled=true;
-  audio.src='https://api.botably.io/aria-demo?'+Date.now();
+  btn.textContent='Loading...';
+  btn.disabled=true;
+  audio.src='https://api.botably.io/aria-demo?t='+Date.now();
   audio.load();
-  audio.oncanplay=function(){audio.play().then(function(){btn.textContent='Playing...';}).catch(function(){btn.textContent='▶ Hear Aria Speak';btn.disabled=false;});};
-  audio.onerror=function(){btn.textContent='▶ Hear Aria Speak';btn.disabled=false;};
-  audio.onended=function(){btn.textContent='▶ Hear Aria Speak';btn.disabled=false;};
+  audio.oncanplay=function(){
+    audio.play().then(function(){
+      btn.textContent='Playing...';
+    }).catch(function(){
+      btn.textContent='\u25B6 Hear Aria Speak';
+      btn.disabled=false;
+    });
+  };
+  audio.onerror=function(){
+    btn.textContent='\u25B6 Hear Aria Speak';
+    btn.disabled=false;
+  };
+  audio.onended=function(){
+    btn.textContent='\u25B6 Hear Aria Speak';
+    btn.disabled=false;
+  };
 }
 
-/* CHAT WIDGET — JS toggle, works in all browsers including Brave */
+/* CHAT TOGGLE — works in Brave (no checkbox dependency) */
 function toggleChat(){
   var pop=document.getElementById('chat-pop');
   pop.classList.toggle('open');
@@ -542,15 +580,44 @@ function toggleChat(){
 
 /* CHAT SEND */
 function cpSend(){
-  var input=document.getElementById('cp-input'),msg=input.value.trim();
-  if(!msg)return;input.value='';
+  var input=document.getElementById('cp-input');
+  var msg=input.value.trim();
+  if(!msg)return;
+  input.value='';
   var msgs=document.getElementById('cp-msgs');
-  var u=document.createElement('div');u.className='cp-msg-user';u.textContent=msg;msgs.appendChild(u);
-  var t=document.createElement('div');t.className='cp-msg-bot';t.textContent='Aria is typing...';t.id='cp-typing';msgs.appendChild(t);
+  var u=document.createElement('div');
+  u.className='cp-msg-user';
+  u.textContent=msg;
+  msgs.appendChild(u);
+  var t=document.createElement('div');
+  t.className='cp-msg-bot';
+  t.textContent='Aria is typing...';
+  t.id='cp-typing';
+  msgs.appendChild(t);
   msgs.scrollTop=msgs.scrollHeight;
-  fetch('https://api.botably.io/chat',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({message:msg})})
-  .then(function(r){return r.json();}).then(function(d){
-    var el=document.getElementById('cp-typing');if(el)el.remove();
-    var b=document.createElement('div');b.className='cp-msg-bot';b.textContent=d.reply||d.response||'Thanks! Email us at hello@botably.io';msgs.appendChild(b);msgs.scrollTop=msgs.scrollHeight;
-  }).catch(function(){
-    var el=document.getElementById('cp-typing');if(el)el.remove
+  fetch('https://api.botably.io/chat',{
+    method:'POST',
+    headers:{'Content-Type':'application/json'},
+    body:JSON.stringify({message:msg})
+  })
+  .then(function(r){return r.json();})
+  .then(function(data){
+    var typing=document.getElementById('cp-typing');
+    if(typing){
+      typing.textContent=data.reply||data.response||'Got it! Let me look into that for you.';
+      typing.removeAttribute('id');
+    }
+    msgs.scrollTop=msgs.scrollHeight;
+  })
+  .catch(function(){
+    var typing=document.getElementById('cp-typing');
+    if(typing){
+      typing.textContent='Sorry, I had trouble connecting. Please try again.';
+      typing.removeAttribute('id');
+    }
+    msgs.scrollTop=msgs.scrollHeight;
+  });
+}
+</script>
+</body>
+</html>
