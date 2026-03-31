@@ -97,15 +97,79 @@
 
     /* PRICING */
     #pricing { padding: 100px 24px; background: var(--dark2); }
-    .pricing-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 24px; max-width: 1000px; margin: 0 auto; }
-    .price-card { background: var(--card); border: 1px solid var(--border); border-radius: 20px; padding: 36px 28px; position: relative; transition: transform 0.25s, box-shadow 0.25s; overflow: hidden; }
+
+    /* FIX: wrapper gives room above cards for the badge to overflow into */
+    .pricing-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 24px;
+      max-width: 1000px;
+      margin: 0 auto;
+      padding-top: 28px; /* space for badge overflow */
+    }
+
+    /* FIX: removed overflow:hidden so badge is never clipped */
+    .price-card {
+      background: var(--card);
+      border: 1px solid var(--border);
+      border-radius: 20px;
+      padding: 36px 28px;
+      position: relative;
+      transition: transform 0.25s, box-shadow 0.25s;
+    }
     .price-card:hover { transform: translateY(-4px); box-shadow: 0 20px 60px rgba(0,0,0,0.3); }
     .price-card.featured { border-color: var(--cyan); box-shadow: 0 0 40px rgba(0,245,255,0.1); }
-    .featured-badge { position: absolute; top: -20px; left: 50%; transform: translateX(-50%); background: linear-gradient(135deg, var(--cyan), var(--violet-light)); color: var(--dark); font-family: 'Syne', sans-serif; font-weight: 700; font-size: 0.72rem; letter-spacing: 0.1em; text-transform: uppercase; padding: 4px 16px; border-radius: 100px; white-space: nowrap; }
+
+    /* FIX: badge now shows above card — overflow visible, top adjusted */
+    .featured-badge {
+      position: absolute;
+      top: -14px;
+      left: 50%;
+      transform: translateX(-50%);
+      background: linear-gradient(135deg, var(--cyan), var(--violet-light));
+      color: var(--dark);
+      font-family: 'Syne', sans-serif;
+      font-weight: 700;
+      font-size: 0.72rem;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      padding: 4px 16px;
+      border-radius: 100px;
+      white-space: nowrap;
+      z-index: 2;
+    }
+
     .price-tier { font-family: 'Syne', sans-serif; font-weight: 700; font-size: 0.8rem; letter-spacing: 0.12em; text-transform: uppercase; color: var(--cyan); margin-bottom: 12px; }
-    .price-amount { font-family: 'Syne', sans-serif; font-size: 2.4rem; font-weight: 800; color: #fff; letter-spacing: -0.02em; line-height: 1; margin-bottom: 4px; }
-    .price-amount sup { font-size: 0.75rem; font-weight: 600; vertical-align: baseline; position: relative; top: -0.8em; }
-    .price-amount.custom { font-size: 1.8rem; }
+
+    /* FIX: price-amount unified sizing — sup aligned consistently */
+    .price-amount {
+      font-family: 'Syne', sans-serif;
+      font-size: 3rem;
+      font-weight: 800;
+      color: #fff;
+      letter-spacing: -0.02em;
+      line-height: 1;
+      margin-bottom: 4px;
+      display: flex;
+      align-items: flex-start;
+    }
+
+    /* FIX: dollar sign locked to same visual size as digits */
+    .price-amount sup {
+      font-size: 1.1rem;
+      font-weight: 700;
+      line-height: 1;
+      margin-top: 0.45rem;
+      margin-right: 2px;
+      vertical-align: top;
+      position: static;
+    }
+
+    .price-amount.custom {
+      font-size: 2rem;
+      align-items: center;
+    }
+
     .price-period { font-size: 0.8rem; color: var(--muted); margin-bottom: 24px; }
     .price-features { list-style: none; display: flex; flex-direction: column; gap: 11px; margin-bottom: 32px; }
     .price-features li { font-size: 0.85rem; color: var(--text); display: flex; align-items: flex-start; gap: 10px; }
@@ -120,7 +184,20 @@
     .roi-field input:focus { border-color: var(--cyan); }
     .roi-result { margin-top: 28px; background: rgba(0,245,255,0.05); border: 1px solid rgba(0,245,255,0.2); border-radius: 12px; padding: 24px; text-align: center; }
     .roi-label { font-size: 0.8rem; color: var(--muted); text-transform: uppercase; letter-spacing: 0.1em; margin-bottom: 8px; }
-    .roi-value { font-family: 'Syne', sans-serif; font-size: 2.8rem; font-weight: 800; color: var(--mint); letter-spacing: 0; line-height: 1; display: block; font-variant-numeric: tabular-nums; }
+
+    /* FIX: ROI value — tabular-nums + fixed font-size so $ and digits never shift */
+    .roi-value {
+      font-family: 'Syne', sans-serif;
+      font-size: 2.8rem;
+      font-weight: 800;
+      color: var(--mint);
+      letter-spacing: -0.02em;
+      line-height: 1;
+      display: block;
+      font-variant-numeric: tabular-nums;
+      font-feature-settings: "tnum";
+    }
+
     .roi-note { font-size: 0.8rem; color: var(--muted); margin-top: 6px; }
 
     /* ABOUT */
@@ -128,7 +205,18 @@
     .about-inner { max-width: 900px; margin: 0 auto; display: grid; grid-template-columns: 1fr 2fr; gap: 60px; align-items: center; }
     .about-photo { width: 100%; max-width: 260px; border-radius: 20px; border: 1px solid var(--border); box-shadow: 0 0 40px rgba(124,58,237,0.2); }
     .about-tag { font-size: 0.75rem; font-weight: 600; letter-spacing: 0.15em; text-transform: uppercase; color: var(--cyan); margin-bottom: 14px; }
-    .about-content h2 { font-family: 'Syne', sans-serif; font-size: 2rem; font-weight: 800; color: #fff; letter-spacing: -0.02em; margin-bottom: 18px; }
+
+    /* FIX: About h2 now matches section-title styling */
+    .about-content h2 {
+      font-family: 'Syne', sans-serif;
+      font-size: clamp(1.6rem, 3vw, 2.2rem);
+      font-weight: 800;
+      color: #fff;
+      letter-spacing: -0.02em;
+      margin-bottom: 18px;
+      line-height: 1.15;
+    }
+
     .about-content p { font-size: 0.95rem; color: var(--muted); line-height: 1.75; margin-bottom: 14px; }
     .timezone-badges { display: flex; gap: 10px; flex-wrap: wrap; margin: 20px 0 28px; }
     .tz-badge { background: rgba(0,245,255,0.07); border: 1px solid rgba(0,245,255,0.2); color: var(--cyan); font-size: 0.78rem; font-weight: 500; padding: 5px 14px; border-radius: 100px; }
@@ -137,6 +225,8 @@
     #contact { padding: 100px 24px; background: var(--dark); text-align: center; }
     .contact-inner { max-width: 560px; margin: 0 auto; }
     .contact-email { display: inline-block; font-family: 'Syne', sans-serif; font-size: 1.1rem; font-weight: 600; color: var(--cyan); margin: 24px 0 32px; }
+    .contact-email a { color: var(--cyan); text-decoration: none; }
+    .contact-email a:hover { text-decoration: underline; }
 
     /* FOOTER */
     footer { background: var(--dark2); border-top: 1px solid var(--border); padding: 36px 48px; display: flex; align-items: center; justify-content: space-between; flex-wrap: wrap; gap: 16px; }
@@ -145,11 +235,10 @@
     .footer-logo span { font-family: 'Syne', sans-serif; font-weight: 800; font-size: 1.1rem; color: var(--cyan); }
     .footer-copy { font-size: 0.8rem; color: var(--muted); }
 
-    /* CHAT WIDGET */
-    #chat-check { display: none; }
-    #chat-check:checked ~ #chat-pop { display: flex; }
+    /* CHAT WIDGET — FIX: Brave-compatible using JS toggle instead of checkbox hack */
     #chat-widget2 { position: fixed; bottom: 28px; right: 28px; z-index: 9999; display: flex; flex-direction: column; align-items: flex-end; }
     #chat-pop { display: none; flex-direction: column; width: 320px; background: #0d1424; border: 1px solid rgba(0,245,255,0.2); border-radius: 16px; overflow: hidden; box-shadow: 0 20px 60px rgba(0,0,0,0.6); margin-bottom: 12px; }
+    #chat-pop.open { display: flex; }
     .cp-head { background: linear-gradient(135deg, rgba(0,245,255,0.1), rgba(124,58,237,0.1)); padding: 14px 18px; display: flex; align-items: center; gap: 12px; border-bottom: 1px solid rgba(0,245,255,0.1); }
     .cp-head img { width: 36px; height: 36px; border-radius: 50%; border: 1px solid #00f5ff; object-fit: cover; }
     .cp-name { font-family: 'Syne', sans-serif; font-weight: 700; color: #00f5ff; font-size: 0.9rem; }
@@ -160,8 +249,8 @@
     .cp-input-row { padding: 10px 14px; display: flex; gap: 8px; border-top: 1px solid rgba(0,245,255,0.1); }
     .cp-input { flex: 1; background: rgba(255,255,255,0.04); border: 1px solid rgba(0,245,255,0.15); border-radius: 8px; color: #fff; font-size: 0.82rem; padding: 8px 12px; outline: none; font-family: 'DM Sans', sans-serif; }
     .cp-send { background: #00f5ff; color: #050810; border: none; border-radius: 8px; padding: 8px 14px; font-weight: 700; font-size: 0.82rem; cursor: pointer; -webkit-tap-highlight-color: transparent; touch-action: manipulation; }
-    .chat-fab-label { width: 60px; height: 60px; border-radius: 50%; background: linear-gradient(135deg, #00f5ff, #7c3aed); display: flex; align-items: center; justify-content: center; box-shadow: 0 4px 24px rgba(0,245,255,0.4); cursor: pointer; -webkit-tap-highlight-color: transparent; touch-action: manipulation; }
-    .chat-fab-label img { width: 42px; height: 42px; border-radius: 50%; object-fit: cover; }
+    .chat-fab { width: 60px; height: 60px; border-radius: 50%; background: linear-gradient(135deg, #00f5ff, #7c3aed); display: flex; align-items: center; justify-content: center; box-shadow: 0 4px 24px rgba(0,245,255,0.4); cursor: pointer; -webkit-tap-highlight-color: transparent; touch-action: manipulation; border: none; padding: 0; }
+    .chat-fab img { width: 42px; height: 42px; border-radius: 50%; object-fit: cover; }
 
     /* RESPONSIVE */
     @media (max-width: 900px) {
@@ -250,6 +339,7 @@
   <h2 class="section-title">Simple, Transparent Pricing</h2>
   <p class="section-sub">No hidden fees. No long-term contracts. Cancel anytime.</p>
   <div class="pricing-grid">
+
     <div class="price-card">
       <div class="price-tier">Starter</div>
       <div class="price-amount"><sup>$</sup>297</div>
@@ -263,6 +353,7 @@
       </ul>
       <a href="https://cal.com/allen-aeq4f9/30min" target="_blank" class="btn-outline" style="width:100%;text-align:center;display:block;">Get Started</a>
     </div>
+
     <div class="price-card featured">
       <div class="featured-badge">Most Popular</div>
       <div class="price-tier">Growth</div>
@@ -278,6 +369,7 @@
       </ul>
       <a href="https://cal.com/allen-aeq4f9/30min" target="_blank" class="btn-primary" style="width:100%;text-align:center;display:block;">Book a Call</a>
     </div>
+
     <div class="price-card">
       <div class="price-tier">Enterprise</div>
       <div class="price-amount custom">Custom</div>
@@ -292,6 +384,7 @@
       </ul>
       <a href="https://cal.com/allen-aeq4f9/30min" target="_blank" class="btn-outline" style="width:100%;text-align:center;display:block;">Contact Us</a>
     </div>
+
   </div>
 </section>
 
@@ -337,18 +430,19 @@
     <div class="section-label">Get In Touch</div>
     <h2 class="section-title">Ready to Automate?</h2>
     <p class="section-sub" style="margin-bottom:0;">Book a free audit or send us a message. We respond within 2 hours.</p>
-    <div class="contact-email"><a href="/cdn-cgi/l/email-protection" class="__cf_email__" data-cfemail="99f1fcf5f5f6d9fbf6edf8fbf5e0b7f0f6">[email&#160;protected]</a></div>
+    <div class="contact-email"><a href="mailto:hello@botably.io">hello@botably.io</a></div>
     <a href="https://cal.com/allen-aeq4f9/30min" target="_blank" class="btn-primary">Book Your Free Audit</a>
   </div>
 </section>
 
+<!-- FIX: copyright year updated to 2026 -->
 <footer>
   <div class="footer-logo"><img src="aria.png" alt="Aria" /><span>Botably</span></div>
-  <div class="footer-copy">© 2025 Botably. All rights reserved. · <a href="/cdn-cgi/l/email-protection" class="__cf_email__" data-cfemail="28404d444447684a475c494a4451064147">[email&#160;protected]</a></div>
+  <div class="footer-copy">© 2026 Botably. All rights reserved. · hello@botably.io</div>
 </footer>
 
+<!-- FIX: chat widget rebuilt with JS toggle — works in Chrome, Brave, Samsung Internet -->
 <div id="chat-widget2">
-  <input type="checkbox" id="chat-check" />
   <div id="chat-pop">
     <div class="cp-head">
       <img src="aria.png" alt="Aria" />
@@ -362,13 +456,14 @@
       <button class="cp-send" onclick="cpSend()">Send</button>
     </div>
   </div>
-  <label for="chat-check" class="chat-fab-label">
+  <button class="chat-fab" onclick="toggleChat()" aria-label="Chat with Aria">
     <img src="aria.png" alt="Chat with Aria" />
-  </label>
+  </button>
 </div>
 
-<script data-cfasync="false" src="/cdn-cgi/scripts/5c5dd728/cloudflare-static/email-decode.min.js"></script><script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
 <script>
+/* THREE.JS STARFIELD — FIX: alphaTest added to prevent square particle boxes */
 try {
   var canvas = document.getElementById('bg-canvas');
   var renderer = new THREE.WebGLRenderer({canvas:canvas,alpha:true,antialias:true});
@@ -382,8 +477,24 @@ try {
   for(var i=0;i<count;i++){pos[i*3]=(Math.random()-.5)*20;pos[i*3+1]=(Math.random()-.5)*20;pos[i*3+2]=(Math.random()-.5)*20;if(Math.random()<.5){col[i*3]=0;col[i*3+1]=.96;col[i*3+2]=1;}else{col[i*3]=.49;col[i*3+1]=.23;col[i*3+2]=.93;}}
   geo.setAttribute('position',new THREE.BufferAttribute(pos,3));
   geo.setAttribute('color',new THREE.BufferAttribute(col,3));
-  var sprite=document.createElement('canvas');sprite.width=64;sprite.height=64;var ctx2=sprite.getContext('2d');var grad=ctx2.createRadialGradient(32,32,0,32,32,32);grad.addColorStop(0,'rgba(255,255,255,1)');grad.addColorStop(1,'rgba(255,255,255,0)');ctx2.fillStyle=grad;ctx2.beginPath();ctx2.arc(32,32,32,0,Math.PI*2);ctx2.fill();var tex=new THREE.CanvasTexture(sprite);
-  var pts=new THREE.Points(geo,new THREE.PointsMaterial({size:.12,vertexColors:true,transparent:true,opacity:.7,map:tex,sizeAttenuation:true,depthWrite:false}));
+  var sprite=document.createElement('canvas');sprite.width=64;sprite.height=64;
+  var ctx2=sprite.getContext('2d');
+  var grad=ctx2.createRadialGradient(32,32,0,32,32,32);
+  grad.addColorStop(0,'rgba(255,255,255,1)');
+  grad.addColorStop(0.4,'rgba(255,255,255,0.8)');
+  grad.addColorStop(1,'rgba(255,255,255,0)');
+  ctx2.fillStyle=grad;ctx2.beginPath();ctx2.arc(32,32,32,0,Math.PI*2);ctx2.fill();
+  var tex=new THREE.CanvasTexture(sprite);
+  var pts=new THREE.Points(geo,new THREE.PointsMaterial({
+    size:.12,
+    vertexColors:true,
+    transparent:true,
+    opacity:.75,
+    map:tex,
+    sizeAttenuation:true,
+    depthWrite:false,
+    alphaTest:0.05
+  }));
   scene.add(pts);
   var mx=0,my=0;
   document.addEventListener('mousemove',function(e){mx=(e.clientX/window.innerWidth-.5)*.4;my=(e.clientY/window.innerHeight-.5)*.4;});
@@ -391,9 +502,16 @@ try {
   (function animate(){requestAnimationFrame(animate);pts.rotation.y+=.0008;pts.rotation.x+=.0003;camera.position.x+=(mx-camera.position.x)*.03;camera.position.y+=(-my-camera.position.y)*.03;renderer.render(scene,camera);})();
 } catch(e) {}
 
-function calcROI(){var l=parseFloat(document.getElementById('roi-leads').value)||0,d=parseFloat(document.getElementById('roi-deal').value)||0,c=parseFloat(document.getElementById('roi-close').value)||0;document.getElementById('roi-output').textContent='$'+Math.round(l*(c/100)*.25*d).toLocaleString();}
+/* ROI CALCULATOR */
+function calcROI(){
+  var l=parseFloat(document.getElementById('roi-leads').value)||0;
+  var d=parseFloat(document.getElementById('roi-deal').value)||0;
+  var c=parseFloat(document.getElementById('roi-close').value)||0;
+  document.getElementById('roi-output').textContent='$'+Math.round(l*(c/100)*.25*d).toLocaleString();
+}
 calcROI();
 
+/* ARIA DEMO */
 function playAriaDemo(btn){
   var audio=document.getElementById('aria-audio');
   btn.textContent='Loading...';btn.disabled=true;
@@ -404,6 +522,13 @@ function playAriaDemo(btn){
   audio.onended=function(){btn.textContent='▶ Hear Aria Speak';btn.disabled=false;};
 }
 
+/* CHAT WIDGET — JS toggle, works in all browsers including Brave */
+function toggleChat(){
+  var pop=document.getElementById('chat-pop');
+  pop.classList.toggle('open');
+}
+
+/* CHAT SEND */
 function cpSend(){
   var input=document.getElementById('cp-input'),msg=input.value.trim();
   if(!msg)return;input.value='';
@@ -420,6 +545,9 @@ function cpSend(){
     var b=document.createElement('div');b.className='cp-msg-bot';b.textContent='Thanks! Email us at hello@botably.io';msgs.appendChild(b);msgs.scrollTop=msgs.scrollHeight;
   });
 }
+
+/* Close chat on Enter key in input */
+document.getElementById('cp-input').addEventListener('keydown',function(e){if(e.key==='Enter')cpSend();});
 </script>
 </body>
 </html>
