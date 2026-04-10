@@ -261,11 +261,60 @@
     .chat-fab { width: 60px; height: 60px; border-radius: 50%; background: linear-gradient(135deg, #00f5ff, #7c3aed); display: flex; align-items: center; justify-content: center; box-shadow: 0 4px 24px rgba(0,245,255,0.4); cursor: pointer; -webkit-tap-highlight-color: transparent; touch-action: manipulation; border: none; padding: 0; }
     .chat-fab img { width: 42px; height: 42px; border-radius: 50%; object-fit: cover; filter: brightness(1.35) contrast(1.1); }
 
+    /* DEMO SECTION */
+    #demo { padding: 100px 24px; background: var(--dark3); }
+    .demo-tabs { display: flex; gap: 12px; justify-content: center; margin-bottom: 48px; flex-wrap: wrap; }
+    .demo-tab { background: transparent; border: 1px solid var(--border); color: var(--muted); font-family: 'DM Sans', sans-serif; font-size: 0.875rem; font-weight: 600; padding: 10px 24px; border-radius: 100px; cursor: pointer; transition: all 0.2s; }
+    .demo-tab:hover { border-color: rgba(0,245,255,0.4); color: var(--cyan); }
+    .demo-tab.active { background: rgba(0,245,255,0.1); border-color: var(--cyan); color: var(--cyan); }
+    .demo-container { display: grid; grid-template-columns: 1fr 1fr; gap: 60px; max-width: 1000px; margin: 0 auto; align-items: center; }
+    .phone-mockup { display: flex; justify-content: center; }
+    .phone-frame { width: 260px; background: #070c18; border: 2px solid rgba(0,245,255,0.25); border-radius: 36px; overflow: hidden; box-shadow: 0 0 60px rgba(0,245,255,0.08), 0 40px 80px rgba(0,0,0,0.6); position: relative; }
+    .phone-notch { width: 80px; height: 20px; background: #070c18; border-radius: 0 0 12px 12px; margin: 0 auto; position: relative; z-index: 2; border: 1px solid rgba(0,245,255,0.15); border-top: none; }
+    .phone-screen { padding: 0 0 16px; }
+    .chat-header { display: flex; align-items: center; gap: 10px; padding: 12px 16px; background: rgba(0,245,255,0.04); border-bottom: 1px solid rgba(0,245,255,0.1); }
+    .chat-avatar { width: 32px; height: 32px; border-radius: 50%; border: 1.5px solid var(--cyan); object-fit: cover; }
+    .chat-name { font-family: 'Syne', sans-serif; font-weight: 700; font-size: 0.78rem; color: var(--cyan); }
+    .chat-status { font-size: 0.65rem; color: var(--mint); }
+    .chat-messages { height: 340px; overflow-y: auto; padding: 12px; display: flex; flex-direction: column; gap: 8px; scroll-behavior: smooth; }
+    .chat-messages::-webkit-scrollbar { display: none; }
+    .chat-alert { background: rgba(0,245,255,0.06); border: 1px solid rgba(0,245,255,0.2); border-radius: 8px; padding: 7px 10px; font-size: 0.68rem; color: var(--cyan); text-align: center; font-weight: 600; letter-spacing: 0.03em; }
+    .chat-msg-bot { align-self: flex-end; max-width: 85%; }
+    .chat-msg-customer { align-self: flex-start; max-width: 85%; }
+    .chat-msg-name { font-size: 0.6rem; color: var(--muted); margin-bottom: 3px; font-weight: 600; text-transform: uppercase; letter-spacing: 0.05em; padding-left: 4px; }
+    .chat-bubble-bot { background: linear-gradient(135deg, rgba(0,245,255,0.2), rgba(124,58,237,0.2)); border: 1px solid rgba(0,245,255,0.25); color: #e2e8f0; font-size: 0.75rem; line-height: 1.5; padding: 9px 12px; border-radius: 14px 14px 4px 14px; }
+    .chat-bubble-customer { background: rgba(255,255,255,0.06); border: 1px solid rgba(255,255,255,0.1); color: rgba(255,255,255,0.82); font-size: 0.75rem; line-height: 1.5; padding: 9px 12px; border-radius: 14px 14px 14px 4px; }
+    .chat-typing { align-self: flex-end; display: flex; gap: 4px; padding: 10px 14px; background: rgba(0,245,255,0.1); border: 1px solid rgba(0,245,255,0.2); border-radius: 14px 14px 4px 14px; }
+    .chat-typing span { width: 5px; height: 5px; background: var(--cyan); border-radius: 50%; animation: tdot 1s infinite; }
+    .chat-typing span:nth-child(2) { animation-delay: 0.15s; }
+    .chat-typing span:nth-child(3) { animation-delay: 0.3s; }
+    @keyframes tdot { 0%,100%{transform:translateY(0);opacity:0.4;} 50%{transform:translateY(-4px);opacity:1;} }
+    .msg-appear { animation: msgIn 0.3s ease both; }
+    @keyframes msgIn { from{opacity:0;transform:translateY(8px);} to{opacity:1;transform:translateY(0);} }
+    .demo-info { display: flex; flex-direction: column; gap: 0; }
+    .demo-scene-title { font-family: 'Syne', sans-serif; font-size: 1.4rem; font-weight: 800; color: #fff; margin-bottom: 8px; }
+    .demo-scene-sub { font-size: 0.9rem; color: var(--muted); margin-bottom: 32px; }
+    .demo-stats { display: grid; grid-template-columns: repeat(3, 1fr); gap: 16px; margin-bottom: 32px; }
+    .demo-stat { background: var(--card); border: 1px solid var(--border); border-radius: 12px; padding: 16px 12px; text-align: center; }
+    .stat-num { display: block; font-family: 'Syne', sans-serif; font-weight: 800; font-size: 1.4rem; color: var(--cyan); }
+    .stat-label { font-size: 0.7rem; color: var(--muted); margin-top: 4px; display: block; }
+    .demo-play-btn { background: linear-gradient(135deg, var(--cyan), var(--violet-light)); color: var(--dark); font-family: 'Syne', sans-serif; font-weight: 700; font-size: 1rem; padding: 14px 32px; border-radius: 8px; border: none; cursor: pointer; transition: box-shadow 0.25s, transform 0.25s; width: fit-content; margin-bottom: 24px; }
+    .demo-play-btn:hover { box-shadow: 0 0 32px rgba(0,245,255,0.35); transform: translateY(-2px); }
+    .demo-play-btn:disabled { opacity: 0.6; cursor: not-allowed; transform: none; }
+    .demo-outcome { display: none; background: rgba(0,255,170,0.06); border: 1px solid rgba(0,255,170,0.3); border-radius: 14px; padding: 18px 20px; display: flex; align-items: center; gap: 16px; margin-bottom: 24px; opacity: 0; transition: opacity 0.5s ease; }
+    .demo-outcome.visible { opacity: 1; }
+    .outcome-check { width: 36px; height: 36px; border-radius: 50%; background: var(--mint); display: flex; align-items: center; justify-content: center; font-size: 16px; flex-shrink: 0; box-shadow: 0 0 16px rgba(0,255,170,0.4); color: var(--dark); font-weight: 700; }
+    .outcome-main { font-family: 'Syne', sans-serif; font-weight: 700; font-size: 0.9rem; color: var(--mint); }
+    .outcome-sub { font-size: 0.78rem; color: var(--muted); margin-top: 3px; }
+
     /* RESPONSIVE */
     @media (max-width: 900px) {
       .pricing-grid { grid-template-columns: 1fr; max-width: 400px; }
     }
     @media (max-width: 768px) {
+      .demo-container { grid-template-columns: 1fr; }
+      .phone-mockup { order: -1; }
+      .demo-stats { grid-template-columns: repeat(3,1fr); }
       nav { padding: 16px 20px; }
       .nav-links { display: none; }
       .about-inner { grid-template-columns: 1fr; text-align: center; }
@@ -290,6 +339,7 @@
     <li><a href="#industries">Industries</a></li>
     <li><a href="#how">How It Works</a></li>
     <li><a href="#pricing">Pricing</a></li>
+    <li><a href="#demo">Live Demo</a></li>
     <li><a href="#about">About</a></li>
     <li><a href="https://cal.com/allen-aeq4f9/30min" target="_blank" class="nav-cta">Book a Call</a></li>
   </ul>
@@ -340,6 +390,54 @@
     <div class="step"><div class="step-num">2</div><div class="step-content"><div class="step-title">Custom Build</div><div class="step-desc">Our team builds your AI stack from scratch — voice agent, chat bot, lead flows, and integrations — tailored to your business.</div></div></div>
     <div class="step"><div class="step-num">3</div><div class="step-content"><div class="step-title">Deploy &amp; Train</div><div class="step-desc">We go live and walk your team through everything. Takes 30 minutes. No tech knowledge required.</div></div></div>
     <div class="step"><div class="step-num">4</div><div class="step-content"><div class="step-title">Ongoing Optimization</div><div class="step-desc">We monitor performance, tweak flows, and add new automations as your business grows. You never touch the backend.</div></div></div>
+  </div>
+</section>
+
+<section id="demo">
+  <div class="section-label">Live Demo</div>
+  <h2 class="section-title">Watch Aria Work</h2>
+  <p class="section-sub">Real scenarios. Real results. Zero human involvement.</p>
+
+  <div class="demo-tabs">
+    <button class="demo-tab active" id="tab-plumber" onclick="switchDemo('plumber')">🔧 Plumber — Burst Pipe</button>
+    <button class="demo-tab" id="tab-realtor" onclick="switchDemo('realtor')">🏡 Realtor — 2AM Lead</button>
+  </div>
+
+  <div class="demo-container">
+    <div class="phone-mockup">
+      <div class="phone-frame">
+        <div class="phone-notch"></div>
+        <div class="phone-screen">
+          <div class="chat-header">
+            <img src="aria.png" alt="Aria" class="chat-avatar" />
+            <div class="chat-info">
+              <div class="chat-name">Aria — AI Agent</div>
+              <div class="chat-status">● Online 24/7</div>
+            </div>
+          </div>
+          <div class="chat-messages" id="demo-chat-messages"></div>
+        </div>
+      </div>
+    </div>
+
+    <div class="demo-info">
+      <div class="demo-scene-title" id="demo-scene-title">🔧 Emergency Plumbing Call</div>
+      <div class="demo-scene-sub" id="demo-scene-sub">11pm. Pipe burst. Watch what happens.</div>
+      <div class="demo-stats">
+        <div class="demo-stat"><span class="stat-num" id="stat-time">47s</span><span class="stat-label">Response time</span></div>
+        <div class="demo-stat"><span class="stat-num">0</span><span class="stat-label">Humans required</span></div>
+        <div class="demo-stat"><span class="stat-num">24/7</span><span class="stat-label">Always on</span></div>
+      </div>
+      <button class="demo-play-btn" id="demo-play-btn" onclick="playDemo()">&#9654; Play Demo</button>
+      <div class="demo-outcome" id="demo-outcome">
+        <div class="outcome-check">&#10003;</div>
+        <div class="outcome-text">
+          <div class="outcome-main" id="outcome-main">Job Booked in 47 Seconds</div>
+          <div class="outcome-sub" id="outcome-sub">Technician dispatched. No human involvement.</div>
+        </div>
+      </div>
+      <a href="https://cal.com/allen-aeq4f9/30min" target="_blank" class="btn-primary">Get This For My Business</a>
+    </div>
   </div>
 </section>
 
@@ -590,6 +688,116 @@ function playAriaDemo(btn){
 function toggleChat(){
   var pop=document.getElementById('chat-pop');
   pop.classList.toggle('open');
+}
+
+/* ── LIVE DEMO ── */
+var DEMO_DATA = {
+  plumber: {
+    title: '🔧 Emergency Plumbing Call',
+    sub: '11pm. Pipe burst. Watch what happens.',
+    audio: 'demo_plumber.mp3',
+    statTime: '47s',
+    outcomeMain: 'Job Booked in 47 Seconds',
+    outcomeSub: 'Technician dispatched. No human involvement.',
+    messages: [
+      { type:'alert',    text:'🔔 NEW LEAD — Emergency Call — 11:02 PM', delay:500 },
+      { type:'customer', name:'Homeowner', text:'Hi my pipe just burst, water is everywhere, I need someone NOW please!', delay:2000 },
+      { type:'typing',   delay:3800 },
+      { type:'bot',      text:"Hi! This is Mike's Plumbing emergency line. I'm here 24/7. What's your address so I can dispatch a technician right now?", delay:5500 },
+      { type:'customer', name:'Homeowner', text:'245 Oak Street, basement pipe, please hurry', delay:8500 },
+      { type:'typing',   delay:10200 },
+      { type:'bot',      text:'Got it. Technician dispatched to 245 Oak Street. ETA 35 minutes. Confirmation text sent to your phone now. Stay safe! ✅', delay:12000 },
+      { type:'outcome',  delay:15500 }
+    ]
+  },
+  realtor: {
+    title: '🏡 Real Estate Lead — 2AM',
+    sub: 'Maria clicks a Facebook ad at 2am. Watch Aria respond.',
+    audio: 'demo_realtor.mp3',
+    statTime: '8s',
+    outcomeMain: 'Lead Qualified. Viewing Booked.',
+    outcomeSub: 'Agent alert sent. Zero human involvement.',
+    messages: [
+      { type:'alert',    text:'🔔 NEW LEAD — Facebook Ad — 2:14 AM', delay:500 },
+      { type:'bot',      text:"Hi Maria! I saw you're interested in the 2BR listing at Cebu IT Park. Are you buying for personal use or investment?", delay:2000 },
+      { type:'customer', name:'Maria Santos', text:'Personal use. Looking to move in within 3 months.', delay:5000 },
+      { type:'typing',   delay:6800 },
+      { type:'bot',      text:'Perfect. I have two units available — Unit 8B at ₱4.2M and Unit 12C at ₱4.8M with a city view. Interested in a free viewing this week?', delay:8500 },
+      { type:'customer', name:'Maria Santos', text:'Yes! Unit 12C sounds great 😊', delay:12000 },
+      { type:'typing',   delay:13800 },
+      { type:'bot',      text:'Viewing confirmed for Thursday at 2pm! 🏡 You\'ll receive property details and a calendar invite now. See you then, Maria!', delay:15500 },
+      { type:'outcome',  delay:19000 }
+    ]
+  }
+};
+
+var demoActive = 'plumber';
+var demoAudio = new Audio();
+var demoTimers = [];
+
+function switchDemo(type) {
+  if (demoTimers.length) { demoTimers.forEach(clearTimeout); demoTimers = []; }
+  demoAudio.pause(); demoAudio.currentTime = 0;
+  demoActive = type;
+  document.querySelectorAll('.demo-tab').forEach(function(t){ t.classList.remove('active'); });
+  document.getElementById('tab-' + type).classList.add('active');
+  var d = DEMO_DATA[type];
+  document.getElementById('demo-scene-title').textContent = d.title;
+  document.getElementById('demo-scene-sub').textContent = d.sub;
+  document.getElementById('stat-time').textContent = d.statTime;
+  document.getElementById('demo-chat-messages').innerHTML = '';
+  document.getElementById('demo-outcome').style.opacity = '0';
+  var btn = document.getElementById('demo-play-btn');
+  btn.textContent = '\u25B6 Play Demo';
+  btn.disabled = false;
+}
+
+function playDemo() {
+  var btn = document.getElementById('demo-play-btn');
+  btn.textContent = 'Playing...';
+  btn.disabled = true;
+  var msgs = document.getElementById('demo-chat-messages');
+  msgs.innerHTML = '';
+  document.getElementById('demo-outcome').style.opacity = '0';
+  var d = DEMO_DATA[demoActive];
+  demoAudio.src = d.audio;
+  demoAudio.play().catch(function(){});
+  var typingEl = null;
+  d.messages.forEach(function(m) {
+    var t = setTimeout(function() {
+      if (m.type === 'typing') {
+        typingEl = document.createElement('div');
+        typingEl.className = 'chat-typing msg-appear';
+        typingEl.innerHTML = '<span></span><span></span><span></span>';
+        msgs.appendChild(typingEl);
+        msgs.scrollTop = msgs.scrollHeight;
+      } else if (m.type === 'outcome') {
+        var o = document.getElementById('demo-outcome');
+        document.getElementById('outcome-main').textContent = d.outcomeMain;
+        document.getElementById('outcome-sub').textContent = d.outcomeSub;
+        o.style.display = 'flex';
+        setTimeout(function(){ o.style.opacity = '1'; }, 50);
+        btn.textContent = '\u25B6 Play Again';
+        btn.disabled = false;
+      } else {
+        if (typingEl) { typingEl.remove(); typingEl = null; }
+        var wrap = document.createElement('div');
+        if (m.type === 'alert') {
+          wrap.className = 'chat-alert msg-appear';
+          wrap.textContent = m.text;
+        } else if (m.type === 'bot') {
+          wrap.className = 'chat-msg-bot msg-appear';
+          wrap.innerHTML = '<div class="chat-bubble-bot">' + m.text + '</div>';
+        } else {
+          wrap.className = 'chat-msg-customer msg-appear';
+          wrap.innerHTML = '<div class="chat-msg-name">' + m.name + '</div><div class="chat-bubble-customer">' + m.text + '</div>';
+        }
+        msgs.appendChild(wrap);
+        msgs.scrollTop = msgs.scrollHeight;
+      }
+    }, m.delay);
+    demoTimers.push(t);
+  });
 }
 
 /* CHAT SEND */
