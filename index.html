@@ -263,10 +263,15 @@
 
     /* DEMO SECTION */
     #demo { padding: 100px 24px; background: var(--dark3); }
-    .demo-tabs { display: flex; gap: 12px; justify-content: center; margin-bottom: 48px; flex-wrap: wrap; }
-    .demo-tab { background: transparent; border: 1px solid var(--border); color: var(--muted); font-family: 'DM Sans', sans-serif; font-size: 0.875rem; font-weight: 600; padding: 10px 24px; border-radius: 100px; cursor: pointer; transition: all 0.2s; }
-    .demo-tab:hover { border-color: rgba(0,245,255,0.4); color: var(--cyan); }
-    .demo-tab.active { background: rgba(0,245,255,0.1); border-color: var(--cyan); color: var(--cyan); }
+    .demo-cards-grid { display: grid; grid-template-columns: repeat(4,1fr); gap: 16px; max-width: 900px; margin: 0 auto 48px; }
+    .demo-card { background: var(--card); border: 1px solid var(--border); border-radius: 16px; padding: 24px 20px; cursor: pointer; transition: all 0.2s; text-align: center; }
+    .demo-card:hover { border-color: rgba(0,245,255,0.4); transform: translateY(-3px); }
+    .demo-card.active { border-color: var(--cyan); background: rgba(0,245,255,0.07); box-shadow: 0 0 24px rgba(0,245,255,0.1); }
+    .dcard-icon { font-size: 2rem; margin-bottom: 10px; }
+    .dcard-title { font-family: 'Syne', sans-serif; font-weight: 700; font-size: 0.9rem; color: #fff; margin-bottom: 5px; }
+    .dcard-sub { font-size: 0.75rem; color: var(--muted); }
+    .demo-player { display: grid; grid-template-columns: 1fr 1fr; gap: 60px; max-width: 900px; margin: 0 auto; align-items: center; }
+    .demo-player-left { display: flex; justify-content: center; }
     .demo-container { display: grid; grid-template-columns: 1fr 1fr; gap: 60px; max-width: 1000px; margin: 0 auto; align-items: center; }
     .phone-mockup { display: flex; justify-content: center; }
     .phone-frame { width: 260px; background: #070c18; border: 2px solid rgba(0,245,255,0.25); border-radius: 36px; overflow: hidden; box-shadow: 0 0 60px rgba(0,245,255,0.08), 0 40px 80px rgba(0,0,0,0.6); position: relative; }
@@ -312,6 +317,9 @@
       .pricing-grid { grid-template-columns: 1fr; max-width: 400px; }
     }
     @media (max-width: 768px) {
+      .demo-cards-grid { grid-template-columns: repeat(2,1fr); }
+      .demo-player { grid-template-columns: 1fr; }
+      .demo-player-left { order: -1; }
       .demo-container { grid-template-columns: 1fr; }
       .phone-mockup { order: -1; }
       .demo-stats { grid-template-columns: repeat(3,1fr); }
@@ -395,16 +403,34 @@
 
 <section id="demo">
   <div class="section-label">Live Demo</div>
-  <h2 class="section-title">Watch Aria Work</h2>
-  <p class="section-sub">Real scenarios. Real results. Zero human involvement.</p>
+  <h2 class="section-title">Hear Aria Handle a Real Call</h2>
+  <p class="section-sub">Pick your industry. Press play. Hear Aria answer, qualify the lead, and book the appointment — no human required.</p>
 
-  <div class="demo-tabs">
-    <button class="demo-tab active" id="tab-plumber" onclick="switchDemo('plumber')">🔧 Plumber — Burst Pipe</button>
-    <button class="demo-tab" id="tab-realtor" onclick="switchDemo('realtor')">🏡 Realtor — 2AM Lead</button>
+  <div class="demo-cards-grid">
+    <div class="demo-card active" id="dcard-plumber" onclick="selectDemo('plumber')">
+      <div class="dcard-icon">🔧</div>
+      <div class="dcard-title">Emergency Plumbing</div>
+      <div class="dcard-sub">Pipe burst. 11pm call.</div>
+    </div>
+    <div class="demo-card" id="dcard-realtor" onclick="selectDemo('realtor')">
+      <div class="dcard-icon">🏡</div>
+      <div class="dcard-title">Real Estate Lead</div>
+      <div class="dcard-sub">Facebook ad. 2am inquiry.</div>
+    </div>
+    <div class="demo-card" id="dcard-auto" onclick="selectDemo('auto')">
+      <div class="dcard-icon">🚗</div>
+      <div class="dcard-title">Auto Repair Shop</div>
+      <div class="dcard-sub">Car won't start. Work in 1hr.</div>
+    </div>
+    <div class="demo-card" id="dcard-hvac" onclick="selectDemo('hvac')">
+      <div class="dcard-icon">❄️</div>
+      <div class="dcard-title">HVAC Emergency</div>
+      <div class="dcard-sub">AC out. 95 degrees. Kids home.</div>
+    </div>
   </div>
 
-  <div class="demo-container">
-    <div class="phone-mockup">
+  <div class="demo-player">
+    <div class="demo-player-left">
       <div class="phone-frame">
         <div class="phone-notch"></div>
         <div class="phone-screen">
@@ -412,7 +438,7 @@
             <img src="aria.png" alt="Aria" class="chat-avatar" />
             <div class="chat-info">
               <div class="chat-name">Aria — AI Agent</div>
-              <div class="chat-status">● Online 24/7</div>
+              <div class="chat-status" id="aria-status">● Online 24/7</div>
             </div>
           </div>
           <div class="chat-messages" id="demo-chat-messages"></div>
@@ -420,15 +446,15 @@
       </div>
     </div>
 
-    <div class="demo-info">
+    <div class="demo-player-right">
       <div class="demo-scene-title" id="demo-scene-title">🔧 Emergency Plumbing Call</div>
-      <div class="demo-scene-sub" id="demo-scene-sub">11pm. Pipe burst. Watch what happens.</div>
+      <div class="demo-scene-sub" id="demo-scene-sub">11pm. A pipe just burst. Watch what Aria does.</div>
       <div class="demo-stats">
         <div class="demo-stat"><span class="stat-num" id="stat-time">47s</span><span class="stat-label">Response time</span></div>
-        <div class="demo-stat"><span class="stat-num">0</span><span class="stat-label">Humans required</span></div>
+        <div class="demo-stat"><span class="stat-num">0</span><span class="stat-label">Humans needed</span></div>
         <div class="demo-stat"><span class="stat-num">24/7</span><span class="stat-label">Always on</span></div>
       </div>
-      <button class="demo-play-btn" id="demo-play-btn" onclick="playDemo()">&#9654; Play Demo</button>
+      <button class="demo-play-btn" id="demo-play-btn" onclick="playDemo()">&#9654; Play Live Call</button>
       <div class="demo-outcome" id="demo-outcome">
         <div class="outcome-check">&#10003;</div>
         <div class="outcome-text">
@@ -436,7 +462,7 @@
           <div class="outcome-sub" id="outcome-sub">Technician dispatched. No human involvement.</div>
         </div>
       </div>
-      <a href="https://cal.com/allen-aeq4f9/30min" target="_blank" class="btn-primary">Get This For My Business</a>
+      <a href="https://cal.com/allen-aeq4f9/30min" target="_blank" class="btn-primary" style="display:inline-block;margin-top:8px;">Get This For My Business</a>
     </div>
   </div>
 </section>
@@ -694,39 +720,88 @@ function toggleChat(){
 var DEMO_DATA = {
   plumber: {
     title: '🔧 Emergency Plumbing Call',
-    sub: '11pm. Pipe burst. Watch what happens.',
-    audio: 'demo_plumber.mp3',
+    sub: '11pm. A pipe just burst. Watch what Aria does.',
+    audio: 'demo_plumber_call.mp3',
     statTime: '47s',
     outcomeMain: 'Job Booked in 47 Seconds',
     outcomeSub: 'Technician dispatched. No human involvement.',
     messages: [
-      { type:'alert',    text:'🔔 NEW LEAD — Emergency Call — 11:02 PM', delay:500 },
-      { type:'customer', name:'Homeowner', text:'Hi my pipe just burst, water is everywhere, I need someone NOW please!', delay:2000 },
-      { type:'typing',   delay:3800 },
-      { type:'bot',      text:"Hi! This is Mike's Plumbing emergency line. I'm here 24/7. What's your address so I can dispatch a technician right now?", delay:5500 },
-      { type:'customer', name:'Homeowner', text:'245 Oak Street, basement pipe, please hurry', delay:8500 },
-      { type:'typing',   delay:10200 },
-      { type:'bot',      text:'Got it. Technician dispatched to 245 Oak Street. ETA 35 minutes. Confirmation text sent to your phone now. Stay safe! ✅', delay:12000 },
-      { type:'outcome',  delay:15500 }
+      { type:'alert',    text:'🔔 INCOMING CALL — 11:02 PM', delay:800 },
+      { type:'customer', name:'Homeowner', text:'Hi my pipe just burst, water everywhere, I need someone NOW—', delay:2500 },
+      { type:'typing',   delay:4500 },
+      { type:'bot',      text:"Hi! You've reached Mike's Plumbing emergency line, I'm Aria. I've got you. What's your address?", delay:6000 },
+      { type:'customer', name:'Homeowner', text:'245 Oak Street. Basement pipe. Please hurry—', delay:10000 },
+      { type:'typing',   delay:12000 },
+      { type:'bot',      text:'Got it — technician dispatched to 245 Oak Street. ETA 35 minutes. Confirmation text sent now. Stay safe! ✅', delay:13500 },
+      { type:'customer', name:'Homeowner', text:'Oh thank god. Thank you so much.', delay:18000 },
+      { type:'bot',      text:"You're all set! Mike will be there by 11:45. See you soon! 👋", delay:20000 },
+      { type:'outcome',  delay:23000 }
     ]
   },
   realtor: {
     title: '🏡 Real Estate Lead — 2AM',
-    sub: 'Maria clicks a Facebook ad at 2am. Watch Aria respond.',
-    audio: 'demo_realtor.mp3',
+    sub: 'Maria fills out a Facebook ad form at 2am.',
+    audio: 'demo_realtor_call.mp3',
     statTime: '8s',
     outcomeMain: 'Lead Qualified. Viewing Booked.',
     outcomeSub: 'Agent alert sent. Zero human involvement.',
     messages: [
-      { type:'alert',    text:'🔔 NEW LEAD — Facebook Ad — 2:14 AM', delay:500 },
-      { type:'bot',      text:"Hi Maria! I saw you're interested in the 2BR listing at Cebu IT Park. Are you buying for personal use or investment?", delay:2000 },
-      { type:'customer', name:'Maria Santos', text:'Personal use. Looking to move in within 3 months.', delay:5000 },
-      { type:'typing',   delay:6800 },
-      { type:'bot',      text:'Perfect. I have two units available — Unit 8B at ₱4.2M and Unit 12C at ₱4.8M with a city view. Interested in a free viewing this week?', delay:8500 },
-      { type:'customer', name:'Maria Santos', text:'Yes! Unit 12C sounds great 😊', delay:12000 },
-      { type:'typing',   delay:13800 },
-      { type:'bot',      text:'Viewing confirmed for Thursday at 2pm! 🏡 You\'ll receive property details and a calendar invite now. See you then, Maria!', delay:15500 },
-      { type:'outcome',  delay:19000 }
+      { type:'alert',    text:'🔔 NEW LEAD — Facebook Ad — 2:14 AM', delay:800 },
+      { type:'customer', name:'Maria Santos', text:"Hi, I saw the listing for the 2BR in Cebu IT Park. I'm really interested.", delay:2500 },
+      { type:'typing',   delay:4200 },
+      { type:'bot',      text:"Hi Maria! So glad you reached out — I'm Aria with Cebu Prime Properties. Are you looking for a personal home or investment property?", delay:5500 },
+      { type:'customer', name:'Maria Santos', text:'Personal use. Looking to move in within 3 months.', delay:10500 },
+      { type:'typing',   delay:12000 },
+      { type:'bot',      text:'Perfect timing! I have two gorgeous units — Unit 8B at ₱4.2M and Unit 12C at ₱4.8M with a city view. Which sounds more like you?', delay:13500 },
+      { type:'customer', name:'Maria Santos', text:'The 12C honestly sounds amazing. Can I see it?', delay:19000 },
+      { type:'typing',   delay:20500 },
+      { type:'bot',      text:"Absolutely! I'm booking you a free viewing with Carlos. Does Thursday at 2pm work?", delay:22000 },
+      { type:'customer', name:'Maria Santos', text:'Yes — Thursday at 2 works perfectly!', delay:26000 },
+      { type:'bot',      text:"You're all booked Maria! 🏡 Sending property details and your calendar invite now. Carlos can't wait to meet you!", delay:28000 },
+      { type:'outcome',  delay:33000 }
+    ]
+  },
+  auto: {
+    title: '🚗 Auto Repair — Missed Call',
+    sub: "Car won't start. Work in an hour.",
+    audio: 'demo_auto_call.mp3',
+    statTime: '35s',
+    outcomeMain: 'Tow Booked. Diagnostic Scheduled.',
+    outcomeSub: 'Customer kept. No human involvement.',
+    messages: [
+      { type:'alert',    text:'🔔 INCOMING CALL — 7:42 AM', delay:800 },
+      { type:'customer', name:'Customer', text:"Hey, my car just died in my driveway. I've got work in an hour. Anyone available?", delay:2500 },
+      { type:'typing',   delay:4500 },
+      { type:'bot',      text:"Hi! Dave's Auto Repair, I'm Aria. I can get you sorted right now. Do you need a tow or can someone bring it in?", delay:6000 },
+      { type:'customer', name:'Customer', text:"Need a tow. It won't even turn over.", delay:11000 },
+      { type:'typing',   delay:12500 },
+      { type:'bot',      text:'No problem! Tow truck to you within 45 minutes and we will get it diagnosed today. What is your address?', delay:14000 },
+      { type:'customer', name:'Customer', text:'32 Elm Street.', delay:18500 },
+      { type:'typing',   delay:19500 },
+      { type:'bot',      text:'Tow dispatched to 32 Elm Street — arriving by 8:45. Confirmation text sent. We will call you with the diagnostic by noon ✅', delay:21000 },
+      { type:'customer', name:'Customer', text:'You just saved my morning. Thank you!', delay:26500 },
+      { type:'bot',      text:"That's what we're here for! See you soon 👋", delay:28500 },
+      { type:'outcome',  delay:31000 }
+    ]
+  },
+  hvac: {
+    title: '❄️ HVAC Emergency',
+    sub: 'AC out. 95 degrees. Two kids at home.',
+    audio: 'demo_hvac_call.mp3',
+    statTime: '52s',
+    outcomeMain: 'Technician Booked Same Day.',
+    outcomeSub: 'Appointment confirmed. No human involvement.',
+    messages: [
+      { type:'alert',    text:'🔔 INCOMING CALL — 1:18 PM', delay:800 },
+      { type:'customer', name:'Homeowner', text:'Hi my AC just went out and it is 95 degrees. I have two kids. I need someone today please—', delay:2500 },
+      { type:'typing',   delay:4800 },
+      { type:'bot',      text:"Oh no, that is awful in this heat! You've reached Cool Air HVAC, I'm Aria. I will get someone out today. What is your address?", delay:6500 },
+      { type:'customer', name:'Homeowner', text:'118 Maple Drive. Please as soon as possible.', delay:12000 },
+      { type:'typing',   delay:13500 },
+      { type:'bot',      text:'I have a technician available between 2 and 4pm today. Does that work for you?', delay:15000 },
+      { type:'customer', name:'Homeowner', text:'Yes yes that works perfectly. Thank you so much.', delay:19500 },
+      { type:'bot',      text:'You are all booked! Technician at 118 Maple Drive between 2 and 4pm. Confirmation text sent now. Stay cool — help is on the way! ✅', delay:22000 },
+      { type:'outcome',  delay:28000 }
     ]
   }
 };
@@ -735,34 +810,39 @@ var demoActive = 'plumber';
 var demoAudio = new Audio();
 var demoTimers = [];
 
-function switchDemo(type) {
+function selectDemo(type) {
   if (demoTimers.length) { demoTimers.forEach(clearTimeout); demoTimers = []; }
   demoAudio.pause(); demoAudio.currentTime = 0;
   demoActive = type;
-  document.querySelectorAll('.demo-tab').forEach(function(t){ t.classList.remove('active'); });
-  document.getElementById('tab-' + type).classList.add('active');
+  document.querySelectorAll('.demo-card').forEach(function(c){ c.classList.remove('active'); });
+  document.getElementById('dcard-' + type).classList.add('active');
   var d = DEMO_DATA[type];
   document.getElementById('demo-scene-title').textContent = d.title;
   document.getElementById('demo-scene-sub').textContent = d.sub;
   document.getElementById('stat-time').textContent = d.statTime;
   document.getElementById('demo-chat-messages').innerHTML = '';
-  document.getElementById('demo-outcome').style.opacity = '0';
+  var o = document.getElementById('demo-outcome');
+  o.style.opacity = '0'; o.style.display = 'none';
+  document.getElementById('aria-status').textContent = '● Online 24/7';
   var btn = document.getElementById('demo-play-btn');
-  btn.textContent = '\u25B6 Play Demo';
+  btn.textContent = '\u25B6 Play Live Call';
   btn.disabled = false;
 }
 
 function playDemo() {
   var btn = document.getElementById('demo-play-btn');
-  btn.textContent = 'Playing...';
+  btn.textContent = '📞 Live Call Playing...';
   btn.disabled = true;
   var msgs = document.getElementById('demo-chat-messages');
   msgs.innerHTML = '';
-  document.getElementById('demo-outcome').style.opacity = '0';
+  var o = document.getElementById('demo-outcome');
+  o.style.opacity = '0'; o.style.display = 'none';
+  document.getElementById('aria-status').textContent = '● On a call now';
   var d = DEMO_DATA[demoActive];
   demoAudio.src = d.audio;
   demoAudio.play().catch(function(){});
   var typingEl = null;
+  demoTimers = [];
   d.messages.forEach(function(m) {
     var t = setTimeout(function() {
       if (m.type === 'typing') {
@@ -772,7 +852,8 @@ function playDemo() {
         msgs.appendChild(typingEl);
         msgs.scrollTop = msgs.scrollHeight;
       } else if (m.type === 'outcome') {
-        var o = document.getElementById('demo-outcome');
+        if (typingEl) { typingEl.remove(); typingEl = null; }
+        document.getElementById('aria-status').textContent = '● Online 24/7';
         document.getElementById('outcome-main').textContent = d.outcomeMain;
         document.getElementById('outcome-sub').textContent = d.outcomeSub;
         o.style.display = 'flex';
