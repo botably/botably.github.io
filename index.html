@@ -263,13 +263,13 @@
 
     /* DEMO SECTION */
     #demo { padding: 100px 24px; background: var(--dark3); }
-    .demo-cards-grid { display: grid; grid-template-columns: repeat(4,1fr); gap: 16px; max-width: 900px; margin: 0 auto 48px; }
-    .demo-card { background: var(--card); border: 1px solid var(--border); border-radius: 16px; padding: 24px 20px; cursor: pointer; transition: all 0.2s; text-align: center; }
+    .demo-cards-grid { display: grid; grid-template-columns: repeat(4,1fr); gap: 16px; max-width: 900px; margin: 0 auto 48px; align-items: stretch; }
+    .demo-card { background: var(--card); border: 1px solid var(--border); border-radius: 16px; padding: 24px 16px; cursor: pointer; transition: all 0.2s; text-align: center; display: flex; flex-direction: column; align-items: center; justify-content: flex-start; }
     .demo-card:hover { border-color: rgba(0,245,255,0.4); transform: translateY(-3px); }
     .demo-card.active { border-color: var(--cyan); background: rgba(0,245,255,0.07); box-shadow: 0 0 24px rgba(0,245,255,0.1); }
-    .dcard-icon { font-size: 2rem; margin-bottom: 10px; }
-    .dcard-title { font-family: 'Syne', sans-serif; font-weight: 700; font-size: 0.9rem; color: #fff; margin-bottom: 5px; }
-    .dcard-sub { font-size: 0.75rem; color: var(--muted); }
+    .dcard-icon { font-size: 2rem; margin-bottom: 10px; line-height: 1; }
+    .dcard-title { font-family: 'DM Sans', sans-serif; font-weight: 700; font-size: 0.88rem; color: #fff; margin-bottom: 6px; line-height: 1.3; }
+    .dcard-sub { font-family: 'DM Sans', sans-serif; font-size: 0.74rem; color: var(--muted); line-height: 1.4; }
     .demo-player { display: grid; grid-template-columns: 1fr 1fr; gap: 60px; max-width: 900px; margin: 0 auto; align-items: center; }
     .demo-player-left { display: flex; justify-content: center; }
     .demo-container { display: grid; grid-template-columns: 1fr 1fr; gap: 60px; max-width: 1000px; margin: 0 auto; align-items: center; }
@@ -297,8 +297,9 @@
     .msg-appear { animation: msgIn 0.3s ease both; }
     @keyframes msgIn { from{opacity:0;transform:translateY(8px);} to{opacity:1;transform:translateY(0);} }
     .demo-info { display: flex; flex-direction: column; gap: 0; }
-    .demo-scene-title { font-family: 'Syne', sans-serif; font-size: 1.4rem; font-weight: 800; color: #fff; margin-bottom: 8px; }
-    .demo-scene-sub { font-size: 0.9rem; color: var(--muted); margin-bottom: 32px; }
+    .demo-player-right { display: flex; flex-direction: column; align-items: flex-start; }
+    .demo-scene-title { font-family: 'DM Sans', sans-serif; font-size: 1.3rem; font-weight: 700; color: #fff; margin-bottom: 8px; line-height: 1.3; }
+    .demo-scene-sub { font-family: 'DM Sans', sans-serif; font-size: 0.875rem; color: var(--muted); margin-bottom: 28px; line-height: 1.5; }
     .demo-stats { display: grid; grid-template-columns: repeat(3, 1fr); gap: 16px; margin-bottom: 32px; }
     .demo-stat { background: var(--card); border: 1px solid var(--border); border-radius: 12px; padding: 16px 12px; text-align: center; }
     .stat-num { display: block; font-family: 'Syne', sans-serif; font-weight: 800; font-size: 1.4rem; color: var(--cyan); }
@@ -726,39 +727,41 @@ var DEMO_DATA = {
     outcomeMain: 'Job Booked in 47 Seconds',
     outcomeSub: 'Technician dispatched. No human involvement.',
     messages: [
-      { type:'alert',    text:'🔔 INCOMING CALL — 11:02 PM', delay:800 },
-      { type:'customer', name:'Homeowner', text:'Hi my pipe just burst, water everywhere, I need someone NOW—', delay:2500 },
-      { type:'typing',   delay:4500 },
-      { type:'bot',      text:"Hi! You've reached Mike's Plumbing emergency line, I'm Aria. I've got you. What's your address?", delay:6000 },
-      { type:'customer', name:'Homeowner', text:'245 Oak Street. Basement pipe. Please hurry—', delay:10000 },
-      { type:'typing',   delay:12000 },
-      { type:'bot',      text:'Got it — technician dispatched to 245 Oak Street. ETA 35 minutes. Confirmation text sent now. Stay safe! ✅', delay:13500 },
-      { type:'customer', name:'Homeowner', text:'Oh thank god. Thank you so much.', delay:18000 },
-      { type:'bot',      text:"You're all set! Mike will be there by 11:45. See you soon! 👋", delay:20000 },
-      { type:'outcome',  delay:23000 }
+      { type:'alert',    text:'🔔 INCOMING CALL — 11:02 PM',                                          delay:0 },
+      { type:'customer', name:'Homeowner', text:"Hi, my pipe just burst. Water is everywhere. I need someone right now please!",  delay:1800 },
+      { type:'typing',   delay:6000 },
+      { type:'bot',      text:"Hi! You've reached Mike's Plumbing emergency line, I'm Aria. I've got you covered. What's your address so I can get someone out right now?", delay:7500 },
+      { type:'customer', name:'Homeowner', text:"It's 245 Oak Street. Please hurry.",                delay:14500 },
+      { type:'typing',   delay:17000 },
+      { type:'bot',      text:"245 Oak Street — got it. Dispatching a technician right now. Estimated arrival 35 minutes. I'm sending a confirmation text to your phone. Is there anything else you need while we get Mike on the way?", delay:18500 },
+      { type:'customer', name:'Homeowner', text:"No — thank you so much, oh my god, thank you.",     delay:27000 },
+      { type:'typing',   delay:30000 },
+      { type:'bot',      text:"You're all set! Mike will be there by 11:45. Stay safe and we'll see you soon!",  delay:31000 },
+      { type:'outcome',  delay:36000 }
     ]
   },
   realtor: {
     title: '🏡 Real Estate Lead — 2AM',
-    sub: 'Maria fills out a Facebook ad form at 2am.',
+    sub: 'Lead comes in at 2am for a Cocoa Beach property.',
     audio: 'demo_realtor_call.mp3',
     statTime: '8s',
-    outcomeMain: 'Lead Qualified. Viewing Booked.',
+    outcomeMain: 'Lead Qualified. Showing Booked.',
     outcomeSub: 'Agent alert sent. Zero human involvement.',
     messages: [
-      { type:'alert',    text:'🔔 NEW LEAD — Facebook Ad — 2:14 AM', delay:800 },
-      { type:'customer', name:'Maria Santos', text:"Hi, I saw the listing for the 2BR in Cebu IT Park. I'm really interested.", delay:2500 },
-      { type:'typing',   delay:4200 },
-      { type:'bot',      text:"Hi Maria! So glad you reached out — I'm Aria with Cebu Prime Properties. Are you looking for a personal home or investment property?", delay:5500 },
-      { type:'customer', name:'Maria Santos', text:'Personal use. Looking to move in within 3 months.', delay:10500 },
-      { type:'typing',   delay:12000 },
-      { type:'bot',      text:'Perfect timing! I have two gorgeous units — Unit 8B at ₱4.2M and Unit 12C at ₱4.8M with a city view. Which sounds more like you?', delay:13500 },
-      { type:'customer', name:'Maria Santos', text:'The 12C honestly sounds amazing. Can I see it?', delay:19000 },
-      { type:'typing',   delay:20500 },
-      { type:'bot',      text:"Absolutely! I'm booking you a free viewing with Carlos. Does Thursday at 2pm work?", delay:22000 },
-      { type:'customer', name:'Maria Santos', text:'Yes — Thursday at 2 works perfectly!', delay:26000 },
-      { type:'bot',      text:"You're all booked Maria! 🏡 Sending property details and your calendar invite now. Carlos can't wait to meet you!", delay:28000 },
-      { type:'outcome',  delay:33000 }
+      { type:'alert',    text:'🔔 NEW LEAD — Facebook Ad — 2:14 AM',                                  delay:0 },
+      { type:'customer', name:'Prospect', text:"Hi, I saw the listing for the two-bedroom in Cocoa Beach. I'm really interested.", delay:1800 },
+      { type:'typing',   delay:5500 },
+      { type:'bot',      text:"Hi! So glad you reached out. I'm Aria with Cocoa Beach Realty. Are you looking for a personal home or an investment property?", delay:7000 },
+      { type:'customer', name:'Prospect', text:"Personal use. Looking to move in within about three months.",  delay:13500 },
+      { type:'typing',   delay:16500 },
+      { type:'bot',      text:"Perfect timing! I have two gorgeous units available — Unit 8B at $420,000 and Unit 12C at $480,000 with a beautiful ocean view. Which one sounds more like you?", delay:18000 },
+      { type:'customer', name:'Prospect', text:"The 12C honestly sounds amazing. Can I actually see it?",     delay:25500 },
+      { type:'typing',   delay:28500 },
+      { type:'bot',      text:"Absolutely! Booking you a free showing with our agent Chris. Does Thursday at 2pm work?", delay:30000 },
+      { type:'customer', name:'Prospect', text:"Yes. Thursday at 2 works perfectly.",                delay:35500 },
+      { type:'typing',   delay:37500 },
+      { type:'bot',      text:"You're all booked! Sending the property details and your calendar invite right now. Chris is so excited to meet you. See you Thursday! 🏡", delay:39000 },
+      { type:'outcome',  delay:45000 }
     ]
   },
   auto: {
@@ -840,7 +843,8 @@ function playDemo() {
   document.getElementById('aria-status').textContent = '● On a call now';
   var d = DEMO_DATA[demoActive];
   demoAudio.src = d.audio;
-  demoAudio.play().catch(function(){});
+  demoAudio.load();
+  setTimeout(function(){ demoAudio.play().catch(function(){}); }, 1500);
   var typingEl = null;
   demoTimers = [];
   d.messages.forEach(function(m) {
